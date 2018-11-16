@@ -1,5 +1,6 @@
-[![Build Status](https://travis-ci.com/KennethWhite/ALF_Scheduler.svg?branch=master)](https://travis-ci.com/KennethWhite/ALF_Scheduler)
+## Current Build Status: [![Build Status](https://travis-ci.com/KennethWhite/ALF_Scheduler.svg?branch=master)](https://travis-ci.com/KennethWhite/ALF_Scheduler)
 
+---------
 
 #   Software Requirements Specification: 
 #   Assisted Living Facilities Inspection Scheduling Project
