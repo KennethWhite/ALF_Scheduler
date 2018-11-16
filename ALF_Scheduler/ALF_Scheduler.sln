@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28306.52
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ALF_Scheduler", "ALF_Scheduler\ALF_Scheduler.csproj", "{144196A4-0B35-4246-BD71-E7098726351E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockUnitTests", "MockUnitTests\MockUnitTests.csproj", "{45AB87BA-6588-4ACF-8062-35C5629A7C66}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{144196A4-0B35-4246-BD71-E7098726351E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{144196A4-0B35-4246-BD71-E7098726351E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{144196A4-0B35-4246-BD71-E7098726351E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{144196A4-0B35-4246-BD71-E7098726351E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45AB87BA-6588-4ACF-8062-35C5629A7C66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45AB87BA-6588-4ACF-8062-35C5629A7C66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45AB87BA-6588-4ACF-8062-35C5629A7C66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45AB87BA-6588-4ACF-8062-35C5629A7C66}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F2FCBC6B-2C26-4838-8293-605D7A923054}
+	EndGlobalSection
+EndGlobal
