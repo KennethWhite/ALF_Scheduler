@@ -1,6 +1,8 @@
 language: csharp
 solution: ./ALF_Scheduler/ALF_Scheduler.sln
-
+mono:
+  - latest
+  
 after_success:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
   - chmod +x send.sh
