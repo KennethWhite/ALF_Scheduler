@@ -4,12 +4,18 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace MockUnitTests
 {
     [TestClass]
-    public class MockTestClass
+    public class UnitTest1
     {
         [TestMethod]
-        public void MockTest()
+        public void AssertTrue_Pass()
         {
             Assert.IsTrue(true);
+        }
+
+        [TestMethod]
+        public void AssertTrue_Fail()
+        {
+            Assert.IsTrue(false);
         }
     }
 }
