@@ -11,11 +11,5 @@ namespace MockUnitTests
         {
             Assert.IsTrue(true);
         }
-
-        [TestMethod]
-        public void AssertTrue_Fail()
-        {
-            Assert.IsTrue(false);
-        }
     }
 }
