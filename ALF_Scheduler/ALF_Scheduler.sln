@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28306.52
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scheduler", "Scheduler\Scheduler.csproj", "{344BB8E6-343A-4F5E-A995-9839AD2FDEC8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchedulerTests", "Scheduler\SchedulerTests.csproj", "{344BB8E6-343A-4F5E-A995-9839AD2FDEC8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excel_Import_Export", "Excel_Import_Export\Excel_Import_Export.csproj", "{462F8E07-16C9-413C-A800-141D6AC3F741}"
 EndProject
