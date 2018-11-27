@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace Excel_Import_Export
 {
+
+    /// <summary>
+    /// This class is used to open and close references to Excel files
+    /// </summary>
     public class ExcelImporterExporter
     {
         /// <summary>
@@ -12,18 +17,20 @@ namespace Excel_Import_Export
         /// <param name="filePath">Filepath to the Excel file</param>
         /// <param name="xlWorkbook">out parameter representing the Excel.Workbook</param>
         /// <returns>True upon success opening file, false on failure</returns>
-        public static bool LoadExcelFromFile(string filePath, out Excel.Workbook xlWorkbook)
+        /// <exception>Throws NullReferenceException if Microsoft Excel is not installed on the systsem
+        /// or if it cannot be opened</exception>
+        public static bool LoadExcelFromFile(string filePath, out Excel.Application xlApp ,out Excel.Workbook xlWorkbook)
         {
             try
             {
-                Excel.Application xlApp = new Excel.Application();
+                xlApp = new Excel.Application();
 
                 if (xlApp == null)
                 {
                     throw new NullReferenceException(
                         $"The program failed to load the file {filePath} because Microsoft Excel could not be opened.");
                 }
-
+                xlApp.DisplayAlerts = false;
                 xlWorkbook = xlApp.Workbooks.Open($@"{filePath}");
                 return true;
             }
@@ -36,7 +43,8 @@ namespace Excel_Import_Export
             catch (Exception ex)
             {
                 //TODO log
-                xlWorkbook = new Excel.Workbook();
+                xlWorkbook = null;
+                xlApp = null;
                 return false;
             }
         }
@@ -63,7 +71,7 @@ namespace Excel_Import_Export
         }
 
         /// <summary>
-        /// This method will attempt to save the Excel.Workbook paramater into
+        /// This method will attempt to save the <c>Excel.Workbook</c> parameter into
         /// the file path specified
         /// </summary>
         /// <param name="path">File path the workbook will be saved to</param>
@@ -82,6 +90,24 @@ namespace Excel_Import_Export
                 return false;
             }
         }
+
+        /// <summary>
+        /// This method will close the Excel application, its workbooks, and any direct references to a workbooks.
+        /// </summary>
+        /// <remarks>Note that any references to an Excel.Workbook must be closed separately from the application.</remarks>
+        /// <param name="xlApp">The application reference</param>
+        /// <param name="xlWorkBook">Reference to the Excel.Workbook to close</param>
+        public static void CloseExcelApp(Excel.Application xlApp, Excel.Workbook xlWorkBook)
+        {
+            xlWorkBook.Close();
+            xlApp.Workbooks.Close();
+            xlApp.Quit();
+
+            Marshal.ReleaseComObject(xlWorkBook);
+            Marshal.ReleaseComObject(xlApp.Workbooks);
+            Marshal.ReleaseComObject(xlApp);
+        }
+
 
     }
 }
