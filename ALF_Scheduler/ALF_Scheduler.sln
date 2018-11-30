@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28306.52
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ALF_Scheduler", "ALF_Scheduler\ALF_Scheduler.csproj", "{0544F3CA-391F-4940-8E95-E8508446581E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excel_Import_Export", "Excel_Import_Export\Excel_Import_Export.csproj", "{462F8E07-16C9-413C-A800-141D6AC3F741}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockUnitTests", "MockUnitTests\MockUnitTests.csproj", "{435B4552-5AEC-4E4E-8FC5-B5DD8922EEAE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchedulerTests", "Scheduler_Tests\SchedulerTests.csproj", "{344BB8E6-343A-4F5E-A995-9839AD2FDEC8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0544F3CA-391F-4940-8E95-E8508446581E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0544F3CA-391F-4940-8E95-E8508446581E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0544F3CA-391F-4940-8E95-E8508446581E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0544F3CA-391F-4940-8E95-E8508446581E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{435B4552-5AEC-4E4E-8FC5-B5DD8922EEAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{435B4552-5AEC-4E4E-8FC5-B5DD8922EEAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{435B4552-5AEC-4E4E-8FC5-B5DD8922EEAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{435B4552-5AEC-4E4E-8FC5-B5DD8922EEAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{462F8E07-16C9-413C-A800-141D6AC3F741}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{462F8E07-16C9-413C-A800-141D6AC3F741}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{462F8E07-16C9-413C-A800-141D6AC3F741}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{462F8E07-16C9-413C-A800-141D6AC3F741}.Release|Any CPU.Build.0 = Release|Any CPU
+		{344BB8E6-343A-4F5E-A995-9839AD2FDEC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{344BB8E6-343A-4F5E-A995-9839AD2FDEC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{344BB8E6-343A-4F5E-A995-9839AD2FDEC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{344BB8E6-343A-4F5E-A995-9839AD2FDEC8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
