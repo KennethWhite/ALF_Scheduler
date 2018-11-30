@@ -57,11 +57,11 @@ namespace ALF_Scheduler
         }
 
         private void PreviousInspection(string date) {
-            facility.OneYearFullInspection = CreateDateTime(date);
+            facility.LastFullInspection = CreateDateTime(date);
         }
 
         private void LastInspection(string date) {
-            facility.LastFullInspection = CreateDateTime(date);
+            facility.MostRecentFullInspection = CreateDateTime(date);
         }
 
         private void ProposedDate(string date) {

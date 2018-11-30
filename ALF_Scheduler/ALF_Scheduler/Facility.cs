@@ -26,23 +26,23 @@ namespace ALF_Scheduler
         public string Address { get; set; }
         public int ZipCode { get; set; }
         public int NumberOfBeds { get; set; }
+        public DateTime MostRecentFullInspection { get; set; }
         public DateTime LastFullInspection { get; set; }
-        public DateTime OneYearFullInspection { get; set; } //need to have better names for previous inspection dates and enforcement
-        public DateTime TwoYearFullInspection { get; set; } //need to have better names for previous inspection dates and enforcement
+        public DateTime PreviousFullInspection { get; set; }
         public string InspectionResults { get; set; } //TODO connect inspection results with config file (NO, NO24, ENF, YES) 
         public DateTime[] DatesOfSOD { get; set; } //TODO dates of SOD (Statement of Deficiencies report) for substantiated complaints done since the last full inspection?
         public string EnforcementNotes { get; set; } // any enforcement for any inspection done since the last full inspection? (fines, stop placement, conditions, revocation, summary suspension)
         public bool FailedFollowUp { get; set; } //datatype for this?
         public string Complaints { get; set; } // failed follow-ups for current inspection or complaints
         public DateTime ProposedDate { get; set; }
-        public float ScheduleInterval {
+        public float ScheduleInterval { //time between last full inspection and proposed date
             get {
                 TimeSpan difference = ProposedDate.Subtract(LastFullInspection);
                 return (float)(Convert.ToDouble(difference)*30.42); // difference in days times avg months in a year
             }
-        } //time between last full inspection and proposed date
-        public DateTime Month15 { get => LastFullInspection.AddMonths(15); } //what 15 months is from the last full inspection
-        public DateTime Month18 { get => LastFullInspection.AddMonths(18); } //what 18 months is from the last full inspection
+        }
+        public DateTime Month15 { get => LastFullInspection.AddMonths(15); }
+        public DateTime Month18 { get => LastFullInspection.AddMonths(18); }
         public int NumberOfLicensors { get; set; } //number of licensors needed.. for inspection I'm guessing?
         public int SampleSize { get; set; } //sample size from last full inspection.. of inspectors?
     }
