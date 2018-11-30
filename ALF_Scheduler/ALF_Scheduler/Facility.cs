@@ -29,8 +29,8 @@ namespace ALF_Scheduler
         public string Complaints { get; set; } // failed follow-ups for current inspection or complaints
         public DateTime ProposedDate { get; set; }
         public float ScheduleInterval { get; set; } //time between last full inspection and proposed date
-        public float Month15 { get; } //what 15 months is from the last full inspection
-        public float Month18 { get; } //what 18 months is from the last full inspection
+        public DateTime Month15 { get => LastFullInspection.AddMonths(15); } //what 15 months is from the last full inspection
+        public DateTime Month18 { get => LastFullInspection.AddMonths(18); } //what 18 months is from the last full inspection
         public int NumberOfLicensors { get; set; } //number of licensors needed.. for inspection I'm guessing?
         public int SampleSize { get; set; } //sample size from last full inspection.. of inspectors?
     }
