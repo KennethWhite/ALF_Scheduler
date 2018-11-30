@@ -1,4 +1,4 @@
-## Current Build Status: [![Build Status](https://travis-ci.com/KennethWhite/ALF_Scheduler.svg?branch=master)](https://travis-ci.com/KennethWhite/ALF_Scheduler)
+## Current Build Status: [![Build Status](https://dev.azure.com/kwhite49/kwhite49/_apis/build/status/KennethWhite.ALF_Scheduler)](https://dev.azure.com/kwhite49/kwhite49/_build/latest?definitionId=1)
 
 ---------
 
