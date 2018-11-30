@@ -1,5 +1,7 @@
 ## Current Build Status: [![Build Status](https://dev.azure.com/kwhite49/kwhite49/_apis/build/status/KennethWhite.ALF_Scheduler)](https://dev.azure.com/kwhite49/kwhite49/_build/latest?definitionId=1)
 
+This is our senior project in which we aim to automate the scheduling of ALF inspections, which is currently done manually in a Microsoft Excel file by Washington DSHS employees.
+
 ---------
 
 #   Software Requirements Specification: 
