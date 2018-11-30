@@ -8,7 +8,9 @@ using System.Runtime.InteropServices;
 namespace Scheduler
 {
 
-    /* Please note that this test class is quite slow as it uses significant amounts of file IO.
+    /* This test class is far too slow as it uses significant amounts of file IO.
+     * Slow tests discourage running the test suite and should be avoided.
+     * It will be worth my time to work on an alternative 
      */
 
     [TestClass]
