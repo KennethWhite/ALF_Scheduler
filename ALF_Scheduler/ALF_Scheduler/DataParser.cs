@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ALF_Scheduler
@@ -18,57 +19,57 @@ namespace ALF_Scheduler
         FailedFollowUp
         Complaints  // failed follow-ups for current inspection or complaints*/
 
-        private string[] _testExcelColumns = { "facility name", "licensee name", "U", "752103", "98001", "City", "08/14/2016", "02/23/2018", "03/23/2019", "07/25/2019", "08/25/2019", "Miranda", "Yes" };
         Facility facility = new Facility();
 
-        private void Name() {
-            facility.Name = _testExcelColumns[0];
+        private void Name(string name) {
+            facility.Name = name;
         }
 
-        private void Licensee() {
-            string[] licensee = _testExcelColumns[1].Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
-            facility.LicenseeLastName = licensee[0];
-            facility.LicenseeFirstName = licensee[1];
+        private void Licensee(string licensee) {
+            string[] firstLast = licensee.Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
+            facility.LicenseeLastName = firstLast[0];
+            facility.LicenseeFirstName = firstLast[1];
         }
 
-        private void Unit() {
-            facility.Unit = Convert.ToChar(_testExcelColumns[2]);
+        private void Unit(string unit) {
+            facility.Unit = Convert.ToChar(unit);
         }
 
-        private void LicenseNumber() {
-            facility.LicenseNumber = Convert.ToInt32(_testExcelColumns[3]);
+        private void LicenseNumber(string number) {
+            facility.LicenseNumber = Convert.ToInt32(number);
         }
 
-        private void ZipCode() {
-            facility.ZipCode = Convert.ToInt32(_testExcelColumns[4]);
+        private void ZipCode(string zip) {
+            facility.ZipCode = Convert.ToInt32(zip);
         }
 
-        private void City() {
-            //facility.City = _testExcelColumns[5];
+        private void City(string city) {
+            //facility.City = city;
+        }
+        
+        public static DateTime CreateDateTime(string date) {
+            Regex rx = new Regex("([0-9]{2})/([0-9]{2})/([0-9]{4}|[0-9]{2})");
+            if (rx.IsMatch(date)) {
+                return DateTime.Parse(date);
+            } else {
+                throw new FormatException("date does not match regex format");
+            }
         }
 
-        private DateTime CreateDateTime(string date) {
-            string[] dateArray = date.Split('/');
-            int month = Convert.ToInt16(dateArray[0]);
-            int day = Convert.ToInt16(dateArray[1]);
-            int year = Convert.ToInt16(dateArray[2]);
-            return new DateTime(year, month, day);
+        private void PreviousInspection(string date) {
+            facility.OneYearFullInspection = CreateDateTime(date);
         }
 
-        private void PreviousInspection() {
-            facility.OneYearFullInspection = CreateDateTime(_testExcelColumns[6]);
+        private void LastInspection(string date) {
+            facility.LastFullInspection = CreateDateTime(date);
         }
 
-        private void LastInspection() {
-            facility.LastFullInspection = CreateDateTime(_testExcelColumns[7]);
+        private void ProposedDate(string date) {
+            facility.ProposedDate = CreateDateTime(date);
         }
 
-        private void ProposedDate() {
-            facility.ProposedDate = CreateDateTime(_testExcelColumns[7]);
-        }
-
-        private void NumberOfBeds() {
-            facility.NumberOfBeds = Convert.ToInt16(_testExcelColumns[8]);
+        private void NumberOfBeds(string beds) {
+            facility.NumberOfBeds = Convert.ToInt16(beds);
         }
     }
 }
