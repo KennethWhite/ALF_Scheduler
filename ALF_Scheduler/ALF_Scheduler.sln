@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excel_Import_Export", "Exce
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchedulerTests", "Scheduler_Tests\SchedulerTests.csproj", "{344BB8E6-343A-4F5E-A995-9839AD2FDEC8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XML_Utils", "XML_Utils\XML_Utils.csproj", "{75563EBE-F227-48BF-8E17-69145C2087DF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{344BB8E6-343A-4F5E-A995-9839AD2FDEC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{344BB8E6-343A-4F5E-A995-9839AD2FDEC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{344BB8E6-343A-4F5E-A995-9839AD2FDEC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75563EBE-F227-48BF-8E17-69145C2087DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75563EBE-F227-48BF-8E17-69145C2087DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75563EBE-F227-48BF-8E17-69145C2087DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75563EBE-F227-48BF-8E17-69145C2087DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
