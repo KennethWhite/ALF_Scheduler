@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 /// <summary>
-/// This class is used to store the metadata for each facility 
+/// This class is used to store the metadata in properties for each facility
 /// </summary>
 
 namespace ALF_Scheduler

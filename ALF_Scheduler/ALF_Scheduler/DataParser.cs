@@ -28,11 +28,24 @@ namespace ALF_Scheduler
         public void Name(string name) {
             facility.Name = name;
         }
-
+        
+        /// <summary>
+        /// This method will split the licensee's name into first and last.
+        /// </summary>
+        /// <param name="licensee">The licensee's full name separated by a comma</param>
         public void Licensee(string licensee) {
             string[] firstLast = licensee.Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             facility.LicenseeLastName = firstLast[0];
             facility.LicenseeFirstName = firstLast[1];
+        }
+
+        /// <summary>
+        /// This method place the licensee's first and last names into their properties.
+        /// </summary>
+        /// <param name="licensee">The licensee's first and last names, respectively</param>
+        public void Licensee(string first, string last) {
+            facility.LicenseeFirstName = first;
+            facility.LicenseeLastName = last;
         }
 
         public void Unit(string unit) {
@@ -50,9 +63,16 @@ namespace ALF_Scheduler
         public void Address(string address) {
             facility.Address = address;
         }
-        
+
+        /// <summary>
+        /// This method will check the incoming string against the regex
+        /// pattern for dates, then create a DateTime object from the string.
+        /// </summary>
+        /// <param name="date">The date to be created</param>
+        /// <returns>DateTime object</returns>
+        /// <exception>Throws FormatException if date is not in the correct format</exception>
         public static DateTime CreateDateTime(string date) {
-            Regex rx = new Regex("([0-9]{2})/([0-9]{2})/([0-9]{4}|[0-9]{2})");
+            Regex rx = new Regex("([0-9]|[0-9]{2})/([0-9]{2})/([0-9]{4}|[0-9]{2})");
             if (rx.IsMatch(date)) {
                 return DateTime.Parse(date);
             } else {
