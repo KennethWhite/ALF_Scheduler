@@ -21,30 +21,34 @@ namespace ALF_Scheduler
 
         Facility facility = new Facility();
 
-        private void Name(string name) {
+        public Facility GetFacility() {
+            return facility;
+        }
+
+        public void Name(string name) {
             facility.Name = name;
         }
 
-        private void Licensee(string licensee) {
+        public void Licensee(string licensee) {
             string[] firstLast = licensee.Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             facility.LicenseeLastName = firstLast[0];
             facility.LicenseeFirstName = firstLast[1];
         }
 
-        private void Unit(string unit) {
+        public void Unit(string unit) {
             facility.Unit = Convert.ToChar(unit);
         }
 
-        private void LicenseNumber(string number) {
+        public void LicenseNumber(string number) {
             facility.LicenseNumber = Convert.ToInt32(number);
         }
 
-        private void ZipCode(string zip) {
+        public void ZipCode(string zip) {
             facility.ZipCode = Convert.ToInt32(zip);
         }
 
-        private void City(string city) {
-            //facility.City = city;
+        public void Address(string address) {
+            facility.Address = address;
         }
         
         public static DateTime CreateDateTime(string date) {
@@ -56,19 +60,19 @@ namespace ALF_Scheduler
             }
         }
 
-        private void PreviousInspection(string date) {
+        public void PreviousInspection(string date) {
             facility.LastFullInspection = CreateDateTime(date);
         }
 
-        private void LastInspection(string date) {
+        public void LastInspection(string date) {
             facility.MostRecentFullInspection = CreateDateTime(date);
         }
 
-        private void ProposedDate(string date) {
+        public void ProposedDate(string date) {
             facility.ProposedDate = CreateDateTime(date);
         }
 
-        private void NumberOfBeds(string beds) {
+        public void NumberOfBeds(string beds) {
             facility.NumberOfBeds = Convert.ToInt16(beds);
         }
     }
