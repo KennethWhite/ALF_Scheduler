@@ -67,14 +67,15 @@ namespace ALF_Scheduler {
         /// char for the facility object.
         /// </summary>
         /// <param name="unit">The facility's unit as a string.</param>
-        /// <exception cref="InvalidCastException">Throws InvalidCastException if the string cannot 
+        /// <exception cref="InvalidCastException">InvalidCastException thrown if the string cannot 
         /// be converted to a char.</exception>
         public void Unit(string unit) {
             try {
                 facility.Unit = Convert.ToChar(unit);
+            } catch (InvalidCastException e) {
+                Console.WriteLine("Unit string was unable to be converted to a char {0]", e);
             } catch (Exception e) {
-                Console.Write("{0} exception in unit", e);
-                throw new InvalidCastException("unit string was unable to be converted to a char");
+                Console.WriteLine("{0} exception in unit", e);
             }
         }
 
@@ -82,14 +83,15 @@ namespace ALF_Scheduler {
         /// This method creates the facility's license <paramref name="number"/>.
         /// </summary>
         /// <param name="number">The facility's license number as a string.</param>
-        /// <exception cref="InvalidCastException">Throws InvalidCastException if the string cannot
+        /// <exception cref="InvalidCastException">InvalidCastException thrown if the string cannot
         /// be converted to an int.</exception>
         public void LicenseNumber(string number) {
             try {
                 facility.LicenseNumber = Convert.ToInt32(number);
+            } catch (InvalidCastException e) {
+                Console.WriteLine("License number string was unable to be converted to an int. {0]", e);
             } catch (Exception e) {
-                Console.Write("{0} exception in license number", e);
-                throw new InvalidCastException("license number string was unable to be converted to an int");
+                Console.WriteLine("{0} exception in license number", e);
             }
         }
 
@@ -97,14 +99,15 @@ namespace ALF_Scheduler {
         /// This method creates the facility <paramref name="zip"/>code.
         /// </summary>
         /// <param name="zip">The facility's zipcode as a string.</param>
-        /// <exception cref="InvalidCastException">Throws InvalidCastException if the string cannot
+        /// <exception cref="InvalidCastException">InvalidCastException thrown if the string cannot
         /// be converted to an int.</exception>
         public void ZipCode(string zip) {
             try {
                 facility.ZipCode = Convert.ToInt16(zip);
+            } catch (InvalidCastException e) {
+                Console.WriteLine("Zipcode string was unable to be converted to an int {0]", e);
             } catch (Exception e) {
-                Console.Write("{0} exception in zipcode", e);
-                throw new InvalidCastException("zipcode string was unable to be converted to an int");
+                Console.WriteLine("{0} exception in zipcode", e);
             }
         }
 
@@ -112,14 +115,15 @@ namespace ALF_Scheduler {
         /// This method creates the number of <paramref name="beds"/> in the facility.
         /// </summary>
         /// <param name="beds">The number of beds in the facility as a string.</param>
-        /// <exception cref="InvalidCastException">Throws InvalidCastException if the string cannot 
+        /// <exception cref="InvalidCastException">InvalidCastException thrown if the string cannot 
         /// be converted to an int.</exception>
         public void NumberOfBeds(string beds) {
             try {
                 facility.NumberOfBeds = Convert.ToInt16(beds);
+            } catch (InvalidCastException e) {
+                Console.WriteLine("String of beds was unable to be converted to an int {0]", e);
             } catch (Exception e) {
-                Console.Write("{0} exception in number of beds", e);
-                throw new InvalidCastException("string of beds was unable to be converted to an int");
+                Console.WriteLine("{0} exception in number of beds", e);
             }
         }
 
@@ -203,7 +207,7 @@ namespace ALF_Scheduler {
                     SODs[x] = CreateDateTime(dates[x]);
                 }
             } catch (Exception e) {
-                Console.Write("{0} exception in dates of SOD", e);
+                Console.WriteLine("{0} exception in dates of SOD", e);
             }
         }
 
@@ -238,7 +242,7 @@ namespace ALF_Scheduler {
                     followUps[x] = CreateDateTime(dates[x]);
                 }
             } catch (Exception e) {
-                Console.Write("{0} exception in failed follow up", e);
+                Console.WriteLine("{0} exception in failed follow up", e);
             }
         }
 
@@ -254,13 +258,14 @@ namespace ALF_Scheduler {
         /// This method creates the <paramref name="number"/> of licensors needed for inspections based on bed count.
         /// </summary>
         /// <param name="number">The number of beds in the facility as a string.</param>
-        /// <exception cref="InvalidCastException">Throws InvalidCastException if the string cannot be converted to an int.</exception>
+        /// <exception cref="InvalidCastException">InvalidCastException thrown if the string cannot be converted to an int.</exception>
         public void NumberOfLicensors(string number) {
             try {
                 facility.NumberOfLicensors = Convert.ToInt16(number);
+            } catch (InvalidCastException e) {
+                Console.WriteLine("String of licensors was unable to be converted to an int {0]", e);
             } catch (Exception e) {
-                Console.Write("{0} exception in number of licensors", e);
-                throw new InvalidCastException("string of licensors was unable to be converted to an int");
+                Console.WriteLine("{0} exception in number of licensors", e);
             }
         }
 
@@ -268,13 +273,14 @@ namespace ALF_Scheduler {
         /// This method creates the sample <paramref name="size"/> of licensors on the last inspection.
         /// </summary>
         /// <param name="size">The sample size of inspectors as a string.</param>
-        /// <exception cref="InvalidCastException">Throws InvalidCastException if the string cannot be converted to an int.</exception>
+        /// <exception cref="InvalidCastException">InvalidCastException thrown if the string cannot be converted to an int.</exception>
         public void SampleSize(string size) {
             try {
                 facility.SampleSize = Convert.ToInt16(size);
+            } catch (InvalidCastException e) {
+                Console.WriteLine("String of sample size was unable to be converted to an int {0]", e);
             } catch (Exception e) {
-                Console.Write("{0} exception in sample size", e);
-                throw new InvalidCastException("string of sample size was unable to be converted to an int");
+                Console.WriteLine("{0} exception in sample size", e);
             }
         }
 
