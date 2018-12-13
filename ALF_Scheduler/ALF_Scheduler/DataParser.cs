@@ -197,15 +197,22 @@ namespace ALF_Scheduler {
 
         //TODO dates of SOD (Statement of Deficiencies report)
         /// <summary>
-        /// This method creates a DateTime array for <paramref name="dates"/> of substantiated complaints done since the last full inspection.
+        /// This method creates a DateTime array for <paramref name="dates"/> of substantiated complaints done 
+        /// since the last full inspection.
         /// </summary>
-        /// <param name="dates">The array of dates.</param>
-        public void DatesOfSOD(string[] dates) {
+        /// <remarks>
+        /// This method splits the incoming string into an array, creates DateTime objects from each date string in the array, 
+        /// and sends the new DateTime array to the facility object.
+        /// </remarks>
+        /// <param name="dates">The dates as a string.</param>
+        public void DatesOfSOD(string dates) {
             try {
-                DateTime[] SODs = new DateTime[dates.Length];
-                for (int x = 0; x < dates.Length; x++) {
-                    SODs[x] = CreateDateTime(dates[x]);
+                string[] dateString = dates.Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
+                DateTime[] SODs = new DateTime[dateString.Length];
+                for (int x = 0; x < dateString.Length; x++) {
+                    SODs[x] = CreateDateTime(dateString[x]);
                 }
+                facility.DatesOfSOD = SODs;
             } catch (Exception e) {
                 Console.WriteLine("{0} exception in dates of SOD", e);
             }
@@ -222,8 +229,8 @@ namespace ALF_Scheduler {
 
         //TODO Enforcement Notes
         /// <summary>
-        /// This method creates a string for any enforcement <paramref name="notes"/> for any inspection done since the last full inspection 
-        /// (fines, stop placement, conditions, revocation, summary suspension).
+        /// This method creates a string for any enforcement <paramref name="notes"/> for any inspection 
+        /// done since the last full inspection (fines, stop placement, conditions, revocation, summary suspension).
         /// </summary>
         /// <param name="notes">The enforcement notes as a string.</param>
         public void EnforcementNotes(string notes) {
@@ -232,22 +239,30 @@ namespace ALF_Scheduler {
 
         //TODO determine best way to do Failed Follow Up
         /// <summary>
-        /// This method creates a DateTime array of dates from failed follow ups from the most recent inspection or complaint based follow ups.
+        /// This method creates a DateTime array of <paramref name="dates"/> from failed follow ups from the most recent inspection 
+        /// or complaint based follow ups.
         /// </summary>
-        /// <param name="dates">The failed follow up dates as a string array.</param>
-        public void FailedFollowUp(string[] dates) {
+        /// <remarks>
+        /// This method splits the incoming string into an array, creates DateTime objects from each date string in the array, 
+        /// and sends the new DateTime array to the facility object.
+        /// </remarks>
+        /// <param name="dates">The failed follow up dates as a string.</param>
+        public void FailedFollowUp(string dates) {
             try {
-                DateTime[] followUps = new DateTime[dates.Length];
-                for (int x = 0; x < dates.Length; x++) {
-                    followUps[x] = CreateDateTime(dates[x]);
+                string[] dateString = dates.Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
+                DateTime[] followUpDates = new DateTime[dateString.Length];
+                for (int x = 0; x < dateString.Length; x++) {
+                    followUpDates[x] = CreateDateTime(dateString[x]);
                 }
+                facility.FailedFollowUp = followUpDates;
             } catch (Exception e) {
                 Console.WriteLine("{0} exception in failed follow up", e);
             }
         }
 
         /// <summary>
-        /// This method creates the facility's proposed inspection <paramref name="date"/> by using the CreateDateTime method here: <see cref="DataParser.CreateDateTime(string date)"/>.
+        /// This method creates the facility's proposed inspection <paramref name="date"/> by using the CreateDateTime 
+        /// method here: <see cref="DataParser.CreateDateTime(string date)"/>.
         /// </summary>
         /// <param name="date">The facility's proposed inspection date as a string.</param>
         public void ProposedDate(string date) {
@@ -270,17 +285,18 @@ namespace ALF_Scheduler {
         }
 
         /// <summary>
-        /// This method creates the sample <paramref name="size"/> of licensors on the last inspection.
+        /// This method creates the <paramref name="list"/> of licensors on the last inspection.
         /// </summary>
+        /// <remarks>The first licensor in the array is marked with an '*' to denote them as the team leader.</remarks>
         /// <param name="size">The sample size of inspectors as a string.</param>
-        /// <exception cref="InvalidCastException">InvalidCastException thrown if the string cannot be converted to an int.</exception>
-        public void SampleSize(string size) {
+        public void LicensorList(string list) {
             try {
-                facility.SampleSize = Convert.ToInt16(size);
-            } catch (InvalidCastException e) {
-                Console.WriteLine("String of sample size was unable to be converted to an int {0]", e);
+                string[] listArray = list.Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
+                FormattableString formattableString = $"{listArray[0]}*";
+                listArray[0] = formattableString.ToString();
+                facility.LicensorList = listArray;
             } catch (Exception e) {
-                Console.WriteLine("{0} exception in sample size", e);
+                Console.WriteLine("{0} exception in licensor list", e);
             }
         }
 

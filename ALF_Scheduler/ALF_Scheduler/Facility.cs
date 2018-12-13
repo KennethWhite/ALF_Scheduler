@@ -100,7 +100,10 @@ namespace ALF_Scheduler
         public int NumberOfLicensors { get; set; }
         
         /// <value>Gets the sample size of inspectors from the most recent inspection.</value>
-        public int SampleSize { get; set; }
+        public int SampleSize { get => LicensorList.Length; }
+
+        /// <value>Gets the string of inspectors from the most recent inspection.</value>
+        public string[] LicensorList { get; set; }
 
         /// <value>Gets any special information listed for the facility.</value>
         public string SpecialInfo { get; set; }
