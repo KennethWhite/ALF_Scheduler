@@ -33,8 +33,8 @@ namespace ALF_Scheduler
         public int LicenseNumber { get; set; }
 
         /// <value>Gets the Facility's unit.</value>
-        public char Unit { get; set; }
-
+        public string Unit { get; set; }
+        
         /// <value>Gets the Facility's address.</value>
         public string City { get; set; }
 

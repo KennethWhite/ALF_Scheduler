@@ -60,20 +60,14 @@ namespace ALF_Scheduler {
             facility.LicenseeFirstName = first;
             facility.LicenseeLastName = last;
         }
-
-        // TODO should this be a char or a number or allow for both?
+        
         /// <summary>
-        /// This method converts the facility <paramref name="unit"/> to a 
-        /// char for the facility object.
+        /// This method stores the facility <paramref name="unit"/> in the facility object.
         /// </summary>
         /// <param name="unit">The facility's unit as a string.</param>
-        /// <exception cref="InvalidCastException">InvalidCastException thrown if the string cannot 
-        /// be converted to a char.</exception>
         public void Unit(string unit) {
             try {
-                facility.Unit = Convert.ToChar(unit);
-            } catch (InvalidCastException e) {
-                Console.WriteLine("Unit string was unable to be converted to a char {0]", e);
+                facility.Unit = unit;
             } catch (Exception e) {
                 Console.WriteLine("{0} exception in unit", e);
             }
