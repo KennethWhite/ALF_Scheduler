@@ -24,5 +24,10 @@ namespace ALF_Scheduler
         {
             InitializeComponent();
         }
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e) {
+            string facility = SearchText.Text;
+            // TODO search for facility based on text content ^
+        }
     }
 }

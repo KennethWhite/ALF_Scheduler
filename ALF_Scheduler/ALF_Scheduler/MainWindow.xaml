@@ -7,6 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Label Content="Assisted Living Facilities" HorizontalAlignment="Left" Margin="80,38,0,350" Width="241" Height="31" FontSize="16"/>
+        <TextBox x:Name="SearchText" HorizontalAlignment="Left" Height="20" Margin="511,46,0,0" TextWrapping="Wrap" Text="Search a Facility" VerticalAlignment="Top" Width="99" Opacity="0.5"/>
+        <Button x:Name="SearchButton" Content="Search" HorizontalAlignment="Left" Margin="628,46,0,0" VerticalAlignment="Top" Width="75" Click="SearchButton_Click"/>
+        <DataGrid ItemsSource="{x:Null}" HorizontalAlignment="Left" Height="254" Margin="80,92,0,0" VerticalAlignment="Top" Width="623"/>
+
     </Grid>
 </Window>
