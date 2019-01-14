@@ -36,7 +36,7 @@ namespace ALF_Scheduler {
         /// </summary>
         /// <param name="name">The facility's name as a string.</param>
         public void Name(string name) {
-            facility.Name = name;
+            facility.FacilityName = name;
         }
 
         /// <summary>
@@ -46,8 +46,10 @@ namespace ALF_Scheduler {
         /// <param name="licensee">The licensee's full name as a string separated by a comma.</param>
         public void Licensee(string licensee) {
             string[] firstLast = licensee.Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
+            
             facility.LicenseeLastName = firstLast[0];
             facility.LicenseeFirstName = firstLast[1];
+            log.debug
         }
 
         /// <summary>

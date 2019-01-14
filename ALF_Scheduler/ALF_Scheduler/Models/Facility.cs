@@ -10,14 +10,17 @@ using System.Threading.Tasks;
 
 namespace ALF_Scheduler
 {
-    class Facility {
+    class Facility
+    {
 
         /// <value>Gets the Facility name.</value>
-        public string Name { get; set; }
+        public string FacilityName { get; set; }
 
         /// <value>Gets the full name of the licensee separated by a comma (last, first).</value>
-        public string NameOfLicensee {
-            get {
+        public string NameOfLicensee
+        {
+            get
+            {
                 FormattableString formattableString = $"{LicenseeLastName}, {LicenseeFirstName}";
                 return formattableString.ToString();
             }
@@ -82,10 +85,12 @@ namespace ALF_Scheduler
 
         /// <value>Gets the time interval between the most recent inspection, and the proposed date.</value>
         /// <remarks>The difference in time is calculated by multiplying the difference in days by the average months in a year.</remarks>
-        public float ScheduleInterval {
-            get {
+        public float ScheduleInterval
+        {
+            get
+            {
                 TimeSpan difference = ProposedDate.Subtract(MostRecentFullInspection);
-                return (float)(Convert.ToDouble(difference)*30.42);
+                return (float)(Convert.ToDouble(difference) * 30.42);
             }
         }
 
@@ -98,7 +103,7 @@ namespace ALF_Scheduler
         // TODO double check this is what's meant by number of licensors
         /// <value>Gets the number of licensors needed based on bed count for this facility's inspection.</value>
         public int NumberOfLicensors { get; set; }
-        
+
         /// <value>Gets the sample size of inspectors from the most recent inspection.</value>
         public int SampleSize { get => LicensorList.Length; }
 
@@ -107,5 +112,7 @@ namespace ALF_Scheduler
 
         /// <value>Gets any special information listed for the facility.</value>
         public string SpecialInfo { get; set; }
+
+        
     }
 }
