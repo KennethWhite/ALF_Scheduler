@@ -99,7 +99,7 @@ namespace ALF_Scheduler {
         /// be converted to an int.</exception>
         public void ZipCode(string zip) {
             try {
-                facility.ZipCode = Convert.ToInt16(zip);
+                facility.ZipCode = Convert.ToInt32(zip);
             } catch (InvalidCastException e) {
                 Console.WriteLine("Zipcode string was unable to be converted to an int {0]", e);
             } catch (Exception e) {
@@ -157,7 +157,7 @@ namespace ALF_Scheduler {
         /// </summary>
         /// <param name="date">The facility's most recent inspection date as a string.</param>
         public void MostRecentInspection(string date) {
-            facility.MostRecentFullInspection = CreateDateTime(date);
+            facility.MostRecentFullInspection = CreateDateTime(date).ToShortDateString();
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace ALF_Scheduler {
         /// </summary>
         /// <param name="date">The facility's one year inspection date as a string.</param>
         public void OneYearInspection(string date) {
-            facility.OneYearFullInspection = CreateDateTime(date);
+            facility.OneYearFullInspection = CreateDateTime(date).ToShortDateString();
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace ALF_Scheduler {
         /// </summary>
         /// <param name="date">The facility's two year inspection date as a string.</param>
         public void TwoYearInspection(string date) {
-            facility.TwoYearFullInspection = CreateDateTime(date);
+            facility.TwoYearFullInspection = CreateDateTime(date).ToShortDateString();
         }
 
         //TODO connect to config file
@@ -262,7 +262,7 @@ namespace ALF_Scheduler {
         /// </summary>
         /// <param name="date">The facility's proposed inspection date as a string.</param>
         public void ProposedDate(string date) {
-            facility.ProposedDate = CreateDateTime(date);
+            facility.ProposedDate = CreateDateTime(date).ToShortDateString();
         }
 
         /// <summary>
