@@ -26,7 +26,7 @@ namespace ALF_Scheduler
             //TODO connect Facility DB for display
             DataParser dp = new DataParser();
             dp.Name("Facility 1");
-            dp.MostRecentInspection("01/12/2019");
+            dp.MostRecentInspection("01/12/2019"); //TODO reformat facility dates so that the dataview doesn't show times
             dp.ProposedDate("03/22/2020");
             Facility fac1 = dp.GetFacility();
             items.Add(fac1);

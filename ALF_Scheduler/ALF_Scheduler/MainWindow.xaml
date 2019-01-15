@@ -15,10 +15,10 @@
                 <ListView Name="FacilityList">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
-                            <GridViewColumn Header="Most Recent Inspection" DisplayMemberBinding="{Binding MostRecentFullInspection}"/>
-                            <GridViewColumn Header="Schedule Interval" DisplayMemberBinding="{Binding ScheduleInterval}"/>
-                            <GridViewColumn Header="Proposed Date" DisplayMemberBinding="{Binding ProposedDate}"/>
+                            <GridViewColumn Header="Name" Width="180" DisplayMemberBinding="{Binding Name}"/>
+                            <GridViewColumn Header="Most Recent Inspection" Width="160" DisplayMemberBinding="{Binding MostRecentFullInspection}"/>
+                            <GridViewColumn Header="Schedule Interval" Width="120" DisplayMemberBinding="{Binding ScheduleInterval}"/>
+                            <GridViewColumn Header="Proposed Date" Width="158" DisplayMemberBinding="{Binding ProposedDate}"/>
                         </GridView>
                     </ListView.View>
                 </ListView>
