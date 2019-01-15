@@ -10,7 +10,31 @@
         <Label Content="Assisted Living Facilities" HorizontalAlignment="Left" Margin="80,38,0,350" Width="241" Height="31" FontSize="16"/>
         <TextBox x:Name="SearchText" HorizontalAlignment="Left" Height="20" Margin="511,46,0,0" TextWrapping="Wrap" Text="Search a Facility" VerticalAlignment="Top" Width="99" Opacity="0.5"/>
         <Button x:Name="SearchButton" Content="Search" HorizontalAlignment="Left" Margin="628,46,0,0" VerticalAlignment="Top" Width="75" Click="SearchButton_Click"/>
-        <DataGrid ItemsSource="{x:Null}" HorizontalAlignment="Left" Height="254" Margin="80,92,0,0" VerticalAlignment="Top" Width="623"/>
+        <TabControl HorizontalAlignment="Left" Height="283" Margin="80,90,0,0" VerticalAlignment="Top" Width="629">
+            <TabItem Header="Facilities" IsSelected="True">
+                <DataGrid ItemsSource="{x:Null}" HorizontalAlignment="Left" Height="254" Margin="0,0,0,0" VerticalAlignment="Top" Width="623" ClipToBounds="True" BorderThickness="0"/>
+            </TabItem>
+            <TabItem Header="Details">
+                <ListBox HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" ClipToBounds="True" >
+                    <ListBoxItem Content="Facility Name" />
+                    <ListBoxItem Content="License Number" />
+                    <ListBoxItem Content="Address" />
+                    <ListBoxItem Content="Name of Licensee" />
+                    <ListBoxItem Content="Current Full Inspection Results (NO, NO24, ENF, YES)" />
+                    <ListBoxItem Content="Dates of SOD  for substantiated complaints done since the last full inspection" />
+                    <ListBoxItem Content="Enforcement for any inspection done since the last full inspection (fines, stop placement, conditions, revocation, summary suspension)" />
+                    <ListBoxItem Content="Most Recent Inspection Date (with any affiliated enforcement)" />
+                    <ListBoxItem Content="One Year Inspection Date (with any affiliated enforcement)" />
+                    <ListBoxItem Content="Two Year Inspection Date (with any affiliated enforcement)" />
+                    <ListBoxItem Content="Failed Follow Ups" />
+                    <ListBoxItem Content="Complaints" />
+                    <ListBoxItem Content="Special Information" />
+                </ListBox>
+            </TabItem>
+            <TabItem Header="Calendar" ClipToBounds="True">
+                <Calendar HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            </TabItem>
+        </TabControl>
 
     </Grid>
 </Window>
