@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Utilities\ErrorLogger.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -64,7 +65,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataParser.cs" />
-    <Compile Include="Facility.cs" />
+    <Compile Include="Interfaces\IEntity.cs" />
+    <Compile Include="Models\Entity.cs" />
+    <Compile Include="Models\Facility.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
