@@ -12,7 +12,16 @@
         <Button x:Name="SearchButton" Content="Search" HorizontalAlignment="Left" Margin="628,46,0,0" VerticalAlignment="Top" Width="75" Click="SearchButton_Click"/>
         <TabControl HorizontalAlignment="Left" Height="283" Margin="80,90,0,0" VerticalAlignment="Top" Width="629">
             <TabItem Header="Facilities" IsSelected="True">
-                <DataGrid ItemsSource="{x:Null}" HorizontalAlignment="Left" Height="254" Margin="0,0,0,0" VerticalAlignment="Top" Width="623" ClipToBounds="True" BorderThickness="0"/>
+                <ListView Name="FacilityList">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
+                            <GridViewColumn Header="Most Recent Inspection" DisplayMemberBinding="{Binding MostRecentFullInspection}"/>
+                            <GridViewColumn Header="Schedule Interval" DisplayMemberBinding="{Binding ScheduleInterval}"/>
+                            <GridViewColumn Header="Proposed Date" DisplayMemberBinding="{Binding ProposedDate}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
             </TabItem>
             <TabItem Header="Details">
                 <ListBox HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" ClipToBounds="True" >

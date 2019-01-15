@@ -89,12 +89,19 @@ namespace ALF_Scheduler
 
         /// <value>Gets the time interval between the most recent inspection, and the proposed date.</value>
         /// <remarks>The difference in time is calculated by multiplying the difference in days by the average months in a year.</remarks>
+<<<<<<< refs/remotes/origin/master:ALF_Scheduler/ALF_Scheduler/Models/Facility.cs
         public float ScheduleInterval
         {
             get
             {
                 TimeSpan difference = ProposedDate.Subtract(MostRecentFullInspection.InspectionDate);
                 return (float)(Convert.ToDouble(difference) * 30.42);
+=======
+        public float ScheduleInterval {
+            get {
+                TimeSpan difference = ProposedDate.Subtract(MostRecentFullInspection);
+                return (float)(difference.TotalDays/30.42);
+>>>>>>> Fixed schedule interval, gridview list and binding, and added a single facility to test with:ALF_Scheduler/ALF_Scheduler/Facility.cs
             }
         }
 
