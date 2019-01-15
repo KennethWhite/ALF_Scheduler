@@ -20,9 +20,17 @@ namespace ALF_Scheduler
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
-        {
+        public MainWindow() {
             InitializeComponent();
+            List<Facility> items = new List<Facility>();
+            //TODO connect Facility DB for display
+            DataParser dp = new DataParser();
+            dp.Name("Facility 1");
+            dp.MostRecentInspection("01/12/2019");
+            dp.ProposedDate("03/22/2020");
+            Facility fac1 = dp.GetFacility();
+            items.Add(fac1);
+            FacilityList.ItemsSource = items;
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e) {

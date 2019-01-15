@@ -31,6 +31,8 @@ namespace ALF_Scheduler {
             facility = fac;
         }
 
+        public Facility GetFacility() { return facility; }
+
         /// <summary>
         /// This method creates the facility <paramref name="name"/>.
         /// </summary>

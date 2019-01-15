@@ -85,7 +85,7 @@ namespace ALF_Scheduler
         public float ScheduleInterval {
             get {
                 TimeSpan difference = ProposedDate.Subtract(MostRecentFullInspection);
-                return (float)(Convert.ToDouble(difference)*30.42);
+                return (float)(difference.TotalDays/30.42);
             }
         }
 
