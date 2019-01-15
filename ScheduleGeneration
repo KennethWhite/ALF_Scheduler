@@ -1,0 +1,90 @@
+using System;
+using System.Globalization;
+using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace ALFCode
+{
+    class ScheduleAlgorithm
+    {
+        static void Main(string[] args)
+        {
+            //Console.WriteLine("Hello World!");
+            SchedulingCodes c1 = new SchedulingCodes();
+            Console.WriteLine($"{c1.ReturnMessage()}");
+            
+            Calendar myCal = CultureInfo.InvariantCulture.Calendar;
+            
+            Console.WriteLine("Enter date of last inspection (MM/DD/YYYY): ");
+            DateTime myDt = new DateTime();//this will be the prevous inspection date
+            
+
+            string date = Console.ReadLine();
+
+            while(!DateTime.TryParseExact(date, "MM/dd/yyyy",null,System.Globalization.DateTimeStyles.AssumeLocal, out myDt))
+            {
+                Console.WriteLine("Invalid date, try again");
+                date = Console.ReadLine();
+            }
+
+            Console.Write( myCal.GetDayOfWeek(myDt) + ", ");
+            Console.Write( myCal.GetMonth(myDt) + "/");
+            Console.Write( myCal.GetDayOfMonth(myDt) + "/");
+            Console.WriteLine(myCal.GetYear(myDt));
+
+            Console.WriteLine("Enter Result Code of Inspection: ");
+            string resultCode = Console.ReadLine();
+
+            int verifyCode = isCode(resultCode);
+
+            DateTime myDt1 = myDt;//this will be the future inspection date.
+
+            myDt1 = myCal.AddDays(myDt, verifyCode);
+
+            Console.WriteLine("\nPrevious visit: ");
+            Console.Write(myCal.GetDayOfWeek(myDt) + ", ");
+            Console.Write(myCal.GetMonth(myDt) + "/");
+            Console.Write(myCal.GetDayOfMonth(myDt) + "/");
+            Console.Write(myCal.GetYear(myDt) + "\n");
+
+            Console.WriteLine("\nNext visit: ");
+            Console.Write( myCal.GetDayOfWeek(myDt1) + ", ");
+            Console.Write( myCal.GetMonth(myDt1) + "/");
+            Console.Write( myCal.GetDayOfMonth(myDt1) + "/");
+            Console.Write( myCal.GetYear(myDt1) + "\n");
+
+        }
+
+        
+        private static int isCode(string resultCode)//quick and dirty code checking. Use regex or something stronger later.
+        {
+
+            if(resultCode.CompareTo("NO24") == 0)
+                return daysFromRange(365,730); //12-24 months in days
+            else if(resultCode.CompareTo("NO") == 0)
+                return daysFromRange(486,547);//16-18 months in days
+            else if(resultCode.CompareTo("YES") == 0)
+                return daysFromRange(395,456);//13-15 months in days
+            else if(resultCode.CompareTo("ENF") == 0)
+                return daysFromRange(273,365);//9-12 months in days
+            else if(resultCode.CompareTo("CHOWN") == 0)
+                return daysFromRange(182,273);//6-9 months in days
+            else
+            {
+                Console.WriteLine("Invalid Code.");
+                return 0; //input error
+            }                
+        }
+        private static int daysFromRange(int low, int high)//might be easier to work with adding days, instead of months. ie 16-18 months == 486.667-547.501
+        {
+            Random rng = new Random();
+            int toReturn = rng.Next(low, high);
+            Console.WriteLine("Range of days: " + low + " - " + high);
+            Console.WriteLine("Number generated from range: " + toReturn);
+            return toReturn;
+        }
+
+
+    }
+}
