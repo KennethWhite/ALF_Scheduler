@@ -36,10 +36,12 @@ namespace ALFCode
             Console.WriteLine("Enter Result Code of Inspection: ");
             string resultCode = Console.ReadLine();
 
-            int verifyCode = isCode(resultCode);
+            
 
             DateTime myDt1 = myDt;//this will be the future inspection date.
 
+
+            int verifyCode = isCode(resultCode, myDt);
             myDt1 = myCal.AddDays(myDt, verifyCode);
 
             Console.WriteLine("\nPrevious visit: ");
@@ -48,43 +50,49 @@ namespace ALFCode
             Console.Write(myCal.GetDayOfMonth(myDt) + "/");
             Console.Write(myCal.GetYear(myDt) + "\n");
 
-            Console.WriteLine("\nNext visit: ");
+            Console.WriteLine("\nScheduled Next visit: ");
             Console.Write( myCal.GetDayOfWeek(myDt1) + ", ");
             Console.Write( myCal.GetMonth(myDt1) + "/");
             Console.Write( myCal.GetDayOfMonth(myDt1) + "/");
             Console.Write( myCal.GetYear(myDt1) + "\n");
 
+
+
         }
 
         
-        private static int isCode(string resultCode)//quick and dirty code checking. Use regex or something stronger later.
+        private static int isCode(string resultCode, DateTime pastInspection)//quick and dirty code checking. Use regex or something stronger later.
         {
 
             if(resultCode.CompareTo("NO24") == 0)
-                return daysFromRange(365,730); //12-24 months in days
+                return daysInRange(365,730, pastInspection); //12-24 months in days
             else if(resultCode.CompareTo("NO") == 0)
-                return daysFromRange(486,547);//16-18 months in days
+                return daysInRange(486,547, pastInspection);//16-18 months in days
             else if(resultCode.CompareTo("YES") == 0)
-                return daysFromRange(395,456);//13-15 months in days
+                return daysInRange(395,456, pastInspection);//13-15 months in days
             else if(resultCode.CompareTo("ENF") == 0)
-                return daysFromRange(273,365);//9-12 months in days
+                return daysInRange(273,365, pastInspection);//9-12 months in days
             else if(resultCode.CompareTo("CHOWN") == 0)
-                return daysFromRange(182,273);//6-9 months in days
+                return daysInRange(182,273, pastInspection);//6-9 months in days
             else
             {
                 Console.WriteLine("Invalid Code.");
                 return 0; //input error
             }                
         }
-        private static int daysFromRange(int low, int high)//might be easier to work with adding days, instead of months. ie 16-18 months == 486.667-547.501
+        private static int daysInRange(int low, int high, DateTime pastInspection)//might be easier to work with adding days, instead of months. ie 16-18 months == 486.667-547.501
         {
             Random rng = new Random();
             int toReturn = rng.Next(low, high);
+            DateTime highTempDate;
+            DateTime lowTempDate;
             Console.WriteLine("Range of days: " + low + " - " + high);
             Console.WriteLine("Number generated from range: " + toReturn);
+
+            lowTempDate = pastInspection.AddDays(low);
+            highTempDate = pastInspection.AddDays(high);
+            Console.WriteLine("Range of possible inspection days based off inspection code: " + lowTempDate + " - " + highTempDate);
             return toReturn;
         }
-
-
     }
 }
