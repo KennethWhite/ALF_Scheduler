@@ -23,14 +23,41 @@ namespace ALF_Scheduler
         public MainWindow() {
             InitializeComponent();
             List<Facility> items = new List<Facility>();
+
             //TODO connect Facility DB for display
-            DataParser dp = new DataParser();
+            Facility fac1 = new Facility();
+            DataParser dp = new DataParser(fac1);
             dp.Name("Facility 1");
-            dp.MostRecentInspection("01/12/2019"); //TODO reformat facility dates so that the dataview doesn't show times
+            dp.MostRecentInspection("01/12/2019");
             dp.ProposedDate("03/22/2020");
-            Facility fac1 = dp.GetFacility();
-            items.Add(fac1);
+            items.Add(dp.GetFacility());
+            
+            Facility fac2 = new Facility();
+            dp = new DataParser(fac2);
+            dp.Name("Facility 2");
+            dp.MostRecentInspection("08/25/2017");
+            dp.ProposedDate("03/02/2019");
+            items.Add(dp.GetFacility());
+
+            Facility fac3 = new Facility();
+            dp = new DataParser(fac3);
+            dp.Name("Facility 3");
+            dp.MostRecentInspection("12/05/2017");
+            dp.ProposedDate("05/14/2019");
+            items.Add(dp.GetFacility());
+
             FacilityList.ItemsSource = items;
+            AddSelectedDates(items);
+        }
+
+        /// <summary>
+        /// This method adds each facility's proposed date to the calendar object.
+        /// </summary>
+        /// <param name="facilities">The list of facilities.</param>
+        private void AddSelectedDates(List<Facility> facilities) {
+            foreach (Facility facility in facilities) { 
+                MonthlyCalendar.SelectedDates.Add(DateTime.Parse(facility.ProposedDate));
+            }
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e) {

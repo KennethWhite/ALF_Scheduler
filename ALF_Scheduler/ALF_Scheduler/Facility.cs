@@ -75,12 +75,12 @@ namespace ALF_Scheduler
         /// <value>Gets the proposed inspection date as a string.</value>
         public string ProposedDate { get; set; }
 
-        /// <value>Gets the time interval between the most recent inspection, and the proposed date as a float.</value>
+        /// <value>Gets the time interval between the most recent inspection, and the proposed date as a string.</value>
         /// <remarks>The difference in time is calculated by dividing the difference in days by the average months in a year.</remarks>
-        public float ScheduleInterval {
+        public string ScheduleInterval {
             get {
                 TimeSpan difference = DateTime.Parse(ProposedDate).Subtract(DateTime.Parse(MostRecentFullInspection));
-                return (float)(difference.TotalDays/30.42);
+                return ((float)(difference.TotalDays / 30.42)).ToString("F2");
             }
         }
 
