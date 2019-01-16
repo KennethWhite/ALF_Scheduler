@@ -7,18 +7,18 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Label Content="Assisted Living Facilities" HorizontalAlignment="Left" Margin="80,38,0,350" Width="241" Height="31" FontSize="16"/>
-        <TextBox x:Name="SearchText" HorizontalAlignment="Left" Height="20" Margin="511,46,0,0" TextWrapping="Wrap" Text="Search a Facility" VerticalAlignment="Top" Width="99" Opacity="0.5"/>
-        <Button x:Name="SearchButton" Content="Search" HorizontalAlignment="Left" Margin="628,46,0,0" VerticalAlignment="Top" Width="75" Click="SearchButton_Click"/>
-        <TabControl HorizontalAlignment="Left" Height="283" Margin="80,90,0,0" VerticalAlignment="Top" Width="629">
+        <Label Content="Assisted Living Facilities" HorizontalAlignment="Left" Margin="50,38,0,340" Height="35" Width="240" FontSize="16"/>
+        <TextBox x:Name="SearchText" HorizontalAlignment="Left" Height="20" Margin="529,47,0,0" TextWrapping="Wrap" Text="Search a Facility" VerticalAlignment="Top" Width="100" Opacity="0.5"/>
+        <Button x:Name="SearchButton" Content="Search" HorizontalAlignment="Left" Margin="651,46,0,0" VerticalAlignment="Top" Width="75" Click="SearchButton_Click"/>
+        <TabControl HorizontalAlignment="Left" Height="285" Margin="50,90,0,0" VerticalAlignment="Top" Width="480">
             <TabItem Header="Facilities" IsSelected="True">
                 <ListView Name="FacilityList">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="Name" Width="180" DisplayMemberBinding="{Binding Name}"/>
-                            <GridViewColumn Header="Most Recent Inspection" Width="160" DisplayMemberBinding="{Binding MostRecentFullInspection}"/>
-                            <GridViewColumn Header="Schedule Interval" Width="120" DisplayMemberBinding="{Binding ScheduleInterval}"/>
-                            <GridViewColumn Header="Proposed Date" Width="158" DisplayMemberBinding="{Binding ProposedDate}"/>
+                            <GridViewColumn Header="Name" Width="130" DisplayMemberBinding="{Binding Name}"/>
+                            <GridViewColumn Header="Most Recent Inspection" Width="135" DisplayMemberBinding="{Binding MostRecentFullInspection}"/>
+                            <GridViewColumn Header="Interval in Months" Width="105" DisplayMemberBinding="{Binding ScheduleInterval}"/>
+                            <GridViewColumn Header="Proposed Date" Width="95" DisplayMemberBinding="{Binding ProposedDate}"/>
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -40,10 +40,7 @@
                     <ListBoxItem Content="Special Information" />
                 </ListBox>
             </TabItem>
-            <TabItem Header="Calendar" ClipToBounds="True">
-                <Calendar HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            </TabItem>
         </TabControl>
-
+        <Calendar Name="MonthlyCalendar" SelectionMode="MultipleRange" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="547,110,0,0"/>
     </Grid>
 </Window>
