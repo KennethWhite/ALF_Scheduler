@@ -1,16 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using System.IO;
 
-namespace XML_Utils
+namespace ALF_Mine
 {
     internal class Program
     {
-
+        public static void Main()
+        {
+            createInitCodeXML(@".\import\codes.xml");
+            loadFiles();
+        }
 
         private static void readXML(String path)
         {
@@ -38,12 +40,190 @@ namespace XML_Utils
             Console.WriteLine("in: {0}, out {1}", configImport, defaultExport);
         }
 
-        private static void createInitXML()
+        //Loads the config and code files in an ara, ara[0] = xmlCode (never null), ara[1] = xmlSettings (can be null).
+        private static XmlDocument[] loadFiles()
         {
-            using (XmlWriter writer = XmlWriter.Create("init.xml"))
+            XmlDocument xmlCodes = null;
+            XmlDocument xmlSettings = null;
+            XmlDocument[] outAra = new XmlDocument[2];
+
+            if (directoryEmpty(@".\import"))
+            {
+                if (File.Exists(@".\default\Default_Codes.xml"))
+                {
+                    xmlCodes = new XmlDocument();
+                    xmlCodes.Load(@".\default\Default_Codes.xml");
+                }
+                else
+                {
+                    createInitCodeXML(@".\default\Default_Codes.xml");
+                    xmlCodes = new XmlDocument();
+                    xmlCodes.Load(@".\default\Default_Codes.xml");
+                }
+
+                outAra[0] = xmlCodes;
+            }
+            else
+            {
+                string[] files = Directory.GetFiles(@".\import", "*.xml", SearchOption.TopDirectoryOnly);
+                string codesPath = null;
+                string settingsPath = null;
+
+                foreach (string filePath in files)
+                {
+                    XmlDocument temp = new XmlDocument();
+                    temp.Load(filePath);
+                    XmlNodeList nodeList = temp.GetElementsByTagName("configuration");
+                    string type = null;
+                    try
+                    {
+                        XmlNode node = nodeList.Item(0);
+                        type = node.Attributes["type"].Value;
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+
+                    switch (type)
+                    {
+                        case "codes":
+                            codesPath = mostRecentFile(codesPath, filePath);
+                            break;
+                        case "settings":
+                            settingsPath = mostRecentFile(settingsPath, filePath);
+                            break;
+                    }
+                }
+
+                if (codesPath != null)
+                {
+                    xmlCodes = new XmlDocument();
+                    xmlCodes.Load(codesPath);
+                }
+                else
+                {
+                    if (File.Exists(@".\default\Default_Codes.xml"))
+                    {
+                        xmlCodes = new XmlDocument();
+                        xmlCodes.Load(@".\default\Default_Codes.xml");
+                    }
+                    else
+                    {
+                        createInitCodeXML(@".\default\Default_Codes.xml");
+                        xmlCodes = new XmlDocument();
+                        xmlCodes.Load(@".\default\Default_Codes.xml");
+                    }
+                }
+
+                if (settingsPath != null)
+                {
+                    xmlSettings = new XmlDocument();
+                    xmlSettings.Load(settingsPath);
+                }
+
+                outAra[0] = xmlCodes;
+
+                if (xmlSettings != null)
+                {
+                    outAra[1] = xmlSettings;
+                }
+            }
+
+            return outAra;
+        }
+
+
+
+        private static string mostRecentFile(string current, string toTest)
+        {
+            if (current == null)
+            {
+                return toTest;
+            }
+            else
+            {
+                DateTime curTime = File.GetCreationTime(current);
+                DateTime testTime = File.GetCreationTime(toTest);
+                if (DateTime.Compare(curTime, testTime) > 0)
+                {
+                    return current;
+                }
+                else
+                {
+                    return toTest;
+                }
+            }
+        }
+
+        private static void createInitFolders()
+        {
+            //This must be run on program init
+            DirectoryInfo import = Directory.CreateDirectory(@".\import");
+            DirectoryInfo export = Directory.CreateDirectory(@".\export");
+            DirectoryInfo defaultFolder = Directory.CreateDirectory(@".\default");
+            String defPath = @".\default\Default_Codes.xml";
+            if (!File.Exists(defPath))
+            {
+                createInitCodeXML(defPath);
+            }
+        }
+
+        private static bool directoryEmpty(string path)
+        {
+            return !Directory.EnumerateFileSystemEntries(path).Any();
+        }
+
+        //Writes current application settings to folder, either given or default path
+        private static void exportCurrentConfiguration(string path)
+        {
+            String fileName = "Config_Export_" + DateTime.Now;
+
+            XmlWriter writer = null;
+
+            if (path != null)
+            {
+                try
+                {
+                    FileAttributes attr = File.GetAttributes(path);
+
+                    if (attr.HasFlag(FileAttributes.Directory))
+                    {
+                        writer = XmlWriter.Create(path);
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    writer = XmlWriter.Create(@".\export\" + fileName);
+                }
+            }
+            else
+            {
+                writer = XmlWriter.Create(@".\export\" + fileName);
+            }
+
+            if (writer != null)
+            {
+
+                writer.WriteStartDocument();
+
+                //Write current application settings here
+
+                writer.WriteEndDocument();
+                writer.Flush();
+            }
+
+        }
+
+        //Creates initial code definitons to path
+        private static void createInitCodeXML(string path)
+        {
+            using (XmlWriter writer = XmlWriter.Create(path))
             {
                 writer.WriteStartDocument();
                 writer.WriteStartElement("configuration");
+                writer.WriteAttributeString("type", "codes");
                 writer.WriteStartElement("codes");
                 writer.WriteStartElement("code");
                 writer.WriteElementString("name", "NO");
