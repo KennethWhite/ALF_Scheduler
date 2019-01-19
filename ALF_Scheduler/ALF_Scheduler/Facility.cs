@@ -12,6 +12,8 @@ namespace ALF_Scheduler
 {
     class Facility {
 
+        private string _inspectionResult;
+
         /// <value>Gets the Facility name.</value>
         public string Name { get; set; }
 
@@ -55,7 +57,10 @@ namespace ALF_Scheduler
 
         //TODO connect inspection results with config file (NO, NO24, ENF, YES) 
         /// <value>Gets the inspection result for the facility.</value>
-        public string InspectionResult { get; set; }
+        public string InspectionResult {
+            get => _inspectionResult;
+            set => _inspectionResult = value.ToUpper();
+        }
 
         //TODO dates of SOD (Statement of Deficiencies report)
         /// <value>Gets the dates of SOD (statement of deficiencies report) for complaints done since the last inspection.</value>
