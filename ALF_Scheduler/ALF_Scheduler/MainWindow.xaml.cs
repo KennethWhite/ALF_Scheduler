@@ -124,5 +124,10 @@ namespace ALF_Scheduler
                 OpenDetails();
             }
         }
+
+        private void CalendarYearButton_Click(object sender, RoutedEventArgs e) {
+            CalendarYear calendarYearPage = new CalendarYear();
+            this.Content = calendarYearPage;
+        }
     }
 }
