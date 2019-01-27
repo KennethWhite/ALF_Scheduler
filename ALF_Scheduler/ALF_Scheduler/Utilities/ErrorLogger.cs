@@ -16,15 +16,16 @@ namespace ALF_Scheduler.Utilities
             Trace.AutoFlush = true;
         }
 
-        public void LogInfo(string message, Exception ex = null)
-        {
-            CallerFilePathAttribute fileLocation;
-            CallerLineNumberAttribute lineNumber;
-            CallerMemberNameAttribute methodName;
-            string output = $"File Path : {fileLocation}" + Environment.NewLine;
-            //TODO
-            Trace.WriteLine(,ex?.Message, ex?.StackTrace);
-        }
+        //public void LogInfo(string message, Exception ex = null)
+        //{
+        //    CallerFilePathAttribute fileLocation;
+        //    CallerLineNumberAttribute lineNumber;
+        //    CallerMemberNameAttribute methodName;
+        //    string output = $"File Path : {fileLocation}" + Environment.NewLine;
+        //    output += $"{lineNumber}";
+        //    //TODO
+        //    Trace.WriteLine(message + ex?.Message + ex?.StackTrace);
+        //}
 
 
     }

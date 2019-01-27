@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ALF_Scheduler.Domain.Models;
+using ALF_Scheduler.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ALF_Scheduler
 {
-    class Facility
+    public class Facility : Entity
     {
 
         /// <value>Gets the Facility name.</value>
@@ -47,14 +49,14 @@ namespace ALF_Scheduler
         /// <value>Gets the number of beds in the facility.</value>
         public int NumberOfBeds { get; set; }
 
-        /// <value>Gets the Facility's most recent full inspection date.</value>
-        public DateTime MostRecentFullInspection { get; set; }
+        /// <value>Gets the Facility's most recent full inspection information.</value>
+        public Inspection MostRecentFullInspection { get; set; }
 
-        /// <value>Gets the Facility's full inspection date from a year ago.</value>
-        public DateTime OneYearFullInspection { get; set; }
+        /// <value>Gets the Facility's full inspection information from a year ago.</value>
+        public Inspection PreviousFullInspection { get; set; }
 
         /// <value>Gets the Facility's full inspection date from two years ago.</value>
-        public DateTime TwoYearFullInspection { get; set; }
+        public Inspection TwoYearFullInspection { get; set; }
 
         // TODO Question: should we combine all the dates with their inspection results 
         // and notes for quick access for comparison, or keep them like this and just look 
@@ -89,16 +91,16 @@ namespace ALF_Scheduler
         {
             get
             {
-                TimeSpan difference = ProposedDate.Subtract(MostRecentFullInspection);
+                TimeSpan difference = ProposedDate.Subtract(MostRecentFullInspection.InspectionDate);
                 return (float)(Convert.ToDouble(difference) * 30.42);
             }
         }
 
         /// <value>Gets the date 15 months from the most recent inspection.</value>
-        public DateTime Month15 { get => MostRecentFullInspection.AddMonths(15); }
+        public DateTime Month15 { get => MostRecentFullInspection.InspectionDate.AddMonths(15); }
 
         /// <value>Gets the cutoff date 18 months from the most recent inspection.</value>
-        public DateTime Month18 { get => MostRecentFullInspection.AddMonths(18); }
+        public DateTime Month18 { get => MostRecentFullInspection.InspectionDate.AddMonths(18); }
 
         // TODO double check this is what's meant by number of licensors
         /// <value>Gets the number of licensors needed based on bed count for this facility's inspection.</value>

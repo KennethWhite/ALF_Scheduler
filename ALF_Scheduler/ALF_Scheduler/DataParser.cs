@@ -49,7 +49,6 @@ namespace ALF_Scheduler {
             
             facility.LicenseeLastName = firstLast[0];
             facility.LicenseeFirstName = firstLast[1];
-            log.debug
         }
 
         /// <summary>
