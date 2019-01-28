@@ -43,7 +43,7 @@ namespace ALF_Scheduler.Services
 
         public Facility Find(int id)
         {
-            return DbContext.Facilities.Include(facility => facility.MostRecentFullInspection)
+            return DbContext.Facilities
                 .SingleOrDefault(facility => facility.Id == id);
         }
 
@@ -53,7 +53,23 @@ namespace ALF_Scheduler.Services
             facilityTask.Wait();
             return facilityTask.Result;
         }
+
+        public Inspection GetMostRecentInspection(int facilityID)
+        {
+            return DbContext.Inspections.Where(inspection => inspection.FacilityID == facilityID)
+                .OrderBy(inspection => inspection.InspectionDate)
+                .First();
+        }
+
+        public Inspection GetNthPreviousInspection(int facilityID, int n)
+        {
+            return DbContext.Inspections.Where(inspection => inspection.FacilityID == facilityID)
+                .OrderBy(inspection => inspection.InspectionDate)
+                .Skip(n - 1).First();
+        }
+
+
     }
 
 }
-}
+

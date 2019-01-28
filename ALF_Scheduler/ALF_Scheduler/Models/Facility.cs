@@ -35,7 +35,13 @@ namespace ALF_Scheduler
         public string LicenseeLastName { get; set; }
 
         /// <value>Gets the license number.</value>
-        public int LicenseNumber { get; set; }
+        public int LicenseNumber { get => _LicenseNumber;
+            set
+            {
+                _LicenseNumber = Convert.ToInt32(value);
+            }
+        }
+        private int _LicenseNumber;
 
         /// <value>Gets the Facility's unit.</value>
         public string Unit { get; set; }
@@ -44,23 +50,19 @@ namespace ALF_Scheduler
         public string City { get; set; }
 
         /// <value>Gets the Facility's zipcode.</value>
-        public int ZipCode { get; set; }
+        public string ZipCode { get; set; }
 
         /// <value>Gets the number of beds in the facility.</value>
         public int NumberOfBeds { get; set; }
 
         /// <value>Gets the Facility's most recent full inspection information.</value>
-        public Inspection MostRecentFullInspection { get; set; }
+        public Inspection MostRecentFullInspection { get => LastFullInspection(); }
 
         /// <value>Gets the Facility's full inspection information from a year ago.</value>
-        public Inspection PreviousFullInspection { get; set; }
+        public Inspection PreviousFullInspection { get => PreviousInspection();}
 
         /// <value>Gets the Facility's full inspection date from two years ago.</value>
-        public Inspection TwoYearFullInspection { get; set; }
-
-        // TODO Question: should we combine all the dates with their inspection results 
-        // and notes for quick access for comparison, or keep them like this and just look 
-        // back at old reports to see the codes?
+        public Inspection TwoYearFullInspection { get => TwoInspectionsPrevious();}
 
         //TODO connect inspection results with config file (NO, NO24, ENF, YES) 
         /// <value>Gets the inspection result for the facility.</value>
@@ -68,7 +70,7 @@ namespace ALF_Scheduler
 
         //TODO dates of SOD (Statement of Deficiencies report)
         /// <value>Gets the dates of SOD (statement of deficiencies report) for complaints done since the last inspection.</value>
-        public DateTime[] DatesOfSOD { get; set; }
+        public DateTime DatesOfSOD { get; set; }
 
         // TODO enforcement notes
         /// <value>Gets the Facility's enforcement notes (fines, stop placement, conditions, revocation, summary suspension) since last inspection.</value>
@@ -76,7 +78,7 @@ namespace ALF_Scheduler
 
         // TODO failed follow up. Datatype for this??
         /// <value>Gets the value for failed follow ups.</value>
-        public DateTime[] FailedFollowUp { get; set; }
+        public DateTime FailedFollowUp { get; set; }
 
         // TODO complaints
         /// <value>Gets the Facility's complaints.</value>
@@ -110,11 +112,43 @@ namespace ALF_Scheduler
         public int SampleSize { get => LicensorList.Length; }
 
         /// <value>Gets the string of inspectors from the most recent inspection.</value>
-        public string[] LicensorList { get; set; }
+        public string LicensorList { get; set; }
 
         /// <value>Gets any special information listed for the facility.</value>
         public string SpecialInfo { get; set; }
 
         
+        public void ParseLicenseeIntoFirstLastName(string licensee)
+        {
+            if (licensee.Contains(","))
+            {
+                string[] firstLast = licensee?.Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
+                LicenseeLastName = firstLast[0];
+                LicenseeFirstName = firstLast[1];
+            }
+            else
+            {
+                LicenseeLastName = licensee;
+            }
+           
+        }
+
+        /// <value>Gets the Facility's most recent full inspection information.</value>
+        private Inspection LastFullInspection()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <value>Gets the Facility's full inspection information from a year ago.</value>
+        private Inspection PreviousInspection()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <value>Gets the Facility's full inspection date from two years ago.</value>
+        private Inspection TwoInspectionsPrevious()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
