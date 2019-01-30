@@ -4,66 +4,87 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
+//Calculating difference between months code was borrowed from here: https://dotnetcodr.com/2015/10/30/calculate-the-number-of-months-between-two-dates-with-c/
 namespace ALFCode
 {
     class ScheduleAlgorithm
     {
         static void Main(string[] args)
         {
-            //Console.WriteLine("Hello World!");
-            SchedulingCodes c1 = new SchedulingCodes();
-            Console.WriteLine($"{c1.ReturnMessage()}");
-            
+            Console.WriteLine("Enter number of inspections to run: ");
+            int choice = Convert.ToInt32(Console.ReadLine());
+            List<DateTime> myDates = new List<DateTime>();
+
+            autoRun(myDates, choice);               
+
+            Console.WriteLine("List Printed Out: ");
+            foreach (DateTime d in myDates)
+            {
+                printDates(d);
+            }
+            double avg = calcAverage(myDates);
+            Console.WriteLine("Average: " + avg);
+        }
+
+        private static double calcAverage(List<DateTime> myDates) //https://dotnetcodr.com/2015/10/30/calculate-the-number-of-months-between-two-dates-with-c/
+        {
+            double average = 0;
+            int timeTweenMonths = 0;
+
+            for(int i = 0; i < myDates.Count-1; i++)
+            {
+                timeTweenMonths = 12 * (myDates[i].Year - myDates[i + 1].Year) + myDates[i].Month - myDates[i + 1].Month;//calculations here borrowed from link on method header line.
+                average += timeTweenMonths;
+            }
+            average = average / myDates.Count;
+
+            return Math.Abs(average);
+        }
+        private static void autoRun(List<DateTime> myDates, int runs)//enter beginning date and code, and subsequent codes after.
+        {
             Calendar myCal = CultureInfo.InvariantCulture.Calendar;
-            
+
             Console.WriteLine("Enter date of last inspection (MM/DD/YYYY): ");
             DateTime myDt = new DateTime();//this will be the prevous inspection date
-            
-
+            //DateTime myFutureDate = new DateTime();
             string date = Console.ReadLine();
 
-            while(!DateTime.TryParseExact(date, "MM/dd/yyyy",null,System.Globalization.DateTimeStyles.AssumeLocal, out myDt))
+            while (!DateTime.TryParseExact(date, "MM/dd/yyyy", null, System.Globalization.DateTimeStyles.AssumeLocal, out myDt))
             {
                 Console.WriteLine("Invalid date, try again");
                 date = Console.ReadLine();
             }
 
-            Console.Write( myCal.GetDayOfWeek(myDt) + ", ");
-            Console.Write( myCal.GetMonth(myDt) + "/");
-            Console.Write( myCal.GetDayOfMonth(myDt) + "/");
-            Console.WriteLine(myCal.GetYear(myDt));
+            string resultCode = "";
+            int verifyCode = 0;
+            DateTime tempDate = new DateTime();
+            printDates(myDt);//print date format nicely
+            myDates.Add(myDt);
 
-            Console.WriteLine("Enter Result Code of Inspection: ");
-            string resultCode = Console.ReadLine();
+            for (int i = 0; i < runs; i++)
+            {
+                //tempDate = myDt;
+                Console.WriteLine("Enter Result Code of Inspection: ");
+                resultCode = Console.ReadLine();
+                verifyCode = isCode(resultCode, myDates[i]);
+                tempDate = myCal.AddDays(myDates[i], verifyCode);
+                myDates.Add(tempDate);
+                printDates(tempDate);
+            }
 
-            
+        }
+        
 
-            DateTime myDt1 = myDt;//this will be the future inspection date.
-
-
-            int verifyCode = isCode(resultCode, myDt);
-            myDt1 = myCal.AddDays(myDt, verifyCode);
-
-            Console.WriteLine("\nPrevious visit: ");
+        private static void printDates(DateTime myDt)
+        {
+            Calendar myCal = CultureInfo.InvariantCulture.Calendar;
             Console.Write(myCal.GetDayOfWeek(myDt) + ", ");
             Console.Write(myCal.GetMonth(myDt) + "/");
             Console.Write(myCal.GetDayOfMonth(myDt) + "/");
-            Console.Write(myCal.GetYear(myDt) + "\n");
-
-            Console.WriteLine("\nScheduled Next visit: ");
-            Console.Write( myCal.GetDayOfWeek(myDt1) + ", ");
-            Console.Write( myCal.GetMonth(myDt1) + "/");
-            Console.Write( myCal.GetDayOfMonth(myDt1) + "/");
-            Console.Write( myCal.GetYear(myDt1) + "\n");
-
-
-
+            Console.WriteLine(myCal.GetYear(myDt) + "\n");
         }
-
-        
         private static int isCode(string resultCode, DateTime pastInspection)//quick and dirty code checking. Use regex or something stronger later.
         {
-
             if(resultCode.CompareTo("NO24") == 0)
                 return daysInRange(365,730, pastInspection); //12-24 months in days
             else if(resultCode.CompareTo("NO") == 0)
@@ -86,13 +107,53 @@ namespace ALFCode
             int toReturn = rng.Next(low, high);
             DateTime highTempDate;
             DateTime lowTempDate;
+            Console.WriteLine("==========================");
             Console.WriteLine("Range of days: " + low + " - " + high);
             Console.WriteLine("Number generated from range: " + toReturn);
 
             lowTempDate = pastInspection.AddDays(low);
             highTempDate = pastInspection.AddDays(high);
             Console.WriteLine("Range of possible inspection days based off inspection code: " + lowTempDate + " - " + highTempDate);
+            Console.WriteLine("==========================");
             return toReturn;
         }
+
+        //Old code that has been refactored. Kept it here for reference if needed.
+
+       /* private static void run(List<DateTime> myDates)//longer more teadious method. Enter dates by hand 1 at a time.
+        {
+            //Console.WriteLine("Hello World!");
+            SchedulingCodes c1 = new SchedulingCodes();
+            Console.WriteLine($"{c1.ReturnMessage()}");
+
+            Calendar myCal = CultureInfo.InvariantCulture.Calendar;
+
+            Console.WriteLine("Enter date of last inspection (MM/DD/YYYY): ");
+            DateTime myDt = new DateTime();//this will be the prevous inspection date            
+
+            string date = Console.ReadLine();
+
+            while (!DateTime.TryParseExact(date, "MM/dd/yyyy", null, System.Globalization.DateTimeStyles.AssumeLocal, out myDt))
+            {
+                Console.WriteLine("Invalid date, try again");
+                date = Console.ReadLine();
+            }
+
+            Console.WriteLine("Enter Result Code of Inspection: ");
+            string resultCode = Console.ReadLine();
+
+            DateTime myDt1 = myDt;//this will be the future inspection date.
+
+            int verifyCode = isCode(resultCode, myDt);
+            myDt1 = myCal.AddDays(myDt, verifyCode);
+
+            Console.WriteLine("\nPrevious visit: ");
+            printDates(myDt);
+
+            Console.WriteLine("\nScheduled Next visit: ");
+            printDates(myDt1);
+
+            myDates.Add(myDt1);
+        }*/
     }
 }
