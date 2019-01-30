@@ -16,6 +16,7 @@ namespace Excel_Import_Export
         /// </summary>
         /// <param name="filePath">Filepath to the Excel file</param>
         /// <param name="xlWorkbook">out parameter representing the Excel.Workbook</param>
+        /// <param name="xlApp">out parameter representing the Excel.Application</param>
         /// <returns>True upon success opening file, false on failure</returns>
         /// <exception>Throws NullReferenceException if Microsoft Excel is not installed on the systsem
         /// or if it cannot be opened</exception>
