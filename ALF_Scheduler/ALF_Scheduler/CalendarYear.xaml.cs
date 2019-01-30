@@ -37,7 +37,7 @@ namespace ALF_Scheduler {
                 calendar.Margin = new Thickness(10);
                 calendar.ClipToBounds = true;
                 calendar.SelectionMode = CalendarSelectionMode.MultipleRange;
-                calendar.CalendarItemStyle = (Style)FindResource("CalendarStyle");
+
                 wrapPanel.Children.Add(calendar);
             }
         }
