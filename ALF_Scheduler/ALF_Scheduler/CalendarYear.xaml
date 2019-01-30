@@ -7,68 +7,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="CalendarYear">
-    <Page.Resources>
-        <Style x:Key="CalendarStyle" TargetType="CalendarItem">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <DockPanel Name="PART_Root" 
-                               LastChildFill="True">
-                            <Button x:Name="PART_PreviousButton" 
-                                DockPanel.Dock="Left"
-                                Content="&lt;"
-                                Focusable="False" 
-                                Visibility="Hidden"
-                                />
 
-                            <Button x:Name="PART_NextButton" 
-                                DockPanel.Dock="Right"
-                                Content="&gt;" 
-                                Focusable="False" 
-                                Visibility="Hidden"
-                                />
-
-                            <Button x:Name="PART_HeaderButton"                                             
-                                DockPanel.Dock="Top"
-                                FontWeight="Bold"
-                                Focusable="False" />
-
-                            <Grid>
-                                <Grid x:Name="PART_MonthView" 
-                                  Visibility="Visible">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                </Grid>
-
-                            </Grid>
-                        </DockPanel>
-                        <ControlTemplate.Triggers>
-                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type Calendar}}, Path=DisplayMode}" Value="Year">
-                                <Setter TargetName="PART_MonthView" Property="Visibility" Value="Hidden" />
-                            </DataTrigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Page.Resources>
-    
     <Grid>
         <WrapPanel Name="wrapPanel"/>
     </Grid>
