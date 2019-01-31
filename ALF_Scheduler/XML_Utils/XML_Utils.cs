@@ -8,16 +8,6 @@ namespace ALF_Mine
 {
     internal class Program
     {
-        public static void Main()
-        {
-            CreateInitFolders();
-            CreateInitCodeXml(@".\default\Default_Codes.xml");
-            XDocument[] docAra = LoadFiles();
-            ReadCodeXml(docAra[0]);
-        }
-
-
-
         private static void ReadCodeXml(String path)
         {
             XmlDocument temp = new XmlDocument();
@@ -26,6 +16,7 @@ namespace ALF_Mine
             ReadCodeXml(doc);
         }
 
+        //Just here to show how to use linq with XDocument
         private static void ReadCodeXml(XDocument doc)
         {
             var codes = from c in doc.Descendants("code")
@@ -42,6 +33,116 @@ namespace ALF_Mine
                 Console.WriteLine("Code {0} has range ({1} - {2}) and description: {3}", code.name, code.minMonth,
                     code.maxMonth, code.desc);
             }
+        }
+
+        private static string GetImportDir()
+        {
+            XDocument settingsDoc = LoadSettingFile();
+            if (settingsDoc != null)
+            {
+                string importDir = settingsDoc.Element("customImportDir")?.ToString();
+                if (importDir != null)
+                {
+                    return importDir;
+                }
+            }
+
+            return @".\import";
+
+        }
+
+        private static string GetExportDir()
+        {
+            XDocument settingsDoc = LoadSettingFile();
+            if (settingsDoc != null)
+            {
+                string importDir = settingsDoc.Element("customImportDir")?.ToString();
+                if (importDir != null)
+                {
+                    return importDir;
+                }
+            }
+
+            return @".\export";
+        }
+
+        private static Boolean SettingsFileExist()
+        {
+            string[] files = Directory.GetFiles(@".\import", "*.xml", SearchOption.TopDirectoryOnly);
+            foreach (string filePath in files)
+            {
+                XDocument doc = XDocument.Load(filePath);
+                string docType = doc.Element("configuration")?.Attribute("type")?.ToString();
+                if (docType != null && docType.Equals("settings"))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        //TODO as of right now, it just loads settings file from import dir since we don't have any default settings
+        private static XDocument LoadSettingFile()
+        {
+            if (SettingsFileExist())
+            {
+                string settingsPath = null;
+                string[] files = Directory.GetFiles(@".\import", "*.xml", SearchOption.TopDirectoryOnly);
+                foreach (string filePath in files)
+                {
+                    XDocument doc = XDocument.Load(filePath);
+                    string docType = doc.Element("configuration")?.Attribute("type")?.ToString();
+                    if (docType != null && docType.Equals("settings"))
+                    {
+                        settingsPath = filePath;
+                    }
+                }
+
+                if (settingsPath != null)
+                {
+                    return XDocument.Load(settingsPath);
+                }
+            }
+            return null;
+        }
+
+        //Will load codes file from default path or if settings file contains a customImportDir, go to that dir and check if there is codes xml
+        private static XDocument LoadCodeFile()
+        {
+            string codesPath = @".\default\Default_Codes.xml";
+            string importDir = GetImportDir();
+            if (importDir.Equals(@"./import"))
+            {
+                //ignore
+            }
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+            else if (importDir != null)
+            {
+                FileAttributes attr = File.GetAttributes(codesPath);
+                if (attr.HasFlag(FileAttributes.Directory))
+                {
+                    string[] files = Directory.GetFiles(importDir, "*.xml", SearchOption.TopDirectoryOnly);
+                    foreach (string filePath in files)
+                    {
+                        XDocument doc = XDocument.Load(filePath);
+                        string docType = doc.Element("configuration")?.Attribute("type")?.ToString();
+                        if (docType != null && docType.Equals("codes"))
+                        {
+                            if (codesPath.Equals(@".\default\Default_Codes.xml"))
+                            {
+                                codesPath = filePath;
+                            }
+                            else
+                            {
+                                codesPath = MostRecentFile(codesPath, filePath);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return XDocument.Load(codesPath);
         }
 
         //Loads the config and code files in an ara, ara[0] = xmlCode (never null), ara[1] = xmlSettings (can be null).
@@ -249,8 +350,5 @@ namespace ALF_Mine
             );
             doc.Save(path);
         }
-
-
-
     }
 }
