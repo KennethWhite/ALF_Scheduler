@@ -173,6 +173,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CalendarYear.xaml.cs">
+      <DependentUpon>CalendarYear.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DataParser.cs" />
     <Compile Include="Interfaces\IEntity.cs" />
     <Compile Include="Models\Entity.cs" />
