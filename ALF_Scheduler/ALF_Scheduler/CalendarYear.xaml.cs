@@ -35,8 +35,8 @@ namespace ALF_Scheduler {
                 calendar.DisplayDateEnd = DateTime.Parse(String.Format("{0}/{1}/{2}", month, DateTime.DaysInMonth(year, x), year));
                 calendar.IsTodayHighlighted = true;
                 calendar.Margin = new Thickness(10);
-                calendar.ClipToBounds = true;
                 calendar.SelectionMode = CalendarSelectionMode.MultipleRange;
+                calendar.CalendarButtonStyle = (Style)(Resources["CalendarButtonStyle"]);
 
                 wrapPanel.Children.Add(calendar);
             }
