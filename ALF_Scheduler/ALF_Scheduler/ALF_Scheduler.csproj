@@ -160,11 +160,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CalendarYear.xaml.cs">
+      <DependentUpon>CalendarYear.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\Inspection.cs" />
     <Compile Include="Services\FacilityService.cs" />
     <Compile Include="Services\InspectionService.cs" />
     <Compile Include="Utilities\ErrorLogger.cs" />
+    <Page Include="CalendarYear.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -172,9 +179,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="CalendarYear.xaml.cs">
-      <DependentUpon>CalendarYear.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataParser.cs" />
     <Compile Include="Interfaces\IEntity.cs" />

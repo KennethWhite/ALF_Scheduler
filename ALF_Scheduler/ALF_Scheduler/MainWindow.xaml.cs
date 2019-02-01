@@ -27,6 +27,7 @@ namespace ALF_Scheduler
             List<Facility> items = new List<Facility>();
 
             // TODO connect Facility DB for display
+            /*
             fac1 = new Facility();
             DataParser dp = new DataParser(fac1);
             dp.Name("Lakeland Adult Family Home");
@@ -59,7 +60,7 @@ namespace ALF_Scheduler
             items.Add(dp.GetFacility());
 
             FacilityList.ItemsSource = items;
-            AddSelectedDates(items);
+            AddSelectedDates(items);*/
             DetailsInit();
         }
 
@@ -68,9 +69,9 @@ namespace ALF_Scheduler
         /// </summary>
         /// <param name="facilities">The list of facilities.</param>
         private void AddSelectedDates(List<Facility> facilities) {
-            foreach (Facility facility in facilities) { 
-                MonthlyCalendar.SelectedDates.Add(DateTime.Parse(facility.ProposedDate));
-            }
+            //foreach (Facility facility in facilities) { 
+            //    MonthlyCalendar.SelectedDates.Add(DateTime.Parse(facility.ProposedDate));
+            //}
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e) {
@@ -109,7 +110,7 @@ namespace ALF_Scheduler
                 textbox.Height = 15;
                 textbox.IsReadOnly = true;
                 // TODO connect to facility
-                textbox.Text = fac1.Name;
+                //textbox.Text = fac1.Name;
                 Grid.SetColumn(textbox, 1);
                 Grid.SetRow(textbox, row);
                 DetailsGrid.Children.Add(textbox);
