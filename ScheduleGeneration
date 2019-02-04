@@ -4,34 +4,50 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
+
 //Calculating difference between months code was borrowed from here: https://dotnetcodr.com/2015/10/30/calculate-the-number-of-months-between-two-dates-with-c/
-namespace ALFCode
+namespace ScheduleGenerater
 {
-    class ScheduleAlgorithm
+   public class ScheduleAlgorithm
     {
-        static void Main(string[] args)
+        public static void start()
         {
             Console.WriteLine("Enter number of inspections to run: ");
             int choice = Convert.ToInt32(Console.ReadLine());
             List<DateTime> myDates = new List<DateTime>();
-
-            autoRun(myDates, choice);               
-
-            Console.WriteLine("List Printed Out: ");
-            foreach (DateTime d in myDates)
+            autoRun(myDates, choice);
+            double average = calcAverage(myDates);
+            int i = 0;
+            Console.WriteLine(i + ". Average: " + average);           
+            if(average < 15.99 || average > 15.99)
             {
-                printDates(d);
+                i++;
+                average = alterAverage(myDates);
+                Console.WriteLine(i + ". Average: " + average);
             }
-            double avg = calcAverage(myDates);
-            Console.WriteLine("Average: " + avg);
         }
 
-        private static double calcAverage(List<DateTime> myDates) //https://dotnetcodr.com/2015/10/30/calculate-the-number-of-months-between-two-dates-with-c/
+        public static double alterAverage(List<DateTime> myDates)//idea is to loop through the List of dates, trying to spread out the days in between visits to make the average go up.
+        {
+            double avg = calcAverage(myDates);
+            double diff = avg - 15.99;//calculate the difference between the average we have and 15.99. Not sure if it is needed, but for right now its good to have an idea of how far off target it is.
+            Console.WriteLine("diff: " + diff);
+            if (diff < 0)//checking for if we need to add more days in order to raise the averaeg. Will need a similar check later to see if average is above 15.99 too.
+            {
+                for (int i = 0; i < myDates.Count; i++)
+                {
+                    myDates[i] = myDates[i].AddDays(Math.Abs(diff));//Code in here is what is wonky. Need to figure out how to spread the visits apart more, while still maintaining WA Guidelines.
+                    printDates(myDates[i]);
+                }
+            }
+            return calcAverage(myDates);//calc new average
+        }
+        public static double calcAverage(List<DateTime> myDates)//https://dotnetcodr.com/2015/10/30/calculate-the-number-of-months-between-two-dates-with-c/
         {
             double average = 0;
             int timeTweenMonths = 0;
 
-            for(int i = 0; i < myDates.Count-1; i++)
+            for (int i = 0; i < myDates.Count - 1; i++)
             {
                 timeTweenMonths = 12 * (myDates[i].Year - myDates[i + 1].Year) + myDates[i].Month - myDates[i + 1].Month;//calculations here borrowed from link on method header line.
                 average += timeTweenMonths;
@@ -40,7 +56,8 @@ namespace ALFCode
 
             return Math.Abs(average);
         }
-        private static void autoRun(List<DateTime> myDates, int runs)//enter beginning date and code, and subsequent codes after.
+
+        public static void autoRun(List<DateTime> myDates, int runs)
         {
             Calendar myCal = CultureInfo.InvariantCulture.Calendar;
 
@@ -73,9 +90,7 @@ namespace ALFCode
             }
 
         }
-        
-
-        private static void printDates(DateTime myDt)
+        public static void printDates(DateTime myDt)
         {
             Calendar myCal = CultureInfo.InvariantCulture.Calendar;
             Console.Write(myCal.GetDayOfWeek(myDt) + ", ");
@@ -83,25 +98,8 @@ namespace ALFCode
             Console.Write(myCal.GetDayOfMonth(myDt) + "/");
             Console.WriteLine(myCal.GetYear(myDt) + "\n");
         }
-        private static int isCode(string resultCode, DateTime pastInspection)//quick and dirty code checking. Use regex or something stronger later.
-        {
-            if(resultCode.CompareTo("NO24") == 0)
-                return daysInRange(365,730, pastInspection); //12-24 months in days
-            else if(resultCode.CompareTo("NO") == 0)
-                return daysInRange(486,547, pastInspection);//16-18 months in days
-            else if(resultCode.CompareTo("YES") == 0)
-                return daysInRange(395,456, pastInspection);//13-15 months in days
-            else if(resultCode.CompareTo("ENF") == 0)
-                return daysInRange(273,365, pastInspection);//9-12 months in days
-            else if(resultCode.CompareTo("CHOWN") == 0)
-                return daysInRange(182,273, pastInspection);//6-9 months in days
-            else
-            {
-                Console.WriteLine("Invalid Code.");
-                return 0; //input error
-            }                
-        }
-        private static int daysInRange(int low, int high, DateTime pastInspection)//might be easier to work with adding days, instead of months. ie 16-18 months == 486.667-547.501
+
+        public static int daysInRange(int low, int high, DateTime pastInspection)//easier to fine tune average when working with adding days, instead of months. ie 16-18 months == 486.667-547.501
         {
             Random rng = new Random();
             int toReturn = rng.Next(low, high);
@@ -118,42 +116,27 @@ namespace ALFCode
             return toReturn;
         }
 
-        //Old code that has been refactored. Kept it here for reference if needed.
-
-       /* private static void run(List<DateTime> myDates)//longer more teadious method. Enter dates by hand 1 at a time.
+        public static int isCode(string resultCode, DateTime pastInspection)//quick and dirty code checking. Use regex or something stronger later.
         {
-            //Console.WriteLine("Hello World!");
-            SchedulingCodes c1 = new SchedulingCodes();
-            Console.WriteLine($"{c1.ReturnMessage()}");
-
-            Calendar myCal = CultureInfo.InvariantCulture.Calendar;
-
-            Console.WriteLine("Enter date of last inspection (MM/DD/YYYY): ");
-            DateTime myDt = new DateTime();//this will be the prevous inspection date            
-
-            string date = Console.ReadLine();
-
-            while (!DateTime.TryParseExact(date, "MM/dd/yyyy", null, System.Globalization.DateTimeStyles.AssumeLocal, out myDt))
+            if (resultCode.CompareTo("NO24") == 0)
+                return daysInRange(365, 730, pastInspection); //12-24 months in days
+            else if (resultCode.CompareTo("NO") == 0)
+                return daysInRange(486, 547, pastInspection);//16-18 months in days
+            else if (resultCode.CompareTo("YES") == 0)
+                return daysInRange(395, 456, pastInspection);//13-15 months in days
+            else if (resultCode.CompareTo("ENF") == 0)
+                return daysInRange(273, 365, pastInspection);//9-12 months in days
+            else if (resultCode.CompareTo("CHOWN") == 0)
+                return daysInRange(182, 273, pastInspection);//6-9 months in days
+            else
             {
-                Console.WriteLine("Invalid date, try again");
-                date = Console.ReadLine();
+                Console.WriteLine("Invalid Code.");
+                return 0; //input error
             }
+        }
 
-            Console.WriteLine("Enter Result Code of Inspection: ");
-            string resultCode = Console.ReadLine();
-
-            DateTime myDt1 = myDt;//this will be the future inspection date.
-
-            int verifyCode = isCode(resultCode, myDt);
-            myDt1 = myCal.AddDays(myDt, verifyCode);
-
-            Console.WriteLine("\nPrevious visit: ");
-            printDates(myDt);
-
-            Console.WriteLine("\nScheduled Next visit: ");
-            printDates(myDt1);
-
-            myDates.Add(myDt1);
-        }*/
     }
+
+     
 }
+
