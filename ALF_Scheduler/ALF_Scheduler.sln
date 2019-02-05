@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchedulerTests", "Scheduler
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XML_Utils", "XML_Utils\XML_Utils.csproj", "{75563EBE-F227-48BF-8E17-69145C2087DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Schedule_Algorithm", "Schedule_Algorithm\Schedule_Algorithm.csproj", "{FA780254-DC8F-4F37-82AF-0F51B4CA9BBA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{75563EBE-F227-48BF-8E17-69145C2087DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75563EBE-F227-48BF-8E17-69145C2087DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75563EBE-F227-48BF-8E17-69145C2087DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA780254-DC8F-4F37-82AF-0F51B4CA9BBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA780254-DC8F-4F37-82AF-0F51B4CA9BBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA780254-DC8F-4F37-82AF-0F51B4CA9BBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA780254-DC8F-4F37-82AF-0F51B4CA9BBA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
