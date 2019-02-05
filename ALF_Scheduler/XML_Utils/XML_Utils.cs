@@ -8,11 +8,9 @@ using System.Xml.Linq;
 
 namespace XML_Utils
 {
-    internal class Program
+    public static class XML_Utils
     {
-
-
-        private static void readXML(String path)
+        public static void readXML(String path)
         {
             //This was just for testing mostly, but once we get a file tree set up, we can have it point to our program settings XML
             XDocument doc = XDocument.Load(path);
@@ -38,7 +36,7 @@ namespace XML_Utils
             Console.WriteLine("in: {0}, out {1}", configImport, defaultExport);
         }
 
-        private static void createInitXML()
+        public static void createInitXML()
         {
             using (XmlWriter writer = XmlWriter.Create("init.xml"))
             {

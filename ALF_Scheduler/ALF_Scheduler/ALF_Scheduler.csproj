@@ -164,6 +164,7 @@
       <DependentUpon>CalendarYear.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\ApplicationDbContext.cs" />
+    <Compile Include="Models\Code.cs" />
     <Compile Include="Models\Inspection.cs" />
     <Compile Include="Services\FacilityService.cs" />
     <Compile Include="Services\InspectionService.cs" />
@@ -215,6 +216,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\XML_Utils\XML_Utils.csproj">
+      <Project>{75563ebe-f227-48bf-8e17-69145c2087df}</Project>
+      <Name>XML_Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.11\build\net35\SQLitePCLRaw.lib.e_sqlite3.linux.targets" Condition="Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.11\build\net35\SQLitePCLRaw.lib.e_sqlite3.linux.targets')" />
