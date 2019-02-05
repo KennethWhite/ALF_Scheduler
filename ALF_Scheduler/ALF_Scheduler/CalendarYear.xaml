@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:ALF_Scheduler"
       xmlns:primitives="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
       mc:Ignorable="d" 
-      Title="ALF Scheduler - Calendar Year" SizeChanged="CalendarPage_SizeChanged">
+      Title="ALF Scheduler - Calendar Year">
     
     <Page.Resources>
         <ResourceDictionary>
