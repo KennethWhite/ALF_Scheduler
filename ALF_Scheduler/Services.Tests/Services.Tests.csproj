@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ALF_Scheduler\ALF_Scheduler.csproj" />
+    <ProjectReference Include="..\ALF_Scheduler\Scheduler.csproj" />
   </ItemGroup>
 
 </Project>

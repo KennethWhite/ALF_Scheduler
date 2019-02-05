@@ -148,9 +148,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ALF_Scheduler\ALF_Scheduler.csproj">
+    <ProjectReference Include="..\ALF_Scheduler\Scheduler.csproj">
       <Project>{0544F3CA-391F-4940-8E95-E8508446581E}</Project>
-      <Name>ALF_Scheduler</Name>
+      <Name>Scheduler</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

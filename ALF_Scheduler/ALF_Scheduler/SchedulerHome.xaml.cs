@@ -20,9 +20,19 @@ namespace ALF_Scheduler {
     public partial class SchedulerHome : Page {
         public SchedulerHome() {
             InitializeComponent();
+
+            // TODO import excel file, parse into facility object and db, bind db to grid
+
+
+
             List<Facility> items = new List<Facility>();
 
             // TODO connect Facility DB for display
+            
+            DetailsInit();
+        }
+
+        private void CreateFacilities() {
             /*
             fac1 = new Facility();
             DataParser dp = new DataParser(fac1);
@@ -57,7 +67,6 @@ namespace ALF_Scheduler {
 
             FacilityList.ItemsSource = items;
             AddSelectedDates(items);*/
-            DetailsInit();
         }
 
         /// <summary>
