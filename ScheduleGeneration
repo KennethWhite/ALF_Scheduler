@@ -4,7 +4,6 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
-
 //Calculating difference between months code was borrowed from here: https://dotnetcodr.com/2015/10/30/calculate-the-number-of-months-between-two-dates-with-c/
 namespace ScheduleGenerater
 {
@@ -14,33 +13,59 @@ namespace ScheduleGenerater
         {
             Console.WriteLine("Enter number of inspections to run: ");
             int choice = Convert.ToInt32(Console.ReadLine());
-            List<DateTime> myDates = new List<DateTime>();
-            autoRun(myDates, choice);
-            double average = calcAverage(myDates);
+            List<DateTime> lastVisit = new List<DateTime>();
+            List<DateTime> nextVisit = new List<DateTime>();
+            nextVisit = autoRun(lastVisit, choice);
+            Console.WriteLine("Next Visit Dates Pre alterAverage(): ");
+            foreach (DateTime d in nextVisit)
+                printDates(d);
+
+
+
+            double average = calcAverage(nextVisit);
             int i = 0;
             Console.WriteLine(i + ". Average: " + average);           
-            if(average < 15.99 || average > 15.99)
+            if(average < 15.99)
             {
                 i++;
-                average = alterAverage(myDates);
+                average = alterAverage(nextVisit);
                 Console.WriteLine(i + ". Average: " + average);
             }
+
+            for(int j = 0; j < lastVisit.Count; j++)
+            {
+                Console.Write("Last Visit: " + lastVisit[j]);
+                Console.WriteLine("----> Next Visit: " + nextVisit[j]);
+            }
+            Console.WriteLine("Final Average: " + calcAverage(nextVisit));
+                
         }
 
-        public static double alterAverage(List<DateTime> myDates)//idea is to loop through the List of dates, trying to spread out the days in between visits to make the average go up.
+        public static double alterAverage(List<DateTime> nextVisit)//idea is to loop through the List of dates, trying to spread out the days in between visits to make the average go up.
         {
-            double avg = calcAverage(myDates);
+            //on averagee there is 30.42 days in a month.
+            double avg = calcAverage(nextVisit);
             double diff = avg - 15.99;//calculate the difference between the average we have and 15.99. Not sure if it is needed, but for right now its good to have an idea of how far off target it is.
-            Console.WriteLine("diff: " + diff);
+            double diffInDays = Math.Abs(diff) * 30.42;
+            double diffInDaysDividedByCount = diffInDays / nextVisit.Count();
+
+            Console.WriteLine("diff in days: " + diffInDays);
+            Console.WriteLine("diff in days / List Count = " + diffInDaysDividedByCount);
+
             if (diff < 0)//checking for if we need to add more days in order to raise the averaeg. Will need a similar check later to see if average is above 15.99 too.
             {
-                for (int i = 0; i < myDates.Count; i++)
+                for (int i = 0; i < nextVisit.Count; i++)
                 {
-                    myDates[i] = myDates[i].AddDays(Math.Abs(diff));//Code in here is what is wonky. Need to figure out how to spread the visits apart more, while still maintaining WA Guidelines.
-                    printDates(myDates[i]);
+                    nextVisit[i] = nextVisit[i].AddDays(diffInDaysDividedByCount);//Code in here is what is wonky. Need to figure out how to spread the visits apart more, while still maintaining WA Guidelines.
+                    //Console.Write("Altered List: ");
+                    //printDates(nextVisit[i]);
                 }
             }
-            return calcAverage(myDates);//calc new average
+            foreach(DateTime d in nextVisit)
+            {
+                printDates(d);
+            }
+            return calcAverage(nextVisit);//calc new average
         }
         public static double calcAverage(List<DateTime> myDates)//https://dotnetcodr.com/2015/10/30/calculate-the-number-of-months-between-two-dates-with-c/
         {
@@ -57,38 +82,35 @@ namespace ScheduleGenerater
             return Math.Abs(average);
         }
 
-        public static void autoRun(List<DateTime> myDates, int runs)
+        public static List<DateTime> autoRun(List<DateTime> lastVisit, int runs)
         {
             Calendar myCal = CultureInfo.InvariantCulture.Calendar;
-
-            Console.WriteLine("Enter date of last inspection (MM/DD/YYYY): ");
             DateTime myDt = new DateTime();//this will be the prevous inspection date
-            //DateTime myFutureDate = new DateTime();
-            string date = Console.ReadLine();
-
-            while (!DateTime.TryParseExact(date, "MM/dd/yyyy", null, System.Globalization.DateTimeStyles.AssumeLocal, out myDt))
-            {
-                Console.WriteLine("Invalid date, try again");
-                date = Console.ReadLine();
-            }
-
-            string resultCode = "";
-            int verifyCode = 0;
-            DateTime tempDate = new DateTime();
-            printDates(myDt);//print date format nicely
-            myDates.Add(myDt);
-
+            //DateTime futureDate = new DateTime();
+            List<DateTime> nextVisit = new List<DateTime>();
             for (int i = 0; i < runs; i++)
             {
-                //tempDate = myDt;
+                DateTime futureDate = new DateTime();
+                Console.WriteLine("Enter date of last inspection (MM/DD/YYYY): ");
+                string date = Console.ReadLine();
+                while (!DateTime.TryParseExact(date, "MM/dd/yyyy", null, System.Globalization.DateTimeStyles.AssumeLocal, out myDt))
+                {
+                    Console.WriteLine("Invalid date, try again");
+                    date = Console.ReadLine();
+                }
+                string resultCode = "";
+                int verifyCode = 0;
                 Console.WriteLine("Enter Result Code of Inspection: ");
                 resultCode = Console.ReadLine();
-                verifyCode = isCode(resultCode, myDates[i]);
-                tempDate = myCal.AddDays(myDates[i], verifyCode);
-                myDates.Add(tempDate);
-                printDates(tempDate);
+                verifyCode = isCode(resultCode, myDt);
+                lastVisit.Add(myDt);
+                
+                futureDate = myDt.AddDays(verifyCode);
+                Console.WriteLine("Future Date: " + futureDate);
+                nextVisit.Add(futureDate);
             }
 
+            return nextVisit;
         }
         public static void printDates(DateTime myDt)
         {
@@ -105,13 +127,13 @@ namespace ScheduleGenerater
             int toReturn = rng.Next(low, high);
             DateTime highTempDate;
             DateTime lowTempDate;
-            Console.WriteLine("==========================");
-            Console.WriteLine("Range of days: " + low + " - " + high);
-            Console.WriteLine("Number generated from range: " + toReturn);
+            //Console.WriteLine("==========================");
+            //Console.WriteLine("Range of days: " + low + " - " + high);
+            //Console.WriteLine("Number generated from range: " + toReturn);
 
             lowTempDate = pastInspection.AddDays(low);
             highTempDate = pastInspection.AddDays(high);
-            Console.WriteLine("Range of possible inspection days based off inspection code: " + lowTempDate + " - " + highTempDate);
+            //Console.WriteLine("Range of possible inspection days based off inspection code: " + lowTempDate + " - " + highTempDate);
             Console.WriteLine("==========================");
             return toReturn;
         }
@@ -133,6 +155,7 @@ namespace ScheduleGenerater
                 Console.WriteLine("Invalid Code.");
                 return 0; //input error
             }
+            //hello world
         }
 
     }
