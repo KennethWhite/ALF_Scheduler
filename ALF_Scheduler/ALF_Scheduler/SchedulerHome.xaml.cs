@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Excel_Import_Export;
+using Excel = Microsoft.Office.Interop.Excel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +24,15 @@ namespace ALF_Scheduler {
             InitializeComponent();
 
             // TODO import excel file, parse into facility object and db, bind db to grid
+            // if load true then
+            //Excel.Application app = new Excel.Application();
+            //Excel.Workbook workbook = new Excel.Workbook();
+            //if (ExcelImporterExporter.LoadExcelFromFile(
+            //    "C:\\Users\\mical\\Source\\Repos\\KennethWhite\\ALF_Scheduler\\ALF_Scheduler\\TestData.xlsx",
+            //    out app, out workbook)) {
+            //    // parse data into facility objects
+
+            //}
 
 
 
