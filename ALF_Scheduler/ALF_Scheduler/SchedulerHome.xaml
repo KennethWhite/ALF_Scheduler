@@ -7,31 +7,33 @@
       mc:Ignorable="d" 
       Title="ALF Scheduler - Home">
 
-    <Grid>
-        <Label Content="Assisted Living Facilities" HorizontalAlignment="Left" Margin="50,80,0,550" Height="35" Width="240" FontSize="16"/>
-        <TextBox x:Name="SearchText" HorizontalAlignment="Left" Height="20" Margin="529,97,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" Opacity="0.5"/>
-        <Button x:Name="SearchButton" Content="Search" HorizontalAlignment="Left" Margin="651,96,0,0" VerticalAlignment="Top" Width="75" Click="SearchButton_Click"/>
-        <TabControl HorizontalAlignment="Left" Height="400" Margin="50,140,0,0" VerticalAlignment="Top" Width="480" SelectionChanged="TabControl_SelectionChanged">
-            <TabItem Name="TabItemFacilities" Header="Facilities" IsSelected="True">
-                <ListView Name="FacilityList">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="Name" Width="140" DisplayMemberBinding="{Binding Name}"/>
-                            <GridViewColumn Header="Last Inspection" Width="95" DisplayMemberBinding="{Binding MostRecentFullInspection}"/>
-                            <GridViewColumn Header="Result" Width="48" DisplayMemberBinding="{Binding InspectionResult}"/>
-                            <GridViewColumn Header="Month Interval" Width="90" DisplayMemberBinding="{Binding ScheduleInterval}"/>
-                            <GridViewColumn Header="Next Inspection" Width="90" DisplayMemberBinding="{Binding ProposedDate}"/>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </TabItem>
-            <TabItem Name="TabItemDetails" Header="Details" Height="22" VerticalAlignment="Top">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <Grid Name="DetailsGrid" Margin="10"></Grid>
-                </ScrollViewer>
-            </TabItem>
-        </TabControl>
-        <Calendar Name="MonthlyCalendar" SelectionMode="MultipleRange" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="547,160,0,0"/>
-        <Button Name="CalendarYearButton" Content="Whole Year" HorizontalAlignment="Left" Margin="547,333,0,0" VerticalAlignment="Top" Width="75" Click="CalendarYearButton_Click" />
-    </Grid>
+    <Viewbox>
+        <Grid>
+            <Label Content="Assisted Living Facilities" HorizontalAlignment="Left" Margin="50,80,0,550" Height="35" Width="240" FontSize="16"/>
+            <TextBox x:Name="SearchText" HorizontalAlignment="Left" Height="20" Margin="529,97,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" Opacity="0.5"/>
+            <Button x:Name="SearchButton" Content="Search" HorizontalAlignment="Left" Margin="651,96,0,0" VerticalAlignment="Top" Width="75" Click="SearchButton_Click"/>
+            <TabControl HorizontalAlignment="Left" Height="400" Margin="50,140,0,0" VerticalAlignment="Top" Width="480" SelectionChanged="TabControl_SelectionChanged">
+                <TabItem Name="TabItemFacilities" Header="Facilities" IsSelected="True">
+                    <ListView Name="FacilityList">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Name" Width="140" DisplayMemberBinding="{Binding Name}"/>
+                                <GridViewColumn Header="Last Inspection" Width="95" DisplayMemberBinding="{Binding MostRecentFullInspection}"/>
+                                <GridViewColumn Header="Result" Width="48" DisplayMemberBinding="{Binding InspectionResult}"/>
+                                <GridViewColumn Header="Month Interval" Width="90" DisplayMemberBinding="{Binding ScheduleInterval}"/>
+                                <GridViewColumn Header="Next Inspection" Width="90" DisplayMemberBinding="{Binding ProposedDate}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </TabItem>
+                <TabItem Name="TabItemDetails" Header="Details" Height="22" VerticalAlignment="Top">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <Grid Name="DetailsGrid" Margin="10"></Grid>
+                    </ScrollViewer>
+                </TabItem>
+            </TabControl>
+            <Calendar Name="MonthlyCalendar" SelectionMode="MultipleRange" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="547,160,0,0"/>
+            <Button Name="CalendarYearButton" Content="Whole Year" HorizontalAlignment="Left" Margin="547,333,0,0" VerticalAlignment="Top" Width="75" Click="CalendarYearButton_Click" />
+        </Grid>
+    </Viewbox>
 </Page>
