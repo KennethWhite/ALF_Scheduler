@@ -31,7 +31,7 @@ namespace ScheduleGenerater
                 average = alterAverage(nextVisit);
                 Console.WriteLine(i + ". Average: " + average);
             }
-
+            
             for(int j = 0; j < lastVisit.Count; j++)
             {
                 Console.Write("Last Visit: " + lastVisit[j]);
