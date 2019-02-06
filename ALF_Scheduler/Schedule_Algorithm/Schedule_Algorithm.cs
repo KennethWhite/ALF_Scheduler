@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 //Calculating difference between months code was borrowed from here: https://dotnetcodr.com/2015/10/30/calculate-the-number-of-months-between-two-dates-with-c/
-namespace ScheduleGenerater
+namespace ScheduleGenerator
 {
     public class ScheduleAlgorithm
     {
