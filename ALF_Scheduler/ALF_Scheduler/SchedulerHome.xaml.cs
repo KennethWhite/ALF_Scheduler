@@ -14,25 +14,34 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ALF_Scheduler.Domain.Models;
 
 namespace ALF_Scheduler {
     /// <summary>
     /// Interaction logic for SchedulerHome.xaml
     /// </summary>
     public partial class SchedulerHome : Page {
-        public SchedulerHome() {
+
+        private ApplicationDbContext DbContext { get; }
+        private Excel.Workbook XlWorkbook;
+        private Excel.Application XlApp;
+
+        public SchedulerHome(string path) {
             InitializeComponent();
 
             // TODO import excel file, parse into facility object and db, bind db to grid
-            // if load true then
-            //Excel.Application app = new Excel.Application();
-            //Excel.Workbook workbook = new Excel.Workbook();
-            //if (ExcelImporterExporter.LoadExcelFromFile(
-            //    "C:\\Users\\mical\\Source\\Repos\\KennethWhite\\ALF_Scheduler\\ALF_Scheduler\\TestData.xlsx",
-            //    out app, out workbook)) {
-            //    // parse data into facility objects
-
-            //}
+            if (ExcelImporterExporter.LoadExcelFromFile(path, out XlApp, out XlWorkbook)) {
+                /*
+                  System.InvalidOperationException
+                  HResult=0x80131509
+                  Message=No database provider has been configured for this DbContext. A provider can be configured by overriding the DbContext.OnConfiguring method or by using AddDbContext 
+                  on the application service provider. If AddDbContext is used, then also ensure that your DbContext type accepts a DbContextOptions<TContext> object in its constructor and 
+                  passes it to the base constructor for DbContext.
+                  Source=Microsoft.EntityFrameworkCore
+                */
+                DbContext = new ApplicationDbContext(new Microsoft.EntityFrameworkCore.DbContextOptions<ApplicationDbContext>());
+                CreateFacilities();
+            }
 
 
 
@@ -44,40 +53,29 @@ namespace ALF_Scheduler {
         }
 
         private void CreateFacilities() {
-            /*
-            fac1 = new Facility();
-            DataParser dp = new DataParser(fac1);
-            dp.Name("Lakeland Adult Family Home");
-            dp.Licensee("Mendez, Catherine");
-            dp.Unit("G");
-            dp.LicenseNumber("725103");
-            dp.ZipCode("98001");
-            dp.City("Algona");
-            dp.OneYearInspection("08/14/2015");
-            dp.MostRecentInspection("02/23/2018");
-            dp.NumberOfLicensors("2");
-            dp.InspectionResult("NO");
-            dp.ProposedDate("03/22/2020");
-            items.Add(dp.GetFacility());
-            
-            Facility fac2 = new Facility();
-            dp = new DataParser(fac2);
-            dp.Name("Facility 2");
-            dp.MostRecentInspection("08/25/2017");
-            dp.InspectionResult("yes");
-            dp.ProposedDate("03/02/2019");
-            items.Add(dp.GetFacility());
+            Services.FacilityService facilityService = new Services.FacilityService(DbContext);
+            for (int row = 1; row < XlWorkbook.Worksheets.Count; row++) {
+                DataParser dp = new DataParser(new Facility());
+                int column = 0;
+                Excel.Worksheet item = XlWorkbook.Worksheets.Item[row];
+                dp.Name(item.Cells[row, column++]);
+                dp.Licensee(item.Cells[row, column++]);
+                dp.Unit(item.Cells[row, column++]);
+                dp.LicenseNumber(item.Cells[row, column++]);
+                dp.ZipCode(item.Cells[row, column++]);
+                dp.City(item.Cells[row, column++]);
+                dp.PreviousInspection(item.Cells[row, column++]);
+                dp.MostRecentInspection(item.Cells[row, column++]);
+                column++; column++; //don't need to parse intervals
+                dp.ProposedDate(item.Cells[row, column++]);
+                column++; column++; //don't need to parse 17th/18th month deadline
+                dp.LicensorList(item.Cells[row, column++]);
+                dp.InspectionResult(item.Cells[row, column++]);
+                dp.EnforcementNotes(item.Cells[row, column++]);
+                facilityService.AddOrUpdateFacility(dp.Facility);
+            }
 
-            Facility fac3 = new Facility();
-            dp = new DataParser(fac3);
-            dp.Name("Facility 3");
-            dp.MostRecentInspection("12/05/2017");
-            dp.InspectionResult("enf");
-            dp.ProposedDate("05/14/2019");
-            items.Add(dp.GetFacility());
-
-            FacilityList.ItemsSource = items;
-            AddSelectedDates(items);*/
+            AddSelectedDates(facilityService.FetchAll());
         }
 
         /// <summary>
@@ -85,9 +83,9 @@ namespace ALF_Scheduler {
         /// </summary>
         /// <param name="facilities">The list of facilities.</param>
         private void AddSelectedDates(List<Facility> facilities) {
-            //foreach (Facility facility in facilities) { 
-            //    MonthlyCalendar.SelectedDates.Add(DateTime.Parse(facility.ProposedDate));
-            //}
+            foreach (Facility facility in facilities) {
+                MonthlyCalendar.SelectedDates.Add(DateTime.Parse(facility.ProposedDate.ToString()));
+            }
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e) {

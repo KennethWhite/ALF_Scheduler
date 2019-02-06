@@ -16,7 +16,7 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Viewbox Margin="10">
+    <Viewbox Margin="10,0,10,20">
         <Grid Name="calendarGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="75" />
