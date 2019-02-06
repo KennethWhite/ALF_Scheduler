@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Collections;
@@ -9,7 +9,7 @@ namespace ScheduleGenerator
 {
     public class ScheduleAlgorithm
     {
-        public static void start()
+        public static List<DateTime> start()
         {
             Console.WriteLine("Enter number of inspections to run: ");
             int choice = Convert.ToInt32(Console.ReadLine());
@@ -22,9 +22,9 @@ namespace ScheduleGenerator
             double average = calcAverage(nextVisit);
             int i = 0;
             Console.WriteLine(i + ". Average: " + average);
-            while(average < 15.9 || average == 16 || average > 15.9)
+            while (average < 15.9 || average == 16 || average > 15.9)//a couple of checks here to keep it from bouncing between very fine decimals.
             {
-                if (i>=999)
+                if (i >= 999)//we don't want the program to get stuck in a loop.
                     break;
 
 
@@ -39,16 +39,42 @@ namespace ScheduleGenerator
                 Console.WriteLine("----> Next Visit: " + nextVisit[j]);
             }
             Console.WriteLine("Final Average: " + calcAverage(nextVisit));
+            return nextVisit;
         }
 
-        public static double alterAverage(List<DateTime> nextVisit,List<String> codeList, List<DateTime> lastVisit)//idea is to loop through the List of dates, trying to spread out the days in between visits to make the average go up.
+        public static void manualOverride(List<DateTime> nextVisit)
+        {
+            Console.WriteLine("Enter the number of the date to change: ");
+            int i = 0;
+            foreach(DateTime d in nextVisit)
+            {
+                i++;
+                Console.WriteLine(i + ". " + d);
+            }
+            int choice = Convert.ToInt32(Console.ReadLine());
+            DateTime newDate = nextVisit[choice-1];
+            Console.WriteLine("Change " + newDate + " to what? (MM/DD/YYYY)");
+            string date = Console.ReadLine();
+            while (!DateTime.TryParseExact(date, "MM/dd/yyyy", null, System.Globalization.DateTimeStyles.AssumeLocal, out newDate))
+            {
+                Console.WriteLine("Invalid date, try again");
+                date = Console.ReadLine();
+            }
+            nextVisit[choice-1] = newDate;
+            Console.WriteLine("New List: ");
+            foreach (DateTime d in nextVisit)
+                Console.WriteLine(d);
+
+        }
+
+        public static double alterAverage(List<DateTime> nextVisit, List<String> codeList, List<DateTime> lastVisit)//idea is to loop through the List of dates, trying to spread out the days in between visits to make the average go up.
         {
             //on averagee there is 30.42 days in a month.
             double avg = calcAverage(nextVisit);
             double diff = avg - 15.99;//calculate the difference between the average we have and 15.99. Not sure if it is needed, but for right now its good to have an idea of how far off target it is.
             double diffInDays = Math.Abs(diff) * 30.42;
             double diffInDaysDividedByCount = diffInDays / nextVisit.Count();
-            if(diffInDaysDividedByCount > 0 && diffInDaysDividedByCount < 1)//if the diffInDaysDiviedByCount is a decimal, then it is small enough to call it quits.
+            if (diffInDaysDividedByCount > 0 && diffInDaysDividedByCount < 1)//if the diffInDaysDiviedByCount is a decimal, then it is small enough to call it quits.
             {
                 return 0.0;
             }
@@ -61,10 +87,10 @@ namespace ScheduleGenerator
                 {
                     Console.WriteLine("Pre Avg Alter: " + nextVisit[i]);
                     int codeCheck = (int)(nextVisit[i] - lastVisit[i]).TotalDays;
-                    if (checkCodeBound(codeList[i],codeCheck)== true)
+                    if (checkCodeBound(codeList[i], codeCheck) == true)
                     {
-                        nextVisit[i] = nextVisit[i].AddDays(diffInDaysDividedByCount);//Code in here is what is wonky. Need to figure out how to spread the visits apart more, while still maintaining WA Guidelines.
-                    }                        
+                        nextVisit[i] = nextVisit[i].AddDays(diffInDaysDividedByCount);
+                    }
                     Console.WriteLine("Post Avg Alter: " + nextVisit[i]);
                 }
             }
@@ -89,7 +115,7 @@ namespace ScheduleGenerator
             double average = 0;
             int timeTweenMonths = 0;
 
-            for (int i = 0; i < myDates.Count -1; i++)
+            for (int i = 0; i < myDates.Count - 1; i++)
             {
                 timeTweenMonths = 12 * (myDates[i].Year - myDates[i + 1].Year) + myDates[i].Month - myDates[i + 1].Month + 1;//calculations here borrowed from link on method header line.
                 average += timeTweenMonths;
