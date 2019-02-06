@@ -15,7 +15,7 @@ namespace ALF_Scheduler.Models
         public int minMonth { get; set; }
         public int maxMonth { get; set; }
 
-        public Code[] getCodes()
+        public List<Code> getCodes()
         {
             XDocument doc = XML_Utils.XML_Utils.LoadCodeFile();
 
@@ -44,7 +44,21 @@ namespace ALF_Scheduler.Models
                 outList.Add(newCode);
             }
 
-            return outList.ToArray<Code>();
+            return outList;
+        }
+
+        public Code getCodeName(string name, List<Code> codeList)
+        {
+            IEnumerable<Code> codes =
+                from code in codeList
+                where code.name.Equals(name, StringComparison.InvariantCultureIgnoreCase)
+                select code;
+
+            if (codes.Count() > 0)
+            {
+                return codes.ElementAt(0);
+            }
+            throw new KeyNotFoundException("Could not find a code with that name");
         }
     }
     }
