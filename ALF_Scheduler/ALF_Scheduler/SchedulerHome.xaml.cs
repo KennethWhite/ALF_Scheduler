@@ -142,48 +142,44 @@ namespace ALF_Scheduler {
 
         // TODO formatting and add ability to scroll
         private void DetailsInit() {
-            Grid grid = DetailsGrid;
-            grid.ColumnDefinitions.Add(new ColumnDefinition());
-            grid.ColumnDefinitions.Add(new ColumnDefinition());
-            string[] labelContent = { "Facility Name", "Name of Licensee", "License Number", "Unit", "City", "ZipCode", "Number Of Beds", "Most Recent Full Inspection",
-                    "One Year Full Inspection", "Two Year Full Inspection", "Inspection Result", "Dates Of SOD", "Enforcement Notes", "Failed Follow Up", "Complaints",
-                    "Proposed Date", "Schedule Interval", "Month 15", "Month 18", "Number Of Licensors", "Sample Size", "Special Info" };
+            ListView list = DetailsView;
 
+            string[] labelContent = { "Facility Name", "Name of Licensee", "License Number", "Unit", "City", "ZipCode", "Number Of Beds", "Most Recent Full Inspection",
+                    "Previous Year Full Inspection", "Two Year Full Inspection", "Inspection Result", "Dates Of SOD", "Enforcement Notes", "Failed Follow Up", "Complaints",
+                    "Proposed Date", "Schedule Interval", "Month 15", "Month 18", "Number Of Licensors", "Sample Size", "Special Info" };
             for (int x = 0; x < labelContent.Length; x++) {
-                RowDefinition rowDefinition = new RowDefinition();
-                rowDefinition.Height = GridLength.Auto;
-                grid.RowDefinitions.Add(rowDefinition);
+                StackPanel stack = new StackPanel();
                 Label label = new Label();
                 label.Content = labelContent[x];
-
-                Grid.SetColumn(label, 0);
-                Grid.SetRow(label, x);
-                grid.Children.Add(label);
+                label.Height = 25;
+                label.FontSize = 12;
+                label.Padding = new Thickness(5);
+                stack.Children.Add(label);
+            
+                list.Items.Add(stack);
             }
-
-            TabItemDetails.Content = grid;
+            
+            TabItemDetails.Content = list;
         }
 
         private void OpenDetails() {
-            for (int row = 0; row < DetailsGrid.RowDefinitions.Count; row++) {
-                TextBox textbox = new TextBox();
-                textbox.Height = 15;
-                textbox.IsReadOnly = true;
+            for (int row = 0; row < DetailsView.Items.Count; row++) {
+                //StackPanel stack = (StackPanel)DetailsView.Items[row];
+                //TextBlock textblock = new TextBlock();
+                //textblock.Height = 15;
+                //stack.Children.Add(textblock);
                 // TODO connect to facility
                 //textbox.Text = fac1.Name;
-                Grid.SetColumn(textbox, 1);
-                Grid.SetRow(textbox, row);
-                DetailsGrid.Children.Add(textbox);
             }
         }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            if (TabItemFacilities.IsSelected) {
-                Console.WriteLine("tab control selection changed" + TabItemFacilities);
-            } else if (TabItemDetails.IsSelected) {
-                Console.WriteLine("tab control selection changed" + TabItemDetails);
-                OpenDetails();
-            }
+            //if (TabItemFacilities.IsSelected) {
+            //    Console.WriteLine("tab control selection changed" + TabItemFacilities);
+            //} else if (TabItemDetails.IsSelected) {
+            //    Console.WriteLine("tab control selection changed" + TabItemDetails);
+            //    OpenDetails();
+            //}
         }
 
         private void CalendarYearButton_Click(object sender, RoutedEventArgs e) {

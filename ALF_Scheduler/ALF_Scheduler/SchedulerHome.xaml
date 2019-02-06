@@ -22,15 +22,19 @@
                                     <GridViewColumn Header="Last Inspection" Width="95" /> <!--DisplayMemberBinding="{Binding MostRecentFullInspection}"/>-->
                                     <GridViewColumn Header="Result" Width="48" DisplayMemberBinding="{Binding InspectionResult}"/>
                                     <GridViewColumn Header="Month Interval" Width="90" /> <!--DisplayMemberBinding="{Binding ScheduleInterval}"/>-->
-                                        <GridViewColumn Header="Next Inspection" Width="90" /> <!--DisplayMemberBinding="{Binding ProposedDate}"/>-->
+                                    <GridViewColumn Header="Next Inspection" Width="90" /> <!--DisplayMemberBinding="{Binding ProposedDate}"/>-->
                                 </GridView>
                             </ListView.View>
                         </ListView>
                     </ScrollViewer>
                 </TabItem>
                 <TabItem Name="TabItemDetails" Header="Details" Height="22" VerticalAlignment="Top">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <Grid Name="DetailsGrid" Margin="10"></Grid>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" CanContentScroll="False" Background="Transparent">
+                        <ListView Name="DetailsView" Focusable="False">
+                            <ListViewItem HorizontalAlignment="Right">
+                                <Button Content="Edit" Width="50" Margin="10" />
+                            </ListViewItem>
+                        </ListView>
                     </ScrollViewer>
                 </TabItem>
                 <TabItem Name="InspectionResultPage" Header="Inspection Result Form" Height="22" VerticalAlignment="Top">
