@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Schedule_Algorithm
 {
-    public static class Utils
+    public static class Schedule_Algorithm
     {
         public static void start()
         {
