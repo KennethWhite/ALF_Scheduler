@@ -7,7 +7,7 @@ using System.Collections.Generic;
 //Calculating difference between months code was borrowed from here: https://dotnetcodr.com/2015/10/30/calculate-the-number-of-months-between-two-dates-with-c/
 namespace ScheduleGenerater
 {
-   public class ScheduleAlgorithm
+    public class ScheduleAlgorithm
     {
         public static void start()
         {
@@ -24,21 +24,21 @@ namespace ScheduleGenerater
 
             double average = calcAverage(nextVisit);
             int i = 0;
-            Console.WriteLine(i + ". Average: " + average);           
-            if(average < 15.99)
+            Console.WriteLine(i + ". Average: " + average);
+            if (average < 15.99)
             {
                 i++;
                 average = alterAverage(nextVisit);
                 Console.WriteLine(i + ". Average: " + average);
             }
-            
-            for(int j = 0; j < lastVisit.Count; j++)
+
+            for (int j = 0; j < lastVisit.Count; j++)
             {
                 Console.Write("Last Visit: " + lastVisit[j]);
                 Console.WriteLine("----> Next Visit: " + nextVisit[j]);
             }
             Console.WriteLine("Final Average: " + calcAverage(nextVisit));
-                
+
         }
 
         public static double alterAverage(List<DateTime> nextVisit)//idea is to loop through the List of dates, trying to spread out the days in between visits to make the average go up.
@@ -61,7 +61,7 @@ namespace ScheduleGenerater
                     //printDates(nextVisit[i]);
                 }
             }
-            foreach(DateTime d in nextVisit)
+            foreach (DateTime d in nextVisit)
             {
                 printDates(d);
             }
@@ -104,7 +104,7 @@ namespace ScheduleGenerater
                 resultCode = Console.ReadLine();
                 verifyCode = isCode(resultCode, myDt);
                 lastVisit.Add(myDt);
-                
+
                 futureDate = myDt.AddDays(verifyCode);
                 Console.WriteLine("Future Date: " + futureDate);
                 nextVisit.Add(futureDate);
@@ -160,6 +160,5 @@ namespace ScheduleGenerater
 
     }
 
-     
-}
 
+}
