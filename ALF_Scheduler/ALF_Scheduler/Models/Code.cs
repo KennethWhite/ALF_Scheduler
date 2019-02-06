@@ -47,7 +47,7 @@ namespace ALF_Scheduler.Models
             return outList;
         }
 
-        public Code getCodeName(string name, List<Code> codeList)
+        public Code getCodeByName(string name, List<Code> codeList)
         {
             IEnumerable<Code> codes =
                 from code in codeList
