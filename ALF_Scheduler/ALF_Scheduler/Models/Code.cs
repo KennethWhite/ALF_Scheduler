@@ -15,7 +15,7 @@ namespace ALF_Scheduler.Models
         public int minMonth { get; set; }
         public int maxMonth { get; set; }
 
-        public List<Code> getCodes()
+        public static List<Code> getCodes()
         {
             XDocument doc = XML_Utils.XML_Utils.LoadCodeFile();
 
@@ -47,7 +47,7 @@ namespace ALF_Scheduler.Models
             return outList;
         }
 
-        public Code getCodeByName(string name, List<Code> codeList)
+        public static Code getCodeByName(string name, List<Code> codeList)
         {
             IEnumerable<Code> codes =
                 from code in codeList
