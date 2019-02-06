@@ -26,29 +26,75 @@ namespace ALF_Scheduler {
         private Excel.Workbook XlWorkbook;
         private Excel.Application XlApp;
 
-        public SchedulerHome(string path) {
+        public SchedulerHome() { //string path) {
             InitializeComponent();
 
             // TODO import excel file, parse into facility object and db, bind db to grid
-            if (ExcelImporterExporter.LoadExcelFromFile(path, out XlApp, out XlWorkbook)) {
-                /*
-                  System.InvalidOperationException
-                  HResult=0x80131509
-                  Message=No database provider has been configured for this DbContext. A provider can be configured by overriding the DbContext.OnConfiguring method or by using AddDbContext 
-                  on the application service provider. If AddDbContext is used, then also ensure that your DbContext type accepts a DbContextOptions<TContext> object in its constructor and 
-                  passes it to the base constructor for DbContext.
-                  Source=Microsoft.EntityFrameworkCore
-                */
-                DbContext = new ApplicationDbContext(new Microsoft.EntityFrameworkCore.DbContextOptions<ApplicationDbContext>());
-                CreateFacilities();
-            }
-
-
+            //if (ExcelImporterExporter.LoadExcelFromFile(path, out XlApp, out XlWorkbook)) {
+            //    /*
+            //      System.InvalidOperationException
+            //      HResult=0x80131509
+            //      Message=No database provider has been configured for this DbContext. A provider can be configured by overriding the DbContext.OnConfiguring method or by using AddDbContext 
+            //      on the application service provider. If AddDbContext is used, then also ensure that your DbContext type accepts a DbContextOptions<TContext> object in its constructor and 
+            //      passes it to the base constructor for DbContext.
+            //      Source=Microsoft.EntityFrameworkCore
+            //    */
+            //    DbContext = new ApplicationDbContext(new Microsoft.EntityFrameworkCore.DbContextOptions<ApplicationDbContext>());
+            //    CreateFacilities();
+            //}
 
             List<Facility> items = new List<Facility>();
-
-            // TODO connect Facility DB for display
+            DataParser dp = new DataParser(new Facility());
+            dp.Name("Lakeland Adult Family Home");
+            dp.Licensee("Mendez, Catherine");
+            dp.Unit("G");
+            dp.LicenseNumber("725103");
+            dp.ZipCode("98001");
+            dp.City("Algona");
+            dp.PreviousInspection("08/14/2015");
+            dp.MostRecentInspection("02/23/2018");
+            dp.NumberOfLicensors("2");
+            dp.InspectionResult("NO");
+            dp.ProposedDate("03/22/2020");
+            items.Add(dp.Facility);
             
+            dp = new DataParser(new Facility());
+            dp.Name("Facility 2");
+            dp.MostRecentInspection("08/25/2017");
+            dp.InspectionResult("yes");
+            dp.ProposedDate("03/02/2019");
+            items.Add(dp.Facility);
+
+            dp = new DataParser(new Facility());
+            dp.Name("Facility 3");
+            dp.MostRecentInspection("12/05/2017");
+            dp.InspectionResult("enf");
+            dp.ProposedDate("05/14/2019");
+            items.Add(dp.Facility);
+
+            dp = new DataParser(new Facility());
+            dp.Name("Facility 4");
+            items.Add(dp.Facility);
+
+            dp = new DataParser(new Facility());
+            dp.Name("Facility 5");
+            items.Add(dp.Facility);
+
+            dp = new DataParser(new Facility());
+            dp.Name("Facility 6");
+            items.Add(dp.Facility);
+
+            dp = new DataParser(new Facility());
+            dp.Name("Facility 7");
+            items.Add(dp.Facility);
+
+            dp = new DataParser(new Facility());
+            dp.Name("Facility 8");
+            items.Add(dp.Facility);
+
+            FacilityList.ItemsSource = items;
+            AddSelectedDates(items);
+
             DetailsInit();
         }
 
