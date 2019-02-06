@@ -139,22 +139,29 @@ namespace ALF_Scheduler {
             // TODO search for facility based on text content ^ and open it in details page
             TabItemDetails.IsSelected = true;
         }
-
-        // TODO formatting and add ability to scroll
+        
         private void DetailsInit() {
             ListView list = DetailsView;
 
             string[] labelContent = { "Facility Name", "Name of Licensee", "License Number", "Unit", "City", "ZipCode", "Number Of Beds", "Most Recent Full Inspection",
                     "Previous Year Full Inspection", "Two Year Full Inspection", "Inspection Result", "Dates Of SOD", "Enforcement Notes", "Failed Follow Up", "Complaints",
                     "Proposed Date", "Schedule Interval", "Month 15", "Month 18", "Number Of Licensors", "Sample Size", "Special Info" };
+
             for (int x = 0; x < labelContent.Length; x++) {
                 StackPanel stack = new StackPanel();
-                Label label = new Label();
-                label.Content = labelContent[x];
-                label.Height = 25;
-                label.FontSize = 12;
-                label.Padding = new Thickness(5);
+                stack.HorizontalAlignment = HorizontalAlignment.Stretch;
+                stack.Orientation = Orientation.Horizontal;
+                Label label = CreateLabel(labelContent[x]);
                 stack.Children.Add(label);
+                label = CreateLabel("", 240, HorizontalAlignment.Right);
+                stack.Children.Add(label);
+
+                if (x == 0) {
+                    Button editButton = new Button();
+                    editButton.Content = "Edit Facility";
+                    editButton.Width = 70;
+                    stack.Children.Add(editButton);
+                }
             
                 list.Items.Add(stack);
             }
@@ -162,15 +169,18 @@ namespace ALF_Scheduler {
             TabItemDetails.Content = list;
         }
 
+        private Label CreateLabel(string content, double width = 175, HorizontalAlignment alignRight = HorizontalAlignment.Left) {
+            Label label = new Label();
+            label.Content = content;
+            label.FontSize = 12;
+            label.Padding = new Thickness(5);
+            label.Width = width;
+            label.HorizontalAlignment = alignRight;
+            return label;
+        }
+
         private void OpenDetails() {
-            for (int row = 0; row < DetailsView.Items.Count; row++) {
-                //StackPanel stack = (StackPanel)DetailsView.Items[row];
-                //TextBlock textblock = new TextBlock();
-                //textblock.Height = 15;
-                //stack.Children.Add(textblock);
-                // TODO connect to facility
-                //textbox.Text = fac1.Name;
-            }
+            //TODO input specific facility info into the labels
         }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e) {
