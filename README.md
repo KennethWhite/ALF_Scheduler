@@ -12,7 +12,7 @@ This is our senior project in which we aim to automate the scheduling of ALF ins
 
 ### Prepared by Team 7:
 >Kenneth White\
-Colton Johannson\
+Colton Johansson\
 Micalyn Williams\
 Brandtly Strobeck
 
