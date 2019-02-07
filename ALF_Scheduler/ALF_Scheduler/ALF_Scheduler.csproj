@@ -164,6 +164,7 @@
       <DependentUpon>CalendarYear.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\ApplicationDbContext.cs" />
+    <Compile Include="Models\ScheduleReturn.cs" />
     <Compile Include="Models\Code.cs" />
     <Compile Include="Models\Inspection.cs" />
     <Compile Include="Services\FacilityService.cs" />

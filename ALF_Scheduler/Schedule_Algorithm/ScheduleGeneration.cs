@@ -21,18 +21,6 @@ namespace ScheduleGeneration
             }
         }
 
-        public struct ScheduleReturn
-        {
-            public IDictionary<Facility, DateTime> FacilitySchedule { get; set; }
-
-            public double GlobalAvg { get; set; }
-
-            public override string ToString()
-            {
-                return "Global Average: " + GlobalAvg;
-            }
-        }
-
         public static ScheduleReturn GenerateSchedule(List<Facility> facilityList, double desiredAvg)
         {
             double offsetMonths = 0;
