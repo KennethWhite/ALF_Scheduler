@@ -43,9 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Schedule_Algorithm.cs" />
+    <Compile Include="ScheduleGeneration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tester.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
