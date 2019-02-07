@@ -8,10 +8,10 @@ namespace ALF_Scheduler.Models
 {
     public class Code : Entity
     {
-        public string name { get; set; }
-        public string description { get; set; }
-        public int minMonth { get; set; }
-        public int maxMonth { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int MinMonth { get; set; }
+        public int MaxMonth { get; set; }
 
         public static List<Code> getCodes()
         {
@@ -34,10 +34,10 @@ namespace ALF_Scheduler.Models
             {
                 Code newCode = new Code();
 
-                newCode.name = code.name;
-                newCode.description = code.desc;
-                newCode.minMonth = int.Parse(code.minMonth);
-                newCode.maxMonth = int.Parse(code.maxMonth);
+                newCode.Name = code.name;
+                newCode.Description = code.desc;
+                newCode.MinMonth = int.Parse(code.minMonth);
+                newCode.MaxMonth = int.Parse(code.maxMonth);
 
                 outList.Add(newCode);
             }
@@ -49,7 +49,7 @@ namespace ALF_Scheduler.Models
         {
             IEnumerable<Code> codes =
                 from code in codeList
-                where code.name.Equals(name, StringComparison.InvariantCultureIgnoreCase)
+                where code.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase)
                 select code;
 
             if (codes.Count() > 0)

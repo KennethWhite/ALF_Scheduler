@@ -1,6 +1,9 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using ALF_Scheduler;
+using ALF_Scheduler.Domain.Models;
+using ALF_Scheduler.Models;
 
 namespace ScheduleGeneration
 {

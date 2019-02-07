@@ -49,5 +49,15 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ALF_Scheduler\ALF_Scheduler.csproj">
+      <Project>{0544f3ca-391f-4940-8e95-e8508446581e}</Project>
+      <Name>ALF_Scheduler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XML_Utils\XML_Utils.csproj">
+      <Project>{75563ebe-f227-48bf-8e17-69145c2087df}</Project>
+      <Name>XML_Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

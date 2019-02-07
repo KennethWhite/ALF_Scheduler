@@ -9,5 +9,6 @@ namespace ALF_Scheduler.Domain.Models
         public DateTime InspectionDate { get; set; }
         public string Licensor { get; set; }
         public string Comments { get; set; }
+        public Code Code { get; set; }
     }
 }

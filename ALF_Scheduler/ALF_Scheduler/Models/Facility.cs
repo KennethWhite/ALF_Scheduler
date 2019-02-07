@@ -14,6 +14,14 @@ namespace ALF_Scheduler
 {
     public class Facility : Entity
     {
+        private List<Inspection> AllInspections { get; set; }
+
+        public Facility(Inspection inspection)
+        {
+            AllInspections = new List<Inspection>();
+            AllInspections.Add(inspection);
+        }
+
 
         /// <value>Gets the Facility name.</value>
         public string FacilityName { get; set; }
@@ -135,7 +143,13 @@ namespace ALF_Scheduler
         /// <value>Gets the Facility's most recent full inspection information.</value>
         private Inspection LastFullInspection()
         {
-            throw new NotImplementedException();
+            if (!AllInspections.Any())
+            {
+                throw new NullReferenceException("Facility List is Empty");
+            }
+            List<Inspection> sortList = AllInspections;
+            sortList.Sort((i1, i2) => i1.InspectionDate.CompareTo(i2.InspectionDate));
+            return sortList.ElementAt(0);
         }
 
         /// <value>Gets the Facility's full inspection information from a year ago.</value>

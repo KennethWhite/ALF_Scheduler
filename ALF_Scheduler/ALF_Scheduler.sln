@@ -13,7 +13,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ALF_Scheduler", "ALF_Schedu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ALF_Scheduler.Tests", "ALF_Scheduler.Tests\ALF_Scheduler.Tests.csproj", "{1244F8CC-EE98-4396-816B-2438A106E05D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Tests", "Services.Tests\Services.Tests.csproj", "{1AC23E27-6E70-4B91-8372-1ABC1B0E8822}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services.Tests", "Services.Tests\Services.Tests.csproj", "{1AC23E27-6E70-4B91-8372-1ABC1B0E8822}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Schedule_Algorithm", "Schedule_Algorithm\Schedule_Algorithm.csproj", "{FA780254-DC8F-4F37-82AF-0F51B4CA9BBA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{1AC23E27-6E70-4B91-8372-1ABC1B0E8822}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1AC23E27-6E70-4B91-8372-1ABC1B0E8822}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1AC23E27-6E70-4B91-8372-1ABC1B0E8822}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA780254-DC8F-4F37-82AF-0F51B4CA9BBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA780254-DC8F-4F37-82AF-0F51B4CA9BBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA780254-DC8F-4F37-82AF-0F51B4CA9BBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA780254-DC8F-4F37-82AF-0F51B4CA9BBA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
