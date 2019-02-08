@@ -6,5 +6,29 @@
         xmlns:local="clr-namespace:ALF_Scheduler"
         mc:Ignorable="d"
         Title="ALF Scheduler" Height="750" Width="850" Source="SchedulerHome.xaml">
-    
+    <NavigationWindow.Content>
+        <Grid>
+
+            <Menu>
+                <MenuItem Header="_File">
+                    <MenuItem Header="_Open" />
+                    <MenuItem Header="_Save" />
+                    <Separator />
+                    <MenuItem Header="_Exit" />
+                </MenuItem>
+                <MenuItem Header="_View">
+                    <MenuItem Header="_Facilities" />
+                    <MenuItem Header="_Details" />
+                    <MenuItem Header="_Inspection Form" />
+                    <Separator />
+                    <MenuItem Header="_Year" />
+                </MenuItem>
+                <MenuItem Header="_Options">
+                    <MenuItem Header="_Search" />
+                    <MenuItem Header="_Filter" />
+                </MenuItem>
+            </Menu>
+            <Frame Source="SchedulerHome.xaml"></Frame>
+        </Grid>
+    </NavigationWindow.Content>
 </NavigationWindow>
