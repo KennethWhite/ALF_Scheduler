@@ -35,7 +35,27 @@ namespace ALF_Scheduler
         /// This method handles the user clicking the save button in the menu.
         /// </summary>
         private void Menu_Save_Click(object sender, RoutedEventArgs e) {
+            SaveFile();
+        }
 
+        /// <summary>
+        /// This is a helper method for saving the file.
+        /// </summary>
+        private void SaveFile() {
+            // Configure save file dialog box
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.FileName = "Document"; // Default file name
+            dlg.DefaultExt = ".xlsx"; // Default file extension
+            dlg.Filter = "Excel documents (.xlsx)|*.xlsx"; // Filter files by extension
+
+            // Show save file dialog box
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // Process save file dialog box results
+            if (result == true) {
+                // Save document
+                string filename = dlg.FileName;
+            }
         }
 
         /// <summary>
