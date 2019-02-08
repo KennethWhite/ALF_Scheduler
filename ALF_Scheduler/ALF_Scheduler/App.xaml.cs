@@ -13,23 +13,30 @@ namespace ALF_Scheduler
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application {
-        //private void Application_Startup(object sender, StartupEventArgs e) {
-        //    // Configure open file dialog box
-        //    OpenFileDialog dlg = new OpenFileDialog();
-        //    dlg.FileName = "Document"; // Default file name
-        //    dlg.DefaultExt = ".xlsx"; // Default file extension
-        //    dlg.Filter = "Excel documents (.xlsx)|*.xlsx"; // Filter files by extension
+        private void Application_Startup(object sender, StartupEventArgs e) {
+            OpenFile(new MainWindow());
+        }
 
-        //    // Show open file dialog box
-        //    Nullable<bool> result = dlg.ShowDialog();
+        public static void OpenFile(Window sender, bool onStartup = false) {
+            // Configure open file dialog box
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.FileName = "Document"; // Default file name
+            dlg.DefaultExt = ".xlsx"; // Default file extension
+            dlg.Filter = "Excel documents (.xlsx)|*.xlsx"; // Filter files by extension
 
-        //    // Process open file dialog box results
-        //    if (result == true) {
-        //        // Open document
-        //        string filename = dlg.FileName;
-        //        SchedulerHome home = new SchedulerHome(filename);
-        //        MainWindow.Show();
-        //    }
-        //}
+            // Show open file dialog box
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // Process open file dialog box results
+            if (result == true) {
+                // Open document
+                string filename = dlg.FileName;
+                SchedulerHome home = new SchedulerHome();//filename);
+
+                MainWindow mainWindow = new MainWindow();
+                if (onStartup) sender.Close();
+                mainWindow.Show();
+            }
+        }
     }
 }

@@ -28,7 +28,7 @@ namespace ALF_Scheduler
         /// This method handles the user clicking the open button in the menu.
         /// </summary>
         private void Menu_Open_Click(object sender, RoutedEventArgs e) {
-
+            App.OpenFile(this, true);
         }
 
         /// <summary>
