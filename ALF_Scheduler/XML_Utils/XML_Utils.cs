@@ -8,15 +8,7 @@ namespace XML_Utils
 {
     public static class XML_Utils
     {
-        public static void ReadCodeXml(String path)
-        {
-            XmlDocument temp = new XmlDocument();
-            temp.Load(path);
-            XDocument doc = XDocument.Parse(temp.OuterXml);
-            ReadCodeXml(doc);
-        }
-
-        //Just here to show how to use linq with XDocument
+        //Just here to show how to use Linq with XDocument
         public static void ReadCodeXml(XDocument doc)
         {
             var codes = from c in doc.Descendants("code")
@@ -35,6 +27,7 @@ namespace XML_Utils
             }
         }
 
+        //Returns the preferred import directory. Default is .\import, otherwise gets from settings file
         public static string GetImportDir()
         {
             XDocument settingsDoc = LoadSettingFile();
@@ -51,6 +44,7 @@ namespace XML_Utils
 
         }
 
+        //Returns the preferred export directory. Default is .\export, otherwise gets from settings file
         public static string GetExportDir()
         {
             XDocument settingsDoc = LoadSettingFile();
@@ -66,9 +60,10 @@ namespace XML_Utils
             return @".\export";
         }
 
+        //Checks if settings file exists in default directory. If we choose to implement settings file, there will need to be a settings file here by default to at least point to custom import directories, to load imported settings.
         public static Boolean SettingsFileExist()
         {
-            string[] files = Directory.GetFiles(@".\import", "*.xml", SearchOption.TopDirectoryOnly);
+            string[] files = Directory.GetFiles(@".\default", "*.xml", SearchOption.TopDirectoryOnly);
             foreach (string filePath in files)
             {
                 XDocument doc = XDocument.Load(filePath);
@@ -82,144 +77,89 @@ namespace XML_Utils
             return false;
         }
 
-        //TODO as of right now, it just loads settings file from import dir since we don't have any default settings
+        //Gets a settings file from where ever one is located, either default directory, or from custom import dir
         public static XDocument LoadSettingFile()
         {
             if (SettingsFileExist())
             {
-                string settingsPath = null;
-                string[] files = Directory.GetFiles(@".\import", "*.xml", SearchOption.TopDirectoryOnly);
-                foreach (string filePath in files)
-                {
-                    XDocument doc = XDocument.Load(filePath);
-                    string docType = doc.Element("configuration")?.Attribute("type")?.ToString();
-                    if (docType != null && docType.Equals("settings"))
-                    {
-                        settingsPath = filePath;
-                    }
-                }
+                string settingsPath = getConfigPathFromDir(@".\default", "settings");
 
                 if (settingsPath != null)
                 {
-                    return XDocument.Load(settingsPath);
+                    XDocument defSettings = XDocument.Load(settingsPath);
+                    string customImportDir = defSettings.Element("customImportDir")?.ToString();
+                    if (customImportDir != null && Directory.Exists(customImportDir))
+                    {
+                        try
+                        {
+                            string newPath = getConfigPathFromDir(customImportDir, "settings");
+                            return XDocument.Load(newPath);
+                        }
+                        catch (FileNotFoundException e)
+                        {
+                            return defSettings;
+                            //TODO Log it?
+                        }                        
+                    }
                 }
             }
-            return null;
+            throw new FileNotFoundException("Could not find the settings file in 'default' directory");
+        }
+
+        //Gets path of most recent config file given a directory to search and a type of config xml
+        public static string getConfigPathFromDir(string directory, string type)
+        {
+            string[] files = Directory.GetFiles(directory, "*.xml", SearchOption.TopDirectoryOnly);
+            string returnPath = null;
+            foreach (string filePath in files)
+            {
+                XDocument doc = XDocument.Load(filePath);
+                string docType = doc.Element("configuration")?.Attribute("type")?.ToString();
+                if (docType != null && docType.Equals(type))
+                {
+                    returnPath = MostRecentFile(returnPath, filePath);
+                }
+            }
+            if (returnPath != null)
+            {
+                return returnPath;
+            }
+            throw new FileNotFoundException("Could not find settings file in directory specified");
         }
 
         //Will load codes file from default path or if settings file contains a customImportDir, go to that dir and check if there is codes xml
         public static XDocument LoadCodeFile()
         {
-            string codesPath = @".\default\Default_Codes.xml";
             string importDir = GetImportDir();
-            if (importDir.Equals(@"./import"))
+            string codePath = null;
+
+            try
             {
-                //ignore
+                codePath = getConfigPathFromDir(importDir, "codes");
             }
-            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            else if (importDir != null)
+            catch (FileNotFoundException)
             {
-                FileAttributes attr = File.GetAttributes(codesPath);
-                if (attr.HasFlag(FileAttributes.Directory))
+                //ignore, means it couldn't find codes file in .\import nor customImportDir
+                codePath = null;
+            }
+
+            if (codePath == null)
+            {
+                try
                 {
-                    string[] files = Directory.GetFiles(importDir, "*.xml", SearchOption.TopDirectoryOnly);
-                    foreach (string filePath in files)
-                    {
-                        XDocument doc = XDocument.Load(filePath);
-                        string docType = doc.Element("configuration")?.Attribute("type")?.ToString();
-                        if (docType != null && docType.Equals("codes"))
-                        {
-                            if (codesPath.Equals(@".\default\Default_Codes.xml"))
-                            {
-                                codesPath = filePath;
-                            }
-                            else
-                            {
-                                codesPath = MostRecentFile(codesPath, filePath);
-                            }
-                        }
-                    }
+                    codePath = getConfigPathFromDir(@".\default", "codes");
+                }
+                catch (FileNotFoundException)
+                {
+                    //TODO Should we handle this somehow? I like create code file then recurse back through this method?
+                    throw new NotImplementedException("Couldn't load codes file from any directory");
                 }
             }
 
-            return XDocument.Load(codesPath);
+            return XDocument.Load(codePath);
         }
 
-        //Loads the config and code files in an ara, ara[0] = xmlCode (never null), ara[1] = xmlSettings (can be null).
-        public static XDocument[] LoadFiles()
-        {
-            XDocument xmlCodes;
-            XDocument xmlSettings = null;
-            XDocument[] outAra = new XDocument[2];
-
-            if (DirectoryEmpty(@".\import"))
-            {
-                if (File.Exists(@".\default\Default_Codes.xml"))
-                {
-                    xmlCodes = XDocument.Load(@".\default\Default_Codes.xml");
-                }
-                else
-                {
-                    CreateInitCodeXml(@".\default\Default_Codes.xml");
-                    xmlCodes = XDocument.Load(@".\default\Default_Codes.xml");
-                }
-
-                outAra[0] = xmlCodes;
-            }
-            else
-            {
-                string[] files = Directory.GetFiles(@".\import", "*.xml", SearchOption.TopDirectoryOnly);
-                string codesPath = null;
-                string settingsPath = null;
-
-                foreach (string filePath in files)
-                {
-                    XDocument doc = XDocument.Load(filePath);
-                    string docType = doc.Element("configuration")?.Attribute("type")?.ToString();
-                    switch (docType)
-                    {
-                        case "codes":
-                            codesPath = MostRecentFile(codesPath, filePath);
-                            break;
-                        case "settings":
-                            settingsPath = MostRecentFile(settingsPath, filePath);
-                            break;
-                    }
-                }
-
-                if (codesPath != null)
-                {
-                    xmlCodes = XDocument.Load(codesPath);
-                }
-                else
-                {
-                    if (File.Exists(@".\default\Default_Codes.xml"))
-                    {
-                        xmlCodes = XDocument.Load(@".\default\Default_Codes.xml");
-                    }
-                    else
-                    {
-                        CreateInitCodeXml(@".\default\Default_Codes.xml");
-                        xmlCodes = XDocument.Load(@".\default\Default_Codes.xml");
-                    }
-                }
-
-                if (settingsPath != null)
-                {
-                    xmlSettings = XDocument.Load(settingsPath);
-                }
-
-                outAra[0] = xmlCodes;
-
-                if (xmlSettings != null)
-                {
-                    outAra[1] = xmlSettings;
-                }
-            }
-
-            return outAra;
-        }
-
+        //Returns the path of the string whose file was last written to.
         private static string MostRecentFile(string current, string toTest)
         {
             if (current == null)
@@ -227,8 +167,8 @@ namespace XML_Utils
                 return toTest;
             }
 
-            DateTime curTime = File.GetCreationTime(current);
-            DateTime testTime = File.GetCreationTime(toTest);
+            DateTime curTime = File.GetLastWriteTime(current);
+            DateTime testTime = File.GetLastWriteTime(toTest);
             if (DateTime.Compare(curTime, testTime) > 0)
             {
                 return current;
@@ -237,6 +177,7 @@ namespace XML_Utils
             return toTest;
         }
 
+        //Should be run on program start. Creates neccessary files/folders for proper execution
         public static void CreateInitFolders()
         {
             //This must be run on program init
@@ -250,12 +191,7 @@ namespace XML_Utils
             }
         }
 
-        private static bool DirectoryEmpty(string path)
-        {
-            return !Directory.EnumerateFileSystemEntries(path).Any();
-        }
-
-        //Writes current application settings to folder, either given or default path
+        //Writes current application settings to folder, either given or default path. Can be given folder or .xml path.
         public static void ExportCurrentSettings(string path)
         {
             String fileName = "Settings_Export_" + DateTime.Now + ".xml";
@@ -311,7 +247,7 @@ namespace XML_Utils
 
         }
 
-        //Creates initial code definitons to path
+        //Creates initial code definitons xml file to specified path
         public static void CreateInitCodeXml(string path)
         {
             XDocument doc = new XDocument(
