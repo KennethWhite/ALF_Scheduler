@@ -16,13 +16,7 @@ namespace ALF_Scheduler
     {
         private List<Inspection> AllInspections { get; set; }
 
-        public Facility(Inspection inspection)
-        {
-            AllInspections = new List<Inspection>();
-            AllInspections.Add(inspection);
-        }
-
-
+        
         /// <value>Gets the Facility name.</value>
         public string FacilityName { get; set; }
 
