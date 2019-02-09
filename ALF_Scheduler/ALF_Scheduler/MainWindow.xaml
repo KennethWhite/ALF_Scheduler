@@ -17,14 +17,7 @@
                     <MenuItem Name="Menu_Exit" Header="_Exit" Click="Menu_Exit_Click" />
                 </MenuItem>
                 <MenuItem Header="_View">
-                    <MenuItem Name="Menu_FacilityView" Header="_Facilities" Click="Menu_FacilityView_Click" />
-                    <MenuItem Name="Menu_DetailView" Header="_Details" Click="Menu_DetailView_Click" />
-                    <MenuItem Name="Menu_FormView" Header="_Inspection Form" Click="Menu_FormView_Click" />
-                    <Separator />
                     <MenuItem Name="Menu_YearView" Header="_Year" Click="Menu_YearView_Click" />
-                </MenuItem>
-                <MenuItem Header="_Options">
-                    <MenuItem Name="Menu_Search" Header="_Search" Click="Menu_Search_Click" />
                     <MenuItem Name="Menu_Filter" Header="_Filter" Click="Menu_Filter_Click" />
                 </MenuItem>
             </Menu>

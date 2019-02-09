@@ -101,39 +101,11 @@ namespace ALF_Scheduler
             MessageBoxImage icon = MessageBoxImage.Warning;
             return MessageBox.Show(messageBoxText, caption, button, icon);
         }
-
-        /// <summary>
-        /// This method handles the user clicking the Facilities button in the menu.
-        /// </summary>
-        private void Menu_FacilityView_Click(object sender, RoutedEventArgs e) {
-
-        }
         
-        /// <summary>
-        /// This method handles the user clicking the Details button in the menu.
-        /// </summary>
-        private void Menu_DetailView_Click(object sender, RoutedEventArgs e) {
-
-        }
-
-        /// <summary>
-        /// This method handles the user clicking the Form button in the menu.
-        /// </summary>
-        private void Menu_FormView_Click(object sender, RoutedEventArgs e) {
-
-        }
-
         /// <summary>
         /// This method handles the user clicking the Year button in the menu.
         /// </summary>
         private void Menu_YearView_Click(object sender, RoutedEventArgs e) {
-
-        }
-
-        /// <summary>
-        /// This method handles the user clicking the Search button in the menu.
-        /// </summary>
-        private void Menu_Search_Click(object sender, RoutedEventArgs e) {
 
         }
 

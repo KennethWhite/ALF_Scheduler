@@ -179,22 +179,23 @@ namespace ALF_Scheduler {
             return label;
         }
 
-        private void OpenDetails() {
+        public void OpenDetails() {
             //TODO input specific facility info into the labels
         }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            //if (TabItemFacilities.IsSelected) {
-            //    Console.WriteLine("tab control selection changed" + TabItemFacilities);
-            //} else if (TabItemDetails.IsSelected) {
-            //    Console.WriteLine("tab control selection changed" + TabItemDetails);
-            //    OpenDetails();
+            //if (TabItemDetails.IsSelected) {
+            //    OpenDetails(); //send specific facility based on what's selected
             //}
         }
 
         private void CalendarYearButton_Click(object sender, RoutedEventArgs e) {
+            OpenCalendar();
+        }
+
+        public void OpenCalendar() {
             CalendarYear calendarYearPage = new CalendarYear();
-            this.NavigationService.Navigate(calendarYearPage);
+            NavigationService.Navigate(calendarYearPage);
         }
     }
 }
