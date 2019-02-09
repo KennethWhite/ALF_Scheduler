@@ -53,7 +53,7 @@ namespace ScheduleGeneration
                 }
 
             CheckBlackout:
-                if (!IsUnscheduledDate(daysScheduled, newNextInspection.Date.DayOfYear))
+                if (!IsUnscheduledDate(daysScheduled, newNextInspection.Date.DayOfYear) || IsDateWithinTwoWeeksOfLast(date_lastInspection, newNextInspection.Date))
                 {
                     newNextInspection = PreferRandom(date_lastInspection, code_lastInspection);
                     goto CheckBlackout;
@@ -86,6 +86,11 @@ namespace ScheduleGeneration
             newSchedule.GlobalAvg = Math.Round(sum / size, 2);
 
             return newSchedule;
+        }
+
+        private static bool IsDateWithinTwoWeeksOfLast(DateTime prevInspection, DateTime nextInspection)
+        {
+            return nextInspection < prevInspection.AddDays(14) && nextInspection > prevInspection.AddDays(-14);
         }
 
         //Used to check conflicts between a new proposed inspection and the list contain previous proposed inspection. Incoming dates must be in int format represented as its DateTime.DayOfYear
