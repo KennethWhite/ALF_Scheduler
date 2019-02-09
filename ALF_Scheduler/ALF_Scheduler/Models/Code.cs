@@ -13,6 +13,8 @@ namespace ALF_Scheduler.Models
         public int MinMonth { get; set; }
         public int MaxMonth { get; set; }
 
+        public static List<Code> CodesList {get; private set; }
+
         public static List<Code> getCodes()
         {
             XDocument doc = XML_Utils.XML_Utils.LoadCodeFile();
@@ -42,17 +44,18 @@ namespace ALF_Scheduler.Models
                 outList.Add(newCode);
             }
 
+            CodesList = outList;
             return outList;
         }
 
-        public static Code getCodeByName(string name, List<Code> codeList)
+        public static Code getCodeByName(string name)
         {
-            IEnumerable<Code> codes =
-                from code in codeList
+            List<Code> codes =
+                (from code in CodesList
                 where code.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase)
-                select code;
+                select code).ToList();
 
-            if (codes.Count() > 0)
+            if (codes.Count > 0)
             {
                 return codes.ElementAt(0);
             }

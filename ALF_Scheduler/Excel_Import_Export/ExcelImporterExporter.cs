@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
+using ALF_Scheduler.Utilities;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace Excel_Import_Export
@@ -8,7 +10,7 @@ namespace Excel_Import_Export
     /// <summary>
     /// This class is used to open and close references to Excel files
     /// </summary>
-    public class ExcelImporterExporter
+    public static class ExcelImporterExporter
     {
         /// <summary>
         /// This method will attempt to open the Excel.Workbook located at the path specified
@@ -37,13 +39,14 @@ namespace Excel_Import_Export
             }
             catch (NullReferenceException ex)
             {
-                //This exception cannt be handled through our application
-                //It will require the user installs Excel 2013 or later
-                throw ex;
+                ErrorLogger.LogInfo($"Failed to load Excel workbook from file {filePath}. This is likely" +
+                                    $" caused because Microsoft Excel could not be opened or" +
+                                    $" is not installed upon this machine.", ex);
+                throw;
             }
             catch (Exception ex)
             {
-                //TODO log
+                ErrorLogger.LogInfo($"Failed to load Excel workbook from file {filePath}.", ex);
                 xlWorkbook = null;
                 xlApp = null;
                 return false;
@@ -51,7 +54,7 @@ namespace Excel_Import_Export
         }
 
         /// <summary>
-        /// This method will attempt to save the Excel.Workbook paramater back into
+        /// This method will attempt to save the Excel.Workbook parameter back into
         /// the file it was originally loaded from
         /// </summary>
         /// <param name="workbook">The workbook to be saved</param>
@@ -65,7 +68,7 @@ namespace Excel_Import_Export
             }
             catch(Exception ex)
             {
-                //TODO log
+                ErrorLogger.LogInfo("Failed to save data into original file.", ex);
                 return false;
             }
 
@@ -87,7 +90,7 @@ namespace Excel_Import_Export
             }
             catch (Exception ex)
             {
-                //TODO log
+                ErrorLogger.LogInfo($"Failed to save Excel Workbook to file '{path}'specified.", ex);
                 return false;
             }
         }
@@ -109,6 +112,21 @@ namespace Excel_Import_Export
             Marshal.ReleaseComObject(xlApp);
         }
 
+        /// <summary>
+        /// This method will delete the file at the path specified.
+        /// </summary>
+        /// <warning>This action is destructive and irreversible.</warning>
+        /// <param name="path">The full path to the file to be deleted</param>
+        public static void DeleteSpecifiedFile(string path)
+        {
+            if (!File.Exists(path))
+            {
+                ErrorLogger.LogInfo($"Failed to delete file:  {path}");
+            }
+            File.Delete(path);
+        }
+        
+        
 
     }
 }

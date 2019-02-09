@@ -3,8 +3,6 @@ using ALF_Scheduler.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 /// <summary>
 /// This class is used to store the metadata in properties for each facility.
@@ -15,13 +13,6 @@ namespace ALF_Scheduler
     public class Facility : Entity
     {
         private List<Inspection> AllInspections { get; set; }
-
-        public Facility(Inspection inspection)
-        {
-            AllInspections = new List<Inspection>();
-            AllInspections.Add(inspection);
-        }
-
 
         /// <value>Gets the Facility name.</value>
         public string FacilityName { get; set; }
@@ -50,6 +41,7 @@ namespace ALF_Scheduler
             }
         }
         private int _LicenseNumber;
+        private Inspection _previousFullInspection;
 
         /// <value>Gets the Facility's unit.</value>
         public string Unit { get; set; }
@@ -67,10 +59,14 @@ namespace ALF_Scheduler
         public Inspection MostRecentFullInspection { get => LastFullInspection(); }
 
         /// <value>Gets the Facility's full inspection information from a year ago.</value>
-        public Inspection PreviousFullInspection { get => PreviousInspection();}
+        public Inspection PreviousFullInspection
+        {
+            get => NthPreviousInspection(1);
+            set => _previousFullInspection = value;
+        }
 
         /// <value>Gets the Facility's full inspection date from two years ago.</value>
-        public Inspection TwoYearFullInspection { get => TwoInspectionsPrevious();}
+        public Inspection TwoYearFullInspection { get => NthPreviousInspection(2);}
 
         //TODO connect inspection results with config file (NO, NO24, ENF, YES) 
         /// <value>Gets the inspection result for the facility.</value>
@@ -84,9 +80,6 @@ namespace ALF_Scheduler
         /// <value>Gets the Facility's enforcement notes (fines, stop placement, conditions, revocation, summary suspension) since last inspection.</value>
         public string EnforcementNotes { get; set; }
 
-        // TODO failed follow up. Datatype for this??
-        /// <value>Gets the value for failed follow ups.</value>
-        public DateTime FailedFollowUp { get; set; }
 
         // TODO complaints
         /// <value>Gets the Facility's complaints.</value>
@@ -106,17 +99,10 @@ namespace ALF_Scheduler
         }
 
         /// <value>Gets the date 15 months from the most recent inspection.</value>
-        public DateTime Month15 { get => MostRecentFullInspection.InspectionDate.AddMonths(15); }
+        public DateTime Month15 => MostRecentFullInspection.InspectionDate.AddMonths(15);
 
         /// <value>Gets the cutoff date 18 months from the most recent inspection.</value>
-        public DateTime Month18 { get => MostRecentFullInspection.InspectionDate.AddMonths(18); }
-
-        // TODO double check this is what's meant by number of licensors
-        /// <value>Gets the number of licensors needed based on bed count for this facility's inspection.</value>
-        public int NumberOfLicensors { get; set; }
-
-        /// <value>Gets the sample size of inspectors from the most recent inspection.</value>
-        public int SampleSize { get => LicensorList.Length; }
+        public DateTime Month18 => MostRecentFullInspection.InspectionDate.AddMonths(18);
 
         /// <value>Gets the string of inspectors from the most recent inspection.</value>
         public string LicensorList { get; set; }
@@ -125,43 +111,28 @@ namespace ALF_Scheduler
         public string SpecialInfo { get; set; }
 
         
-        public void ParseLicenseeIntoFirstLastName(string licensee)
-        {
-            if (licensee.Contains(","))
-            {
-                string[] firstLast = licensee?.Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
-                LicenseeLastName = firstLast[0];
-                LicenseeFirstName = firstLast[1];
-            }
-            else
-            {
-                LicenseeLastName = licensee;
-            }
-           
-        }
 
         /// <value>Gets the Facility's most recent full inspection information.</value>
         private Inspection LastFullInspection()
         {
-            if (!AllInspections.Any())
-            {
-                throw new NullReferenceException("Facility List is Empty");
-            }
-            List<Inspection> sortList = AllInspections;
-            sortList.Sort((i1, i2) => i1.InspectionDate.CompareTo(i2.InspectionDate));
-            return sortList.ElementAt(0);
+            return NthPreviousInspection(0);
         }
 
         /// <value>Gets the Facility's full inspection information from a year ago.</value>
-        private Inspection PreviousInspection()
+        private Inspection NthPreviousInspection(int n)
         {
-            throw new NotImplementedException();
+            if (!AllInspections.Any())
+            {
+                throw new InvalidOperationException("Facility List is Empty");
+            }
+            List<Inspection> sortList = AllInspections;
+            sortList.Sort((i1, i2) => i1.InspectionDate.CompareTo(i2.InspectionDate));
+            return sortList.ElementAt(n);
         }
 
-        /// <value>Gets the Facility's full inspection date from two years ago.</value>
-        private Inspection TwoInspectionsPrevious()
+        public void AddInspection(Inspection toAdd)
         {
-            throw new NotImplementedException();
+            AllInspections.Add(toAdd);
         }
     }
 }

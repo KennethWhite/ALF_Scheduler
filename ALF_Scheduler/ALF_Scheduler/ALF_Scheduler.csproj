@@ -91,6 +91,10 @@
     <Reference Include="Microsoft.Extensions.Primitives, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Primitives.2.2.0\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -169,6 +173,7 @@
     <Compile Include="Models\Inspection.cs" />
     <Compile Include="Services\FacilityService.cs" />
     <Compile Include="Services\InspectionService.cs" />
+    <Compile Include="Utilities\DataParser.cs" />
     <Compile Include="Utilities\ErrorLogger.cs" />
     <Page Include="CalendarYear.xaml">
       <SubType>Designer</SubType>
@@ -182,7 +187,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DataParser.cs" />
     <Compile Include="Interfaces\IEntity.cs" />
     <Compile Include="Models\Entity.cs" />
     <Compile Include="Models\Facility.cs" />
