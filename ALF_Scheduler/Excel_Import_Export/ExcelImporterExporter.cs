@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using Excel = Microsoft.Office.Interop.Excel;
+using ALF_Scheduler.Utilities;
 
 namespace Excel_Import_Export
 {
@@ -39,15 +40,24 @@ namespace Excel_Import_Export
             {
                 //This exception cannt be handled through our application
                 //It will require the user installs Excel 2013 or later
+                string message = "Error in ExcelImporterExporter.cs in LoadExcelFromFile(). Client needs a Excel 2013 or greater in order to handle exception.";
+                ErrorLogger err = new ErrorLogger(message, ex);
                 throw ex;
+
             }
             catch (Exception ex)
             {
-                //TODO log
+                string message = "Error in ExcelImporterExporter.cs in LoadExcelFromFile().";
+                ErrorLogger err = new ErrorLogger(message, ex);
                 xlWorkbook = null;
                 xlApp = null;
                 return false;
             }
+            //finally //Will a finally here help to close off workbook and app connections? Or do they need to be left open until later?
+            //{
+            //    xlWorkbook = null;
+            //    xlApp = null;
+            //}
         }
 
         /// <summary>
@@ -65,10 +75,10 @@ namespace Excel_Import_Export
             }
             catch(Exception ex)
             {
-                //TODO log
+                string message = "Error in ExcelImporterExporter.cs in SaveWorkbookToOriginalFile().";
+                ErrorLogger err = new ErrorLogger(message, ex);
                 return false;
             }
-
         }
 
         /// <summary>
@@ -87,7 +97,8 @@ namespace Excel_Import_Export
             }
             catch (Exception ex)
             {
-                //TODO log
+                string message = "Error in ExcelImporterExporter.cs in SaveWorkbookToSpecifiedFile().";
+                ErrorLogger err = new ErrorLogger(message, ex);
                 return false;
             }
         }
@@ -100,13 +111,22 @@ namespace Excel_Import_Export
         /// <param name="xlWorkBook">Reference to the Excel.Workbook to close</param>
         public static void CloseExcelApp(Excel.Application xlApp, Excel.Workbook xlWorkBook)
         {
-            xlWorkBook.Close();
-            xlApp.Workbooks.Close();
-            xlApp.Quit();
+            try
+            {
+                xlWorkBook.Close();
+                xlApp.Workbooks.Close();
+                xlApp.Quit();
 
-            Marshal.ReleaseComObject(xlWorkBook);
-            Marshal.ReleaseComObject(xlApp.Workbooks);
-            Marshal.ReleaseComObject(xlApp);
+                Marshal.ReleaseComObject(xlWorkBook);
+                Marshal.ReleaseComObject(xlApp.Workbooks);
+                Marshal.ReleaseComObject(xlApp);
+            }
+            catch(Exception ex)
+            {
+                string message = "Error in ExcelImporterExporter.cs in CloseExcelApp().";
+                ErrorLogger err = new ErrorLogger(message, ex);
+            }
+            
         }
 
 
