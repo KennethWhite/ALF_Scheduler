@@ -1,4 +1,5 @@
 using ALF_Scheduler;
+using ALF_Scheduler.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ALF_Scheduler.Domain.Models
@@ -10,5 +11,6 @@ namespace ALF_Scheduler.Domain.Models
 
         public DbSet<Facility> Facilities { get; set; }
         public DbSet<Inspection> Inspections { get; set; }
+        public DbSet<Code> Codes { get; set; }
     }
 }
