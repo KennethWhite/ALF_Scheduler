@@ -18,12 +18,21 @@ namespace ALF_Scheduler {
     /// Interaction logic for CalendarYear.xaml
     /// </summary>
     public partial class CalendarYear : Page {
+
+        /// <summary>
+        /// The CalendarYear constructor intializes the 12 month calendar in the current year, 
+        /// using the helper method <see cref="CreateCalendars"/>.
+        /// </summary>
         public CalendarYear() {
             InitializeComponent();
             calendarYearLabel.Content += DateTime.Now.Year.ToString();
             CreateCalendars();
         }
 
+        /// <summary>
+        /// This helper method creates 12 individual calendar objects in the current year
+        /// with blackout dates for dates passed, and selected future dates.
+        /// </summary>
         public void CreateCalendars() {
             Calendar calendar;
             string month;

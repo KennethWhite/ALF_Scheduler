@@ -26,10 +26,15 @@ namespace ALF_Scheduler {
         private Excel.Workbook XlWorkbook;
         private Excel.Application XlApp;
 
+        /// <summary>
+        /// This constructor initializes the overall application and data/database with the specified excel file path 
+        /// grabbed from the Open File Dialog Window in <see cref="App.OpenFile(Window, bool)"/>
+        /// </summary>
+        /// <param name="path">The full path of the specified file to import.</param>
         public SchedulerHome() { //string path) {
             InitializeComponent();
 
-            // TODO import excel file, parse into facility object and db, bind db to grid
+            // TODO @KENNY import excel file
             //if (ExcelImporterExporter.LoadExcelFromFile(path, out XlApp, out XlWorkbook)) {
             //    /*
             //      System.InvalidOperationException
@@ -43,61 +48,18 @@ namespace ALF_Scheduler {
             //    CreateFacilities();
             //}
 
+            // This is where the DataParser should parse into facility object and db
             List<Facility> items = new List<Facility>();
-            DataParser dp = new DataParser(new Facility());
-            dp.Name("Lakeland Adult Family Home");
-            dp.Licensee("Mendez, Catherine");
-            dp.Unit("G");
-            dp.LicenseNumber("725103");
-            dp.ZipCode("98001");
-            dp.City("Algona");
-            dp.PreviousInspection("08/14/2015");
-            dp.MostRecentInspection("02/23/2018");
-            dp.NumberOfLicensors("2");
-            dp.InspectionResult("NO");
-            dp.ProposedDate("03/22/2020");
-            items.Add(dp.Facility);
-            
-            dp = new DataParser(new Facility());
-            dp.Name("Facility 2");
-            dp.MostRecentInspection("08/25/2017");
-            dp.InspectionResult("yes");
-            dp.ProposedDate("03/02/2019");
-            items.Add(dp.Facility);
-
-            dp = new DataParser(new Facility());
-            dp.Name("Facility 3");
-            dp.MostRecentInspection("12/05/2017");
-            dp.InspectionResult("enf");
-            dp.ProposedDate("05/14/2019");
-            items.Add(dp.Facility);
-
-            dp = new DataParser(new Facility());
-            dp.Name("Facility 4");
-            items.Add(dp.Facility);
-
-            dp = new DataParser(new Facility());
-            dp.Name("Facility 5");
-            items.Add(dp.Facility);
-
-            dp = new DataParser(new Facility());
-            dp.Name("Facility 6");
-            items.Add(dp.Facility);
-
-            dp = new DataParser(new Facility());
-            dp.Name("Facility 7");
-            items.Add(dp.Facility);
-
-            dp = new DataParser(new Facility());
-            dp.Name("Facility 8");
-            items.Add(dp.Facility);
-
             FacilityList.ItemsSource = items;
             AddSelectedDates(items);
 
             DetailsInit();
         }
 
+        //TODO @KENNY is this already dealt with in your new dataparser? This and next method was just my attempt, feel free to delete or change.
+        /// <summary>
+        /// This helper method creates facilities for each row in the excel file. 
+        /// </summary>
         private void CreateFacilities() {
             Services.FacilityService facilityService = new Services.FacilityService(DbContext);
             for (int row = 1; row < XlWorkbook.Worksheets.Count; row++) {
@@ -125,7 +87,7 @@ namespace ALF_Scheduler {
         }
 
         /// <summary>
-        /// This method adds each facility's proposed date to the calendar object.
+        /// This method adds each facility's proposed date (from the list of facilities given) into the calendar object.
         /// </summary>
         /// <param name="facilities">The list of facilities.</param>
         private void AddSelectedDates(List<Facility> facilities) {
@@ -134,12 +96,18 @@ namespace ALF_Scheduler {
             }
         }
 
+        /// <summary>
+        /// This method searches through the list of facilities displayed for the specific string provided by the user.
+        /// </summary>
         private void SearchButton_Click(object sender, RoutedEventArgs e) {
             string facility = SearchText.Text;
             // TODO search for facility based on text content ^ and open it in details page
             TabItemDetails.IsSelected = true;
         }
-        
+
+        /// <summary>
+        /// This method initializes the Details tab with Facility object property names.
+        /// </summary>
         private void DetailsInit() {
             ListView list = DetailsView;
 
@@ -169,6 +137,12 @@ namespace ALF_Scheduler {
             TabItemDetails.Content = list;
         }
 
+        /// <summary>
+        /// This method creates a new label for each item in the details tab.
+        /// </summary>
+        /// <param name="content">The string content to be displayed.</param>
+        /// <param name="width">The width of the label, default is 175px.</param>
+        /// <param name="alignRight">The horizontal text alignment, default left.</param>
         private Label CreateLabel(string content, double width = 175, HorizontalAlignment alignRight = HorizontalAlignment.Left) {
             Label label = new Label();
             label.Content = content;
@@ -179,23 +153,42 @@ namespace ALF_Scheduler {
             return label;
         }
 
+        /// <summary>
+        /// This method gathers data from the selected facility in the ListView and displays it next to its respective property label.
+        /// </summary>
         public void OpenDetails() {
-            //TODO input specific facility info into the labels
+            //TODO input specific facility info into the labels, needs to be accessible based on tab switch as well (see below)
         }
 
+        /// <summary>
+        /// This event is triggered when you switch tabs in the TabControl.
+        /// </summary>
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             //if (TabItemDetails.IsSelected) {
             //    OpenDetails(); //send specific facility based on what's selected
-            //}
+            //} 
         }
 
+        /// <summary>
+        /// This event method opens the CalendarYear page when the 'Whole Year' button is clicked.
+        /// </summary>
         private void CalendarYearButton_Click(object sender, RoutedEventArgs e) {
             OpenCalendar();
         }
 
+        /// <summary>
+        /// This is a helper method for navigating to the calendarYear page.
+        /// </summary>
         public void OpenCalendar() {
             CalendarYear calendarYearPage = new CalendarYear();
             NavigationService.Navigate(calendarYearPage);
+        }
+
+        /// <summary>
+        /// This click event will update the specified facility's most recent inspection information.
+        /// </summary>
+        private void SubmitForm_Click(object sender, RoutedEventArgs e) {
+
         }
     }
 }
