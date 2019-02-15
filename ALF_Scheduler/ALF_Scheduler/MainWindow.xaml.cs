@@ -73,18 +73,19 @@ namespace ALF_Scheduler
         /// the exit button in the menu or the 'X' in the window itself.
         /// </summary>
         private void NavigationWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
-            if (true /* any changes have been made to a facility or inspection form has been filled out */) {
+            if (true /* if any changes have been made to a facility or inspection form has been filled out */) {
                 MessageBoxResult result = CreateWarningDialog();
 
                 // Process message box results
                 switch (result) {
                     case MessageBoxResult.Yes:
                         //save file
+                        App.Current.Shutdown();
                         break;
                     case MessageBoxResult.No:
+                        App.Current.Shutdown();
                         break;
                     case MessageBoxResult.Cancel:
-                        // User pressed Cancel button
                         e.Cancel = true;
                         break;
                 }
@@ -106,7 +107,7 @@ namespace ALF_Scheduler
         /// This method handles the user clicking the Year button in the menu.
         /// </summary>
         private void Menu_YearView_Click(object sender, RoutedEventArgs e) {
-
+            //HelperMethods.OpenCalendar();
         }
 
         /// <summary>
