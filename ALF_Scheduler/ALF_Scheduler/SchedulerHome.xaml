@@ -1,0 +1,68 @@
+﻿<Page x:Class="ALF_Scheduler.SchedulerHome"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ALF_Scheduler"
+      mc:Ignorable="d"
+      Title="ALF Scheduler - Home">
+
+    <Viewbox>
+        <Grid>
+            <Label Content="Assisted Living Facilities" HorizontalAlignment="Left" Margin="15,80,0,550" Height="35" Width="240" FontSize="16"/>
+            <TextBox x:Name="SearchText" HorizontalAlignment="Left" Height="20" Margin="510,97,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="130" Opacity="0.5"/>
+            <Button x:Name="SearchButton" Content="Search" HorizontalAlignment="Left" Margin="651,96,0,0" VerticalAlignment="Top" Width="75" Click="SearchButton_Click"/>
+            <TabControl HorizontalAlignment="Left" Height="400" Margin="15,140,0,0" VerticalAlignment="Top" Width="525" SelectionChanged="TabControl_SelectionChanged">
+                <TabItem Name="TabItemFacilities" Header="Facilities" IsSelected="True">
+                    <ScrollViewer>
+                        <ListView Name="FacilityList">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Name" Width="170" DisplayMemberBinding="{Binding FacilityName}"/>
+                                    <GridViewColumn Header="Last Inspection" Width="95" DisplayMemberBinding="{Binding Inspection}" /> <!--DisplayMemberBinding="{Binding MostRecentFullInspection}"/>-->
+                                    <GridViewColumn Header="Result" Width="48" DisplayMemberBinding="{Binding InspectionResult}"/>
+                                    <GridViewColumn Header="Month Interval" Width="90" DisplayMemberBinding="{Binding Inspection}" /> <!--DisplayMemberBinding="{Binding ScheduleInterval}"/>-->
+                                    <GridViewColumn Header="Next Inspection" Width="90" DisplayMemberBinding="{Binding Inspection}" /> <!--DisplayMemberBinding="{Binding ProposedDate}"/>-->
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </ScrollViewer>
+                </TabItem>
+                <TabItem Name="TabItemDetails" Header="Details" Height="22" VerticalAlignment="Top">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" CanContentScroll="False" Background="Transparent">
+                        <ListView Name="DetailsView" Focusable="False"></ListView>
+                    </ScrollViewer>
+                </TabItem>
+                <TabItem Name="InspectionResultPage" Header="Inspection Result Form" Height="22" VerticalAlignment="Top">
+                    <Grid Margin="50,20,50,20">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="Facility Name" Margin="0,10,0,10" Grid.Column="0" Grid.Row="0" />
+                        <!--set itemssource to a list of all the facility names-->
+                        <ComboBox Height="20" Width="200" Grid.Column="1" Grid.Row="0" />
+                        <Label Content="Inspection Date" Grid.Column="0" Grid.Row="1" />
+                        <DatePicker Grid.Column="1" Grid.Row="1"/>
+                        <Label Content="Result Code" Margin="0,10,0,10" Grid.Column="0" Grid.Row="2" />
+                        <!--set itemssource to a list of all the result codes-->
+                        <ComboBox Height="20" Width="200" Grid.Column="1" Grid.Row="2" />
+                        <Label Content="Enforcement Notes" Grid.Column="0" Grid.Row="3" />
+                        <TextBox Height="Auto" Width="200" Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" />
+                        <Button Name="SubmitForm" Content="Submit" Margin="0,10,0,10" Grid.Column="1" Grid.Row="4" Width="75" HorizontalAlignment="Right" Click="SubmitForm_Click" />
+                    </Grid>
+                </TabItem>
+            </TabControl>
+            <Calendar Name="MonthlyCalendar" SelectionMode="MultipleRange" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="547,160,0,0"/>
+            <Button Name="CalendarYearButton" Content="Whole Year" HorizontalAlignment="Left" Margin="547,333,0,0" VerticalAlignment="Top" Width="75" Click="CalendarYearButton_Click" />
+        </Grid>
+    </Viewbox>
+</Page>

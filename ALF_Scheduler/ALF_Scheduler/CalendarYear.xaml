@@ -1,25 +1,36 @@
-﻿<Page x:Class="ALF_Scheduler.CalendarYear"
+﻿<Page x:Name="CalendarPage" x:Class="ALF_Scheduler.CalendarYear"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ALF_Scheduler"
+      xmlns:primitives="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
       mc:Ignorable="d" 
-      Title="CalendarYear">
+      Title="ALF Scheduler - Calendar Year">
+    
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="CalendarTemplate.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="30" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="75" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-
-        <Button Grid.Row="0" Grid.Column="0" Margin="20,10,0,0" Content="Back" Grid.RowSpan="1" />
-        <Grid Grid.Row="1" Grid.Column="0" Margin="10,0,0,0" Grid.ColumnSpan="2">
-            <WrapPanel Name="wrapPanel"/>
+    <Viewbox Margin="10,0,10,20">
+        <Grid Name="calendarGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="75" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Label Name="calendarYearLabel" Grid.Row="0" Grid.Column="0" Margin="5,30,0,0" Content="Calendar Year " Grid.RowSpan="1" FontSize="20" />
         </Grid>
-    </Grid>
+    </Viewbox>
 </Page>

@@ -9,9 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excel_Import_Export.Tests",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XML_Utils", "XML_Utils\XML_Utils.csproj", "{75563EBE-F227-48BF-8E17-69145C2087DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ALF_Scheduler", "ALF_Scheduler\ALF_Scheduler.csproj", "{0544F3CA-391F-4940-8E95-E8508446581E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scheduler", "ALF_Scheduler\Scheduler.csproj", "{0544F3CA-391F-4940-8E95-E8508446581E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ALF_Scheduler.Tests", "ALF_Scheduler.Tests\ALF_Scheduler.Tests.csproj", "{1244F8CC-EE98-4396-816B-2438A106E05D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parser.Tests", "ALF_Scheduler.Tests\Parser.Tests.csproj", "{1244F8CC-EE98-4396-816B-2438A106E05D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services.Tests", "Services.Tests\Services.Tests.csproj", "{1AC23E27-6E70-4B91-8372-1ABC1B0E8822}"
 EndProject
