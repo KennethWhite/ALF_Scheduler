@@ -167,6 +167,7 @@
     <Compile Include="CalendarYear.xaml.cs">
       <DependentUpon>CalendarYear.xaml</DependentUpon>
     </Compile>
+    <Compile Include="HelperMethods.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\Inspection.cs" />
     <Compile Include="SchedulerHome.xaml.cs">

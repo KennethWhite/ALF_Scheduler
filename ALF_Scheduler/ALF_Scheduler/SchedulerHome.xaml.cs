@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ALF_Scheduler.Domain.Models;
+using ALF_Scheduler.Services;
 
 namespace ALF_Scheduler {
     /// <summary>
@@ -26,6 +27,8 @@ namespace ALF_Scheduler {
         private Excel.Workbook XlWorkbook;
         private Excel.Application XlApp;
 
+        CalendarYear CalendarYearPage { get; }
+
         /// <summary>
         /// This constructor initializes the overall application and data/database with the specified excel file path 
         /// grabbed from the Open File Dialog Window in <see cref="App.OpenFile(Window, bool)"/>
@@ -33,6 +36,7 @@ namespace ALF_Scheduler {
         /// <param name="path">The full path of the specified file to import.</param>
         public SchedulerHome() { //string path) {
             InitializeComponent();
+            CalendarYearPage = new CalendarYear();
 
             // TODO @KENNY import excel file
             //if (ExcelImporterExporter.LoadExcelFromFile(path, out XlApp, out XlWorkbook)) {
@@ -49,9 +53,10 @@ namespace ALF_Scheduler {
             //}
 
             // This is where the DataParser should parse into facility object and db
-            List<Facility> items = new List<Facility>();
+            //List<Facility> items = FacilityService.FetchAll();
+            List<Facility> items = new List<Facility>(); //delete once I can do that ^
             FacilityList.ItemsSource = items;
-            AddSelectedDates(items);
+            HelperMethods.DateSelection(items, MonthlyCalendar); //delete this if you use the CreateFacilities method below
 
             DetailsInit();
         }
@@ -83,17 +88,7 @@ namespace ALF_Scheduler {
                 facilityService.AddOrUpdateFacility(dp.Facility);
             }
 
-            AddSelectedDates(facilityService.FetchAll());
-        }
-
-        /// <summary>
-        /// This method adds each facility's proposed date (from the list of facilities given) into the calendar object.
-        /// </summary>
-        /// <param name="facilities">The list of facilities.</param>
-        private void AddSelectedDates(List<Facility> facilities) {
-            foreach (Facility facility in facilities) {
-                MonthlyCalendar.SelectedDates.Add(DateTime.Parse(facility.ProposedDate.ToString()));
-            }
+            HelperMethods.DateSelection(facilityService.FetchAll(), MonthlyCalendar);
         }
 
         /// <summary>
@@ -173,15 +168,7 @@ namespace ALF_Scheduler {
         /// This event method opens the CalendarYear page when the 'Whole Year' button is clicked.
         /// </summary>
         private void CalendarYearButton_Click(object sender, RoutedEventArgs e) {
-            OpenCalendar();
-        }
-
-        /// <summary>
-        /// This is a helper method for navigating to the calendarYear page.
-        /// </summary>
-        public void OpenCalendar() {
-            CalendarYear calendarYearPage = new CalendarYear();
-            NavigationService.Navigate(calendarYearPage);
+            HelperMethods.OpenCalendar(CalendarYearPage);
         }
 
         /// <summary>
