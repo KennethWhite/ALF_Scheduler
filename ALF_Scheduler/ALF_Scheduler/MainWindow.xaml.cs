@@ -106,10 +106,10 @@ namespace ALF_Scheduler
                 switch (result) {
                     case MessageBoxResult.Yes:
                         SaveFile();
-                        App.Current.Shutdown();
+                        Environment.Exit(0);
                         break;
                     case MessageBoxResult.No:
-                        App.Current.Shutdown();
+                        Environment.Exit(0);
                         break;
                     case MessageBoxResult.Cancel:
                         e.Cancel = true;
