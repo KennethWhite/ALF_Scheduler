@@ -15,6 +15,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ALF_Scheduler.Domain.Models;
+using ALF_Scheduler.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ALF_Scheduler {
     /// <summary>
@@ -25,6 +28,7 @@ namespace ALF_Scheduler {
         private ApplicationDbContext DbContext { get; }
         private Excel.Workbook XlWorkbook;
         private Excel.Application XlApp;
+        private
 
         /// <summary>
         /// This constructor initializes the overall application and data/database with the specified excel file path 
@@ -33,20 +37,15 @@ namespace ALF_Scheduler {
         /// <param name="path">The full path of the specified file to import.</param>
         public SchedulerHome() { //string path) {
             InitializeComponent();
+            IServiceCollection services
+            
+            
 
             // TODO @KENNY import excel file
-            //if (ExcelImporterExporter.LoadExcelFromFile(path, out XlApp, out XlWorkbook)) {
-            //    /*
-            //      System.InvalidOperationException
-            //      HResult=0x80131509
-            //      Message=No database provider has been configured for this DbContext. A provider can be configured by overriding the DbContext.OnConfiguring method or by using AddDbContext 
-            //      on the application service provider. If AddDbContext is used, then also ensure that your DbContext type accepts a DbContextOptions<TContext> object in its constructor and 
-            //      passes it to the base constructor for DbContext.
-            //      Source=Microsoft.EntityFrameworkCore
-            //    */
-            //    DbContext = new ApplicationDbContext(new Microsoft.EntityFrameworkCore.DbContextOptions<ApplicationDbContext>());
-            //    CreateFacilities();
-            //}
+            if (ExcelImporterExporter.LoadExcelFromFile(path, out XlApp, out XlWorkbook)) {
+                DbContext = new ApplicationDbContext(new Microsoft.EntityFrameworkCore.DbContextOptions<ApplicationDbContext>());
+                CreateFacilities();
+            }
 
             // This is where the DataParser should parse into facility object and db
             List<Facility> items = new List<Facility>();
@@ -55,6 +54,25 @@ namespace ALF_Scheduler {
 
             DetailsInit();
         }
+        
+        
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddScoped<FacilityService>();
+            services.AddScoped<Inspection>();
+
+            services.AddDbContext<ApplicationDbContext>(builder =>
+            {
+                builder.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            var dependencyContext = DependencyContext.Default;
+            var assemblies = dependencyContext.RuntimeLibraries.SelectMany(lib =>
+                lib.GetDefaultAssemblyNames(dependencyContext)
+                    .Where(a => a.Name.Contains("SecretSanta")).Select(Assembly.Load)).ToArray();
+            services.AddAutoMapper(assemblies);
+        }
+        
 
         //TODO @KENNY is this already dealt with in your new dataparser? This and next method was just my attempt, feel free to delete or change.
         /// <summary>
