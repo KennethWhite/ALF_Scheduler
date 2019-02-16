@@ -34,6 +34,7 @@ namespace ALF_Scheduler
             // Show open file dialog box
             Nullable<bool> result = dlg.ShowDialog();
 
+
             // Process open file dialog box results
             if (result == true) {
                 // Open document
@@ -43,6 +44,10 @@ namespace ALF_Scheduler
                 MainWindow mainWindow = new MainWindow();
                 if (onStartup) sender.Close();
                 mainWindow.Show();
+            }
+            else if (!onStartup)
+            {
+                Environment.Exit(0);
             }
         }
     }
