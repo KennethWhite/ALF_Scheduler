@@ -42,21 +42,47 @@ namespace ALF_Scheduler
         /// This is a helper method for saving the file.
         /// </summary>
         private void SaveFile() {
-            // Configure save file dialog box
-            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
-            dlg.FileName = "Document"; // Default file name
-            dlg.DefaultExt = ".xlsx"; // Default file extension
-            dlg.Filter = "Excel documents (.xlsx)|*.xlsx"; // Filter files by extension
+            MessageBoxResult save = CreateSaveDialog();
+            App app = (App)App.Current;
 
-            // Show save file dialog box
-            Nullable<bool> result = dlg.ShowDialog();
+            // Process message box results
+            switch (save) {
+                case MessageBoxResult.Yes:
 
-            // Process save file dialog box results
-            if (result == true) {
-                // Save document
-                string filename = dlg.FileName;
+                    // Configure save file dialog box
+                    Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+                    dlg.FileName = "Document"; // Default file name
+                    dlg.DefaultExt = ".xlsx"; // Default file extension
+                    dlg.Filter = "Excel documents (.xlsx)|*.xlsx"; // Filter files by extension
+
+                    // Show save file dialog box
+                    Nullable<bool> result = dlg.ShowDialog();
+
+                    // Process save file dialog box results
+                    if (result == true) {
+                        // Save document
+                        string filename = dlg.FileName;
+                        //Excel_Import_Export.ExcelImporterExporter.SaveWorkbookToSpecifiedFile(filename, app.XlWorkbook);
+                    }
+
+                    break;
+                case MessageBoxResult.No:
+                    //Excel_Import_Export.ExcelImporterExporter.SaveWorkbookToOriginalFile(app.XlWorkbook);
+                    break;
             }
         }
+
+        /// <summary>
+        /// This is a helper method that creates and displays the MessageBox before closing the window.
+        /// </summary>
+        private MessageBoxResult CreateSaveDialog() {
+            string messageBoxText = "Do you want to save changes to a new file?";
+            string caption = "Word Processor";
+            MessageBoxButton button = MessageBoxButton.YesNo;
+            MessageBoxImage icon = MessageBoxImage.Question;
+            return MessageBox.Show(messageBoxText, caption, button, icon);
+        }
+
 
         /// <summary>
         /// This method handles the user clicking the exit button in the menu.
@@ -79,7 +105,7 @@ namespace ALF_Scheduler
                 // Process message box results
                 switch (result) {
                     case MessageBoxResult.Yes:
-                        //save file
+                        SaveFile();
                         App.Current.Shutdown();
                         break;
                     case MessageBoxResult.No:
@@ -102,7 +128,7 @@ namespace ALF_Scheduler
             MessageBoxImage icon = MessageBoxImage.Warning;
             return MessageBox.Show(messageBoxText, caption, button, icon);
         }
-        
+
         /// <summary>
         /// This method handles the user clicking the Year button in the menu.
         /// </summary>
