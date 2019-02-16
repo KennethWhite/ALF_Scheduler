@@ -1,4 +1,6 @@
-﻿using Microsoft.Win32;
+﻿using ALF_Scheduler.Domain.Models;
+using Excel = Microsoft.Office.Interop.Excel;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -13,6 +15,11 @@ namespace ALF_Scheduler
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application {
+
+        public ApplicationDbContext DbContext { get; }
+        public Excel.Workbook XlWorkbook { get; }
+        public Excel.Application XlApp { get; }
+
         private void Application_Startup(object sender, StartupEventArgs e) {
             OpenFile(new MainWindow());
         }

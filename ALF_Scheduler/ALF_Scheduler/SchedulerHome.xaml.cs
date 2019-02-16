@@ -24,10 +24,6 @@ namespace ALF_Scheduler {
     /// </summary>
     public partial class SchedulerHome : Page {
 
-        private ApplicationDbContext DbContext { get; }
-        private Excel.Workbook XlWorkbook;
-        private Excel.Application XlApp;
-
         CalendarYear CalendarYearPage { get; }
 
         /// <summary>
@@ -66,31 +62,31 @@ namespace ALF_Scheduler {
         /// <summary>
         /// This helper method creates facilities for each row in the excel file. 
         /// </summary>
-        private void CreateFacilities() {
-            Services.FacilityService facilityService = new Services.FacilityService(DbContext);
-            for (int row = 1; row < XlWorkbook.Worksheets.Count; row++) {
-                DataParser dp = new DataParser(new Facility());
-                int column = 0;
-                Excel.Worksheet item = XlWorkbook.Worksheets.Item[row];
-                dp.Name(item.Cells[row, column++]);
-                dp.Licensee(item.Cells[row, column++]);
-                dp.Unit(item.Cells[row, column++]);
-                dp.LicenseNumber(item.Cells[row, column++]);
-                dp.ZipCode(item.Cells[row, column++]);
-                dp.City(item.Cells[row, column++]);
-                dp.PreviousInspection(item.Cells[row, column++]);
-                dp.MostRecentInspection(item.Cells[row, column++]);
-                column++; column++; //don't need to parse intervals
-                dp.ProposedDate(item.Cells[row, column++]);
-                column++; column++; //don't need to parse 17th/18th month deadline
-                dp.LicensorList(item.Cells[row, column++]);
-                dp.InspectionResult(item.Cells[row, column++]);
-                dp.EnforcementNotes(item.Cells[row, column++]);
-                facilityService.AddOrUpdateFacility(dp.Facility);
-            }
+        //private void CreateFacilities() {
+        //    Services.FacilityService facilityService = new Services.FacilityService(DbContext);
+        //    for (int row = 1; row < XlWorkbook.Worksheets.Count; row++) {
+        //        DataParser dp = new DataParser(new Facility());
+        //        int column = 0;
+        //        Excel.Worksheet item = XlWorkbook.Worksheets.Item[row];
+        //        dp.Name(item.Cells[row, column++]);
+        //        dp.Licensee(item.Cells[row, column++]);
+        //        dp.Unit(item.Cells[row, column++]);
+        //        dp.LicenseNumber(item.Cells[row, column++]);
+        //        dp.ZipCode(item.Cells[row, column++]);
+        //        dp.City(item.Cells[row, column++]);
+        //        dp.PreviousInspection(item.Cells[row, column++]);
+        //        dp.MostRecentInspection(item.Cells[row, column++]);
+        //        column++; column++; //don't need to parse intervals
+        //        dp.ProposedDate(item.Cells[row, column++]);
+        //        column++; column++; //don't need to parse 17th/18th month deadline
+        //        dp.LicensorList(item.Cells[row, column++]);
+        //        dp.InspectionResult(item.Cells[row, column++]);
+        //        dp.EnforcementNotes(item.Cells[row, column++]);
+        //        facilityService.AddOrUpdateFacility(dp.Facility);
+        //    }
 
-            HelperMethods.DateSelection(facilityService.FetchAll(), MonthlyCalendar);
-        }
+        //    HelperMethods.DateSelection(facilityService.FetchAll(), MonthlyCalendar);
+        //}
 
         /// <summary>
         /// This method searches through the list of facilities displayed for the specific string provided by the user.
