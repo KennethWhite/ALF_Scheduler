@@ -39,13 +39,13 @@
                         <ListView Name="FacilityList" GridViewColumnHeader.Click="ColumnHeader_Click">
                             <ListView.View>
                                 <GridView>
-                                    <GridViewColumn Header="Name" Width="170" DisplayMemberBinding="{Binding FacilityName}"/>
-                                    <GridViewColumn Header="Last Inspection" Width="95" DisplayMemberBinding="{Binding Inspection}" />
+                                    <GridViewColumn Header="Name" Width="140" DisplayMemberBinding="{Binding FacilityName}"/>
+                                    <GridViewColumn Header="Last Inspection" Width="100" DisplayMemberBinding="{Binding Inspection}" />
                                     <!--DisplayMemberBinding="{Binding MostRecentFullInspection}"/>-->
-                                    <GridViewColumn Header="Result" Width="48" DisplayMemberBinding="{Binding InspectionResult}"/>
-                                    <GridViewColumn Header="Month Interval" Width="90" DisplayMemberBinding="{Binding Inspection}" />
+                                    <GridViewColumn Header="Result" Width="53" DisplayMemberBinding="{Binding InspectionResult}"/>
+                                    <GridViewColumn Header="Month Interval" Width="100" DisplayMemberBinding="{Binding Inspection}" />
                                     <!--DisplayMemberBinding="{Binding ScheduleInterval}"/>-->
-                                    <GridViewColumn Header="Next Inspection" Width="90" DisplayMemberBinding="{Binding Inspection}" />
+                                    <GridViewColumn Header="Next Inspection" Width="103" DisplayMemberBinding="{Binding Inspection}" />
                                     <!--DisplayMemberBinding="{Binding ProposedDate}"/>-->
                                 </GridView>
                             </ListView.View>
