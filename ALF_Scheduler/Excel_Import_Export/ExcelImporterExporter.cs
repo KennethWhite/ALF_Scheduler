@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using ALF_Scheduler.Utilities;
 using Excel = Microsoft.Office.Interop.Excel;
+using ALF_Scheduler.Utilities;
 
 namespace Excel_Import_Export
 {
@@ -51,6 +52,11 @@ namespace Excel_Import_Export
                 xlApp = null;
                 return false;
             }
+            //finally //Will a finally here help to close off workbook and app connections? Or do they need to be left open until later?
+            //{
+            //    xlWorkbook = null;
+            //    xlApp = null;
+            //}
         }
 
         /// <summary>
@@ -71,7 +77,6 @@ namespace Excel_Import_Export
                 ErrorLogger.LogInfo("Failed to save data into original file.", ex);
                 return false;
             }
-
         }
 
         /// <summary>
@@ -103,13 +108,22 @@ namespace Excel_Import_Export
         /// <param name="xlWorkBook">Reference to the Excel.Workbook to close</param>
         public static void CloseExcelApp(Excel.Application xlApp, Excel.Workbook xlWorkBook)
         {
-            xlWorkBook.Close();
-            xlApp.Workbooks.Close();
-            xlApp.Quit();
+            try
+            {
+                xlWorkBook.Close();
+                xlApp.Workbooks.Close();
+                xlApp.Quit();
 
-            Marshal.ReleaseComObject(xlWorkBook);
-            Marshal.ReleaseComObject(xlApp.Workbooks);
-            Marshal.ReleaseComObject(xlApp);
+                Marshal.ReleaseComObject(xlWorkBook);
+                Marshal.ReleaseComObject(xlApp.Workbooks);
+                Marshal.ReleaseComObject(xlApp);
+            }
+            catch(Exception ex)
+            {
+                string message = "Error in ExcelImporterExporter.cs in CloseExcelApp().";
+                ErrorLogger err = new ErrorLogger(message, ex);
+            }
+            
         }
 
         /// <summary>
