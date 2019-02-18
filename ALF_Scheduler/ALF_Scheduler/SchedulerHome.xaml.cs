@@ -16,8 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ALF_Scheduler.Domain.Models;
 using ALF_Scheduler.Services;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+using System.ComponentModel;
 
 namespace ALF_Scheduler {
     /// <summary>
@@ -25,10 +24,7 @@ namespace ALF_Scheduler {
     /// </summary>
     public partial class SchedulerHome : Page {
 
-        private ApplicationDbContext DbContext { get; }
-        private Excel.Workbook XlWorkbook;
-        private Excel.Application XlApp;
-        private
+        CalendarYear CalendarYearPage { get; }
 
         /// <summary>
         /// This constructor initializes the overall application and data/database with the specified excel file path 
@@ -37,9 +33,7 @@ namespace ALF_Scheduler {
         /// <param name="path">The full path of the specified file to import.</param>
         public SchedulerHome() { //string path) {
             InitializeComponent();
-            IServiceCollection services
-            
-            
+            CalendarYearPage = new CalendarYear();
 
             // TODO @KENNY import excel file
             if (ExcelImporterExporter.LoadExcelFromFile(path, out XlApp, out XlWorkbook)) {
@@ -48,9 +42,10 @@ namespace ALF_Scheduler {
             }
 
             // This is where the DataParser should parse into facility object and db
-            List<Facility> items = new List<Facility>();
+            //List<Facility> items = FacilityService.FetchAll();
+            List<Facility> items = new List<Facility>(); //delete once I can do that ^
             FacilityList.ItemsSource = items;
-            AddSelectedDates(items);
+            HelperMethods.DateSelection(items, MonthlyCalendar); //delete this if you use the CreateFacilities method below
 
             DetailsInit();
         }
@@ -78,41 +73,31 @@ namespace ALF_Scheduler {
         /// <summary>
         /// This helper method creates facilities for each row in the excel file. 
         /// </summary>
-        private void CreateFacilities() {
-            Services.FacilityService facilityService = new Services.FacilityService(DbContext);
-            for (int row = 1; row < XlWorkbook.Worksheets.Count; row++) {
-                DataParser dp = new DataParser(new Facility());
-                int column = 0;
-                Excel.Worksheet item = XlWorkbook.Worksheets.Item[row];
-                dp.Name(item.Cells[row, column++]);
-                dp.Licensee(item.Cells[row, column++]);
-                dp.Unit(item.Cells[row, column++]);
-                dp.LicenseNumber(item.Cells[row, column++]);
-                dp.ZipCode(item.Cells[row, column++]);
-                dp.City(item.Cells[row, column++]);
-                dp.PreviousInspection(item.Cells[row, column++]);
-                dp.MostRecentInspection(item.Cells[row, column++]);
-                column++; column++; //don't need to parse intervals
-                dp.ProposedDate(item.Cells[row, column++]);
-                column++; column++; //don't need to parse 17th/18th month deadline
-                dp.LicensorList(item.Cells[row, column++]);
-                dp.InspectionResult(item.Cells[row, column++]);
-                dp.EnforcementNotes(item.Cells[row, column++]);
-                facilityService.AddOrUpdateFacility(dp.Facility);
-            }
+        //private void CreateFacilities() {
+        //    Services.FacilityService facilityService = new Services.FacilityService(DbContext);
+        //    for (int row = 1; row < XlWorkbook.Worksheets.Count; row++) {
+        //        DataParser dp = new DataParser(new Facility());
+        //        int column = 0;
+        //        Excel.Worksheet item = XlWorkbook.Worksheets.Item[row];
+        //        dp.Name(item.Cells[row, column++]);
+        //        dp.Licensee(item.Cells[row, column++]);
+        //        dp.Unit(item.Cells[row, column++]);
+        //        dp.LicenseNumber(item.Cells[row, column++]);
+        //        dp.ZipCode(item.Cells[row, column++]);
+        //        dp.City(item.Cells[row, column++]);
+        //        dp.PreviousInspection(item.Cells[row, column++]);
+        //        dp.MostRecentInspection(item.Cells[row, column++]);
+        //        column++; column++; //don't need to parse intervals
+        //        dp.ProposedDate(item.Cells[row, column++]);
+        //        column++; column++; //don't need to parse 17th/18th month deadline
+        //        dp.LicensorList(item.Cells[row, column++]);
+        //        dp.InspectionResult(item.Cells[row, column++]);
+        //        dp.EnforcementNotes(item.Cells[row, column++]);
+        //        facilityService.AddOrUpdateFacility(dp.Facility);
+        //    }
 
-            AddSelectedDates(facilityService.FetchAll());
-        }
-
-        /// <summary>
-        /// This method adds each facility's proposed date (from the list of facilities given) into the calendar object.
-        /// </summary>
-        /// <param name="facilities">The list of facilities.</param>
-        private void AddSelectedDates(List<Facility> facilities) {
-            foreach (Facility facility in facilities) {
-                MonthlyCalendar.SelectedDates.Add(DateTime.Parse(facility.ProposedDate.ToString()));
-            }
-        }
+        //    HelperMethods.DateSelection(facilityService.FetchAll(), MonthlyCalendar);
+        //}
 
         /// <summary>
         /// This method searches through the list of facilities displayed for the specific string provided by the user.
@@ -191,15 +176,7 @@ namespace ALF_Scheduler {
         /// This event method opens the CalendarYear page when the 'Whole Year' button is clicked.
         /// </summary>
         private void CalendarYearButton_Click(object sender, RoutedEventArgs e) {
-            OpenCalendar();
-        }
-
-        /// <summary>
-        /// This is a helper method for navigating to the calendarYear page.
-        /// </summary>
-        public void OpenCalendar() {
-            CalendarYear calendarYearPage = new CalendarYear();
-            NavigationService.Navigate(calendarYearPage);
+            HelperMethods.OpenCalendar(CalendarYearPage);
         }
 
         /// <summary>
@@ -208,5 +185,73 @@ namespace ALF_Scheduler {
         private void SubmitForm_Click(object sender, RoutedEventArgs e) {
 
         }
-    }
+
+        GridViewColumnHeader _lastHeaderClicked = null;
+        ListSortDirection _lastDirection = ListSortDirection.Ascending;
+
+        private void ColumnHeader_Click(object sender, RoutedEventArgs e)
+        {
+            var headerClicked = e.OriginalSource as GridViewColumnHeader;
+            ListSortDirection direction;
+
+            if (headerClicked != null)
+            {
+                if (headerClicked.Role != GridViewColumnHeaderRole.Padding)
+                {
+                    if (headerClicked != _lastHeaderClicked)
+                    {
+                        direction = ListSortDirection.Ascending;
+                    }
+                    else
+                    {
+                        if (_lastDirection == ListSortDirection.Ascending)
+                        {
+                            direction = ListSortDirection.Descending;
+                        }
+                        else
+                        {
+                            direction = ListSortDirection.Ascending;
+                        }
+                    }
+
+                    var columnBinding = headerClicked.Column.DisplayMemberBinding as Binding;
+                    var sortBy = columnBinding?.Path.Path ?? headerClicked.Column.Header as string;
+
+                    Sort(sortBy, direction);
+
+                    if (direction == ListSortDirection.Ascending)
+                    {
+                        headerClicked.Column.HeaderTemplate =
+                          Resources["HeaderTemplateArrowUp"] as DataTemplate;
+                    }
+                    else
+                    {
+                        headerClicked.Column.HeaderTemplate =
+                          Resources["HeaderTemplateArrowDown"] as DataTemplate;
+                    }
+
+                    // Remove arrow from previously sorted header  
+                    if (_lastHeaderClicked != null && _lastHeaderClicked != headerClicked)
+                    {
+                        _lastHeaderClicked.Column.HeaderTemplate = null;
+                    }
+
+                    _lastHeaderClicked = headerClicked;
+                    _lastDirection = direction;
+                }
+            }
+        }
+
+        private void Sort(string sortBy, ListSortDirection direction)
+        {
+            //Not too sure if this will sort, but I think it should. Can't really test it though yet because excel file not coming in.
+            ICollectionView dataView =
+              CollectionViewSource.GetDefaultView(FacilityList.ItemsSource);
+
+            dataView.SortDescriptions.Clear();
+            SortDescription sd = new SortDescription(sortBy, direction);
+            dataView.SortDescriptions.Add(sd);
+            dataView.Refresh();
+        }
+    }    
 }

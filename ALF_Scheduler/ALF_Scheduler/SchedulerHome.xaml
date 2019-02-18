@@ -7,6 +7,27 @@
       mc:Ignorable="d"
       Title="ALF Scheduler - Home">
 
+    <Page.Resources>
+        <DataTemplate x:Key="HeaderTemplateArrowUp">
+            <DockPanel>
+                <TextBlock HorizontalAlignment="Center" Text="{Binding}"/>
+                <Path x:Name="arrow"
+                        StrokeThickness = "1"                                     
+                        Fill            = "gray"
+                        Data            = "M 5,10 L 15,10 L 10,5 L 5,10"/>
+            </DockPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="HeaderTemplateArrowDown">
+            <DockPanel>
+                <TextBlock HorizontalAlignment="Center" Text="{Binding}"/>
+                <Path x:Name="arrow"
+                        StrokeThickness = "1"                                     
+                        Fill            = "gray"
+                        Data            = "M 5,5 L 10,10 L 15,5 L 5,5"/>
+            </DockPanel>
+        </DataTemplate>
+    </Page.Resources>
+
     <Viewbox>
         <Grid>
             <Label Content="Assisted Living Facilities" HorizontalAlignment="Left" Margin="15,80,0,550" Height="35" Width="240" FontSize="16"/>
@@ -15,14 +36,17 @@
             <TabControl HorizontalAlignment="Left" Height="400" Margin="15,140,0,0" VerticalAlignment="Top" Width="525" SelectionChanged="TabControl_SelectionChanged">
                 <TabItem Name="TabItemFacilities" Header="Facilities" IsSelected="True">
                     <ScrollViewer>
-                        <ListView Name="FacilityList">
+                        <ListView Name="FacilityList" GridViewColumnHeader.Click="ColumnHeader_Click">
                             <ListView.View>
                                 <GridView>
-                                    <GridViewColumn Header="Name" Width="170" DisplayMemberBinding="{Binding FacilityName}"/>
-                                    <GridViewColumn Header="Last Inspection" Width="95" DisplayMemberBinding="{Binding Inspection}" /> <!--DisplayMemberBinding="{Binding MostRecentFullInspection}"/>-->
-                                    <GridViewColumn Header="Result" Width="48" DisplayMemberBinding="{Binding InspectionResult}"/>
-                                    <GridViewColumn Header="Month Interval" Width="90" DisplayMemberBinding="{Binding Inspection}" /> <!--DisplayMemberBinding="{Binding ScheduleInterval}"/>-->
-                                    <GridViewColumn Header="Next Inspection" Width="90" DisplayMemberBinding="{Binding Inspection}" /> <!--DisplayMemberBinding="{Binding ProposedDate}"/>-->
+                                    <GridViewColumn Header="Name" Width="140" DisplayMemberBinding="{Binding FacilityName}"/>
+                                    <GridViewColumn Header="Last Inspection" Width="100" DisplayMemberBinding="{Binding Inspection}" />
+                                    <!--DisplayMemberBinding="{Binding MostRecentFullInspection}"/>-->
+                                    <GridViewColumn Header="Result" Width="53" DisplayMemberBinding="{Binding InspectionResult}"/>
+                                    <GridViewColumn Header="Month Interval" Width="100" DisplayMemberBinding="{Binding Inspection}" />
+                                    <!--DisplayMemberBinding="{Binding ScheduleInterval}"/>-->
+                                    <GridViewColumn Header="Next Inspection" Width="103" DisplayMemberBinding="{Binding Inspection}" />
+                                    <!--DisplayMemberBinding="{Binding ProposedDate}"/>-->
                                 </GridView>
                             </ListView.View>
                         </ListView>
