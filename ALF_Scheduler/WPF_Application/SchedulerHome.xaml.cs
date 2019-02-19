@@ -17,6 +17,11 @@ using System.Windows.Shapes;
 using ALF_Scheduler.Domain.Models;
 using ALF_Scheduler.Services;
 using System.ComponentModel;
+using System.Reflection;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyModel;
 
 namespace ALF_Scheduler {
     /// <summary>
@@ -36,10 +41,10 @@ namespace ALF_Scheduler {
             CalendarYearPage = new CalendarYear();
 
             // TODO @KENNY import excel file
-            if (ExcelImporterExporter.LoadExcelFromFile(path, out XlApp, out XlWorkbook)) {
-                DbContext = new ApplicationDbContext(new Microsoft.EntityFrameworkCore.DbContextOptions<ApplicationDbContext>());
-                CreateFacilities();
-            }
+//            if (ExcelImporterExporter.LoadExcelFromFile(path, out XlApp, out XlWorkbook)) {
+//                DbContext = new ApplicationDbContext(new Microsoft.EntityFrameworkCore.DbContextOptions<ApplicationDbContext>());
+//                CreateFacilities();
+//            }
 
             // This is where the DataParser should parse into facility object and db
             //List<Facility> items = FacilityService.FetchAll();
@@ -56,16 +61,18 @@ namespace ALF_Scheduler {
             services.AddScoped<FacilityService>();
             services.AddScoped<Inspection>();
 
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
             services.AddDbContext<ApplicationDbContext>(builder =>
             {
-                builder.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
+                builder.UseSqlite(connection);
             });
 
             var dependencyContext = DependencyContext.Default;
             var assemblies = dependencyContext.RuntimeLibraries.SelectMany(lib =>
                 lib.GetDefaultAssemblyNames(dependencyContext)
-                    .Where(a => a.Name.Contains("SecretSanta")).Select(Assembly.Load)).ToArray();
-            services.AddAutoMapper(assemblies);
+                    .Where(a => a.Name.Contains("Scheduler")).Select(Assembly.Load)).ToArray();
+            //services.AddAutoMapper(assemblies);
         }
         
 
