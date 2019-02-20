@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Reflection;
 
 namespace ALF_Scheduler
 {
@@ -35,6 +36,7 @@ namespace ALF_Scheduler
             dp.LicenseNumber("725103");
             dp.ZipCode("98001");
             dp.City("Algona");
+            dp.NumberOfBeds("25");
             dp.OneYearInspection("08/14/2015");
             dp.MostRecentInspection("02/23/2018");
             dp.NumberOfLicensors("2");
@@ -103,13 +105,16 @@ namespace ALF_Scheduler
             TabItemDetails.Content = grid;
         }
 
-        private void OpenDetails() {
+        private void OpenDetails()
+        {
+            //TODO figure out how to pass in the Facility Object to be displayed on Details tab.
+            string[] facProperties = fac1.returnFacility(fac1);
             for (int row = 0; row < DetailsGrid.RowDefinitions.Count; row++) {
                 TextBox textbox = new TextBox();
                 textbox.Height = 15;
                 textbox.IsReadOnly = true;
-                // TODO connect to facility
-                textbox.Text = fac1.Name;
+                
+                textbox.Text = facProperties[row];
                 Grid.SetColumn(textbox, 1);
                 Grid.SetRow(textbox, row);
                 DetailsGrid.Children.Add(textbox);

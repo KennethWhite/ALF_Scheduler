@@ -98,14 +98,89 @@ namespace ALF_Scheduler
         // TODO double check this is what's meant by number of licensors
         /// <value>Gets the number of licensors needed based on bed count for this facility's inspection.</value>
         public int NumberOfLicensors { get; set; }
-        
-        /// <value>Gets the sample size of inspectors from the most recent inspection.</value>
-        public int SampleSize { get => LicensorList.Length; }
 
         /// <value>Gets the string of inspectors from the most recent inspection.</value>
         public string[] LicensorList { get; set; }
+        /// <value>Gets the sample size of inspectors from the most recent inspection.</value>
+        public int SampleSize { get => LicensorList.Length; }
 
         /// <value>Gets any special information listed for the facility.</value>
         public string SpecialInfo { get; set; }
+
+        /// <summary>
+        /// returnFacility will return string array of all of the passed in Facilitiy's values. Handy for the Details tab.
+        /// </summary>
+        /// <param name="fac"></param>
+        /// <returns></returns>
+        public string[] returnFacility(Facility fac)
+        {
+            string[] s = new string[23];
+            StringBuilder sod = new StringBuilder();
+            StringBuilder failedFollow = new StringBuilder();
+            StringBuilder licensorList = new StringBuilder();
+
+            s[0] = fac.Name;
+            s[1] = fac.NameOfLicensee;
+            s[2] = fac.LicenseNumber.ToString();
+            s[3] = fac.Unit;
+            s[4] = fac.City;
+            s[5] = fac.ZipCode.ToString();
+            s[6] = fac.NumberOfBeds.ToString();
+            s[7] = fac.MostRecentFullInspection;
+            s[8] = fac.OneYearFullInspection;
+            s[9] = fac.TwoYearFullInspection;
+            s[10] = fac.InspectionResult;
+
+            if (fac.DatesOfSOD != null)
+            {
+                foreach (DateTime dt in fac.DatesOfSOD)
+                {
+                    sod.Append(dt.ToShortDateString());
+                }
+                s[11] = sod.ToString();
+            }
+            else
+                s[11] = "No Dates of SOD on record";
+            
+            s[12] = fac.EnforcementNotes;
+
+            if (fac.FailedFollowUp != null)
+            {
+                foreach (DateTime dt in fac.FailedFollowUp)
+                {
+                    failedFollow.Append(dt.ToShortDateString());
+                }
+                s[13] = failedFollow.ToString();
+            }
+            else
+                s[13] = "No Failed Follow Up on record";
+
+            s[14] = fac.Complaints;
+            s[15] = fac.ProposedDate.ToString();
+            s[16] = fac.ScheduleInterval;
+            s[17] = fac.Month15;
+            s[18] = fac.Month18;
+            s[19] = fac.NumberOfLicensors.ToString();
+
+            if (fac.LicensorList != null)
+                s[20] = fac.SampleSize.ToString();
+            else
+                s[20] = "Sample Size not on record";
+
+            if (fac.LicensorList != null)
+            {
+                foreach (String str in fac.LicensorList)
+                {
+                    licensorList.Append(str);
+                }
+
+                s[21] = licensorList.ToString();
+            }
+            else
+                s[21] = "No Licensor List on record";
+            
+            s[22] = fac.SpecialInfo;
+            return s;
+        }
     }
 }
