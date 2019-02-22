@@ -1,21 +1,18 @@
-﻿using ALF_Scheduler.Domain.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ALF_Scheduler.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ALF_Scheduler.Services
 {
     public class InspectionService
     {
-        private ApplicationDbContext DbContext { get; }
-
         public InspectionService(ApplicationDbContext context)
         {
             DbContext = context;
         }
+
+        private ApplicationDbContext DbContext { get; }
 
         public Inspection AddOrUpdateInspection(Inspection inspection)
         {
@@ -30,7 +27,7 @@ namespace ALF_Scheduler.Services
 
         public void RemoveInspection(Inspection inspection)
         {
-            DbContext.Inspections.Remove(inspection);    
+            DbContext.Inspections.Remove(inspection);
             DbContext.SaveChanges();
         }
 

@@ -66,7 +66,7 @@ namespace Services.Tests
             {
                 var service = new InspectionService(context);
                 var fetchedInspection = service.Find(1);
-                Assert.AreEqual<int>(1, fetchedInspection.Id);
+                Assert.AreEqual(1, fetchedInspection.Id);
             }
         }
 
@@ -82,9 +82,9 @@ namespace Services.Tests
             using (var context = new ApplicationDbContext(Options))
             {
                 var fetchedInspection = new InspectionService(context).Find(2);
-                Assert.AreEqual<int>(2, fetchedInspection.Id);
-                Assert.AreEqual<DateTime>(inspectionList[1].InspectionDate, fetchedInspection.InspectionDate);
-                Assert.AreEqual<string>(inspectionList[1].Licensor, fetchedInspection.Licensor);
+                Assert.AreEqual(2, fetchedInspection.Id);
+                Assert.AreEqual(inspectionList[1].InspectionDate, fetchedInspection.InspectionDate);
+                Assert.AreEqual(inspectionList[1].Licensor, fetchedInspection.Licensor);
             }
         }
 
@@ -99,7 +99,7 @@ namespace Services.Tests
 
             myInspection.Comments = "Updated Inspection Comment";
             myInspection.Licensor = "Bob Ross";
-            
+
 
             using (var context = new ApplicationDbContext(Options))
             {
@@ -110,8 +110,8 @@ namespace Services.Tests
             {
                 var fetchedInspection = new InspectionService(context).Find(1);
                 Assert.AreEqual(1, fetchedInspection.Id);
-                Assert.AreEqual<string>("Updated Inspection Comment", fetchedInspection.Comments);
-                Assert.AreEqual<string>("Bob Ross", fetchedInspection.Licensor);
+                Assert.AreEqual("Updated Inspection Comment", fetchedInspection.Comments);
+                Assert.AreEqual("Bob Ross", fetchedInspection.Licensor);
             }
         }
 
@@ -132,17 +132,17 @@ namespace Services.Tests
                 {
                     var inspectionToAdd = initialInspections[i];
                     var inspectionFetched = fetchedInspections[i];
-                    Assert.AreNotEqual<int>(default(int), inspectionFetched.Id);
-                    Assert.AreEqual<DateTime>(inspectionToAdd.InspectionDate, inspectionFetched.InspectionDate);
+                    Assert.AreNotEqual(default(int), inspectionFetched.Id);
+                    Assert.AreEqual(inspectionToAdd.InspectionDate, inspectionFetched.InspectionDate);
                     //Assert.AreEqual<string>(inspectionToAdd.FacilityInspected.FacilityName, 
-                      //  inspectionFetched.FacilityInspected.FacilityName);
+                    //  inspectionFetched.FacilityInspected.FacilityName);
                 }
             }
         }
 
         private static Inspection CreateInspection()
         {
-            Facility toAdd = new Facility()
+            var toAdd = new Facility
             {
                 FacilityName = "Test Facility",
                 City = "Spokane",
@@ -160,13 +160,11 @@ namespace Services.Tests
         {
             var inspections = new List<Inspection>();
             for (var i = 1; i < 6; i++)
-            {
                 inspections.Add(new Inspection
                 {
                     Licensor = $"Bob Ross the {i}th",
                     InspectionDate = new DateTime(2019, 1, 26)
                 });
-            }
             return inspections;
         }
 

@@ -1,5 +1,5 @@
-﻿using ALF_Scheduler.Models;
-using System;
+﻿using System;
+using ALF_Scheduler.Models;
 
 namespace ALF_Scheduler.Domain.Models
 {
