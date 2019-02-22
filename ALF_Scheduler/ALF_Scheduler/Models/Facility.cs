@@ -1,8 +1,8 @@
-﻿using ALF_Scheduler.Domain.Models;
-using ALF_Scheduler.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ALF_Scheduler.Domain.Models;
+using ALF_Scheduler.Models;
 
 /// <summary>
 /// This class is used to store the metadata in properties for each facility.
@@ -12,6 +12,8 @@ namespace ALF_Scheduler
 {
     public class Facility : Entity
     {
+        private int _LicenseNumber;
+        private Inspection _previousFullInspection;
         private List<Inspection> AllInspections { get; set; }
 
         /// <value>Gets the Facility name.</value>
@@ -34,18 +36,15 @@ namespace ALF_Scheduler
         public string LicenseeLastName { get; set; }
 
         /// <value>Gets the license number.</value>
-        public int LicenseNumber { get => _LicenseNumber;
-            set
-            {
-                _LicenseNumber = Convert.ToInt32(value);
-            }
+        public int LicenseNumber
+        {
+            get => _LicenseNumber;
+            set => _LicenseNumber = Convert.ToInt32(value);
         }
-        private int _LicenseNumber;
-        private Inspection _previousFullInspection;
 
         /// <value>Gets the Facility's unit.</value>
         public string Unit { get; set; }
-        
+
         /// <value>Gets the Facility's address.</value>
         public string City { get; set; }
 
@@ -56,7 +55,7 @@ namespace ALF_Scheduler
         public int NumberOfBeds { get; set; }
 
         /// <value>Gets the Facility's most recent full inspection information.</value>
-        public Inspection MostRecentFullInspection { get => LastFullInspection(); }
+        public Inspection MostRecentFullInspection => LastFullInspection();
 
         /// <value>Gets the Facility's full inspection information from a year ago.</value>
         public Inspection PreviousFullInspection
@@ -66,7 +65,7 @@ namespace ALF_Scheduler
         }
 
         /// <value>Gets the Facility's full inspection date from two years ago.</value>
-        public Inspection TwoYearFullInspection { get => NthPreviousInspection(2);}
+        public Inspection TwoYearFullInspection => NthPreviousInspection(2);
 
         //TODO connect inspection results with config file (NO, NO24, ENF, YES) 
         /// <value>Gets the inspection result for the facility.</value>
@@ -77,7 +76,10 @@ namespace ALF_Scheduler
         public DateTime DatesOfSOD { get; set; }
 
         // TODO enforcement notes
-        /// <value>Gets the Facility's enforcement notes (fines, stop placement, conditions, revocation, summary suspension) since last inspection.</value>
+        /// <value>
+        ///     Gets the Facility's enforcement notes (fines, stop placement, conditions, revocation, summary suspension) since
+        ///     last inspection.
+        /// </value>
         public string EnforcementNotes { get; set; }
 
 
@@ -92,9 +94,10 @@ namespace ALF_Scheduler
         /// <remarks>The difference in time is calculated by multiplying the difference in days by the average months in a year.</remarks>
         public float ScheduleInterval
         {
-            get {
-                TimeSpan difference = ProposedDate.Subtract(MostRecentFullInspection.InspectionDate);
-                return (float)(difference.TotalDays / 30.42);
+            get
+            {
+                var difference = ProposedDate.Subtract(MostRecentFullInspection.InspectionDate);
+                return (float) (difference.TotalDays / 30.42);
             }
         }
 
@@ -110,7 +113,6 @@ namespace ALF_Scheduler
         /// <value>Gets any special information listed for the facility.</value>
         public string SpecialInfo { get; set; }
 
-        
 
         /// <value>Gets the Facility's most recent full inspection information.</value>
         private Inspection LastFullInspection()
@@ -121,11 +123,8 @@ namespace ALF_Scheduler
         /// <value>Gets the Facility's full inspection information from a year ago.</value>
         private Inspection NthPreviousInspection(int n)
         {
-            if (!AllInspections.Any())
-            {
-                throw new InvalidOperationException("Facility List is Empty");
-            }
-            List<Inspection> sortList = AllInspections;
+            if (!AllInspections.Any()) throw new InvalidOperationException("Facility List is Empty");
+            var sortList = AllInspections;
             sortList.Sort((i1, i2) => i1.InspectionDate.CompareTo(i2.InspectionDate));
             return sortList.ElementAt(n);
         }

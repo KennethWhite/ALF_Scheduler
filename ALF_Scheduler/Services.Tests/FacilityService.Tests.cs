@@ -145,13 +145,12 @@ namespace Services.Tests
                 FacilityName = "Test Facility",
                 InspectionResult = "PASS",
                 NumberOfBeds = 42,
-                City = "Spokane",
+                City = "Spokane"
                 //PreviousFullInspection = new Inspection()
                 //{
                 //    InspectionDate = new System.DateTime(2019, 1, 25),
                 //    Licensor = "Bob Ross"
                 //}
-
             };
         }
 
@@ -159,20 +158,18 @@ namespace Services.Tests
         {
             var facilities = new List<Facility>();
             for (var i = 1; i < 6; i++)
-            {
                 facilities.Add(new Facility
                 {
                     FacilityName = $"Test Facility {i}",
                     InspectionResult = "PASS",
                     NumberOfBeds = 42,
-                    City = "Spokane",
+                    City = "Spokane"
                     //MostRecentFullInspection = new Inspection()
                     //{
                     //    InspectionDate = new System.DateTime(2019, 1, 25),
                     //    Licensor = "Bob Ross"
                     //}
                 });
-            }
             return facilities;
         }
 

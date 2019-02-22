@@ -1,59 +1,42 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using ALF_Scheduler;
-using ALF_Scheduler.Domain.Models;
 using ALF_Scheduler.Models;
 
 namespace ScheduleGeneration
 {
     public class ScheduleGeneration
     {
-
-        //Used to hold a date of a proposed inspection, as well as the months the algorithm selected base off the previous Inspection
-        private struct NextInspectionDate
-        {
-            public DateTime Date { get; set; }
-            public double Months { get; set; }
-
-            public NextInspectionDate(DateTime date, double months)
-            {
-                Date = date;
-                Months = months;
-            }
-        }
-
         //Main driver of the method, give it a list of Facilities and a desired average, and it will return a ScheduleReturn object which contains the average months of the schedule, and a Dictionary of Facilities and their proposed inspection dates
         public static ScheduleReturn GenerateSchedule(List<Facility> facilityList, double desiredAvg)
         {
             double offsetMonths = 0;
-            List<double> months = new List<double>();
-            int curSize = 0;
+            var months = new List<double>();
+            var curSize = 0;
             double curSum = 0;
-            List<int> daysScheduled = new List<int>();
+            var daysScheduled = new List<int>();
 
-            ScheduleReturn newSchedule = new ScheduleReturn();
+            var newSchedule = new ScheduleReturn();
             newSchedule.FacilitySchedule = new Dictionary<Facility, DateTime>();
 
-            foreach (Facility facility in facilityList)
+            foreach (var facility in facilityList)
             {
-                Inspection lastInspec = facility.MostRecentFullInspection;
-                DateTime date_lastInspection = lastInspec.InspectionDate;
-                Code code_lastInspection = lastInspec.Code;
+                var lastInspec = facility.MostRecentFullInspection;
+                var date_lastInspection = lastInspec.InspectionDate;
+                var code_lastInspection = lastInspec.Code;
 
                 NextInspectionDate newNextInspection;
 
                 if (offsetMonths < 0.01 && offsetMonths > -0.01)
-                {
                     newNextInspection = PreferRandom(date_lastInspection, code_lastInspection);
-                }
                 else
-                {
-                    newNextInspection = PreferAverage(date_lastInspection, code_lastInspection, curSize, curSum, desiredAvg);
-                }
+                    newNextInspection = PreferAverage(date_lastInspection, code_lastInspection, curSize, curSum,
+                        desiredAvg);
 
-            CheckBlackout:
-                if (!IsUnscheduledDate(daysScheduled, newNextInspection.Date.DayOfYear) || IsDateWithinTwoWeeksOfLast(date_lastInspection, newNextInspection.Date))
+                CheckBlackout:
+                if (!IsUnscheduledDate(daysScheduled, newNextInspection.Date.DayOfYear) ||
+                    IsDateWithinTwoWeeksOfLast(date_lastInspection, newNextInspection.Date))
                 {
                     newNextInspection = PreferRandom(date_lastInspection, code_lastInspection);
                     goto CheckBlackout;
@@ -66,22 +49,16 @@ namespace ScheduleGeneration
                 curSize = months.Count;
                 curSum = 0;
 
-                foreach (double i in months)
-                {
-                    curSum += i;
-                }
-                
-                double curAvg = Math.Round(curSum / curSize, 2);
+                foreach (var i in months) curSum += i;
+
+                var curAvg = Math.Round(curSum / curSize, 2);
                 offsetMonths = Math.Round(curAvg - desiredAvg, 2);
             }
 
-            int size = months.Count;
+            var size = months.Count;
             double sum = 0;
 
-            foreach (double i in months)
-            {
-                sum += i;
-            }
+            foreach (var i in months) sum += i;
 
             newSchedule.GlobalAvg = Math.Round(sum / size, 2);
 
@@ -96,20 +73,17 @@ namespace ScheduleGeneration
         //Used to check conflicts between a new proposed inspection and the list contain previous proposed inspection. Incoming dates must be in int format represented as its DateTime.DayOfYear
         private static bool IsUnscheduledDate(List<int> scheduledDays, int startInspection)
         {
-            bool notScheduled = true;
-            int endInspection = startInspection + 6;
+            var notScheduled = true;
+            var endInspection = startInspection + 6;
 
-            List<int> newInpectionRange = GetRange(startInspection, endInspection);
+            var newInpectionRange = GetRange(startInspection, endInspection);
 
-            foreach (int startDay in scheduledDays)
+            foreach (var startDay in scheduledDays)
             {
-                int endDay = startDay + 6;
-                List<int> currentRange = GetRange(startDay, endDay);
+                var endDay = startDay + 6;
+                var currentRange = GetRange(startDay, endDay);
 
-                if (currentRange.Intersect(newInpectionRange).Any())
-                {
-                    notScheduled = false;
-                }
+                if (currentRange.Intersect(newInpectionRange).Any()) notScheduled = false;
             }
 
             return notScheduled;
@@ -118,12 +92,9 @@ namespace ScheduleGeneration
         //Provides a list of ints given a start and end value. Both inclusive
         private static List<int> GetRange(int start, int end)
         {
-            List<int> list = new List<int>();
+            var list = new List<int>();
 
-            for (int i = start; i <= end; i++)
-            {
-                list.Add(i);
-            }
+            for (var i = start; i <= end; i++) list.Add(i);
 
             return list;
         }
@@ -131,30 +102,31 @@ namespace ScheduleGeneration
         //Takes the date of a previous Inspection and the Code of the previous Inspection, and randomly chooses a month within the code's allowed range
         private static NextInspectionDate PreferRandom(DateTime lastInspection, Code lastCode)
         {
-            int minMonth = lastCode.MinMonth;
-            int maxMonth = lastCode.MaxMonth;
+            var minMonth = lastCode.MinMonth;
+            var maxMonth = lastCode.MaxMonth;
 
-            double months = Math.Round(NextDoubleInRange(minMonth, maxMonth), 2);
-            int daysBetween = DoubleMonthToDays(months);
+            var months = Math.Round(NextDoubleInRange(minMonth, maxMonth), 2);
+            var daysBetween = DoubleMonthToDays(months);
 
-            DateTime newDate = lastInspection.AddDays(daysBetween);
+            var newDate = lastInspection.AddDays(daysBetween);
 
             return new NextInspectionDate(newDate, months);
         }
 
         //Takes the date and Code of the last Inspection, as well as the current count of months generated (totMonths), the sum of each of those months (monthSum), and the desired average. It then calculates the best value within the given Code's range of months to get the desired average
-        private static NextInspectionDate PreferAverage(DateTime lastInspection, Code lastCode, int totMonths, double monthSum, double desiredAvg)
+        private static NextInspectionDate PreferAverage(DateTime lastInspection, Code lastCode, int totMonths,
+            double monthSum, double desiredAvg)
         {
-            int minMonth = lastCode.MinMonth;
-            int maxMonth = lastCode.MaxMonth;
+            var minMonth = lastCode.MinMonth;
+            var maxMonth = lastCode.MaxMonth;
 
-            double bestMonth = desiredAvg * (totMonths + 1) - monthSum;
+            var bestMonth = desiredAvg * (totMonths + 1) - monthSum;
 
-            double months = Math.Round(GetClosestToValue(minMonth, maxMonth, bestMonth), 2);
+            var months = Math.Round(GetClosestToValue(minMonth, maxMonth, bestMonth), 2);
 
-            int daysBetween = DoubleMonthToDays(months);
+            var daysBetween = DoubleMonthToDays(months);
 
-            DateTime newDate = lastInspection.AddDays(daysBetween);
+            var newDate = lastInspection.AddDays(daysBetween);
 
             return new NextInspectionDate(newDate, months);
         }
@@ -164,17 +136,11 @@ namespace ScheduleGeneration
         {
             double value;
             if (goal <= min)
-            {
                 value = min;
-            }
             else if (goal >= max)
-            {
                 value = max;
-            }
             else
-            {
                 value = goal;
-            }
 
             return value;
         }
@@ -194,7 +160,7 @@ namespace ScheduleGeneration
         //Returns a random double from within a range of given doubles
         private static double NextDoubleInRange(double min, double max)
         {
-            Random random = new Random();
+            var random = new Random();
             var next = random.NextDouble();
 
             return next * (max - min) + min;
@@ -203,10 +169,23 @@ namespace ScheduleGeneration
         //Returns an array of DateTimes of all the in between two dates. Both Inclusive
         public static DateTime[] GetDatesBetween(DateTime startDate, DateTime endDate)
         {
-            List<DateTime> allDates = new List<DateTime>();
-            for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+            var allDates = new List<DateTime>();
+            for (var date = startDate; date <= endDate; date = date.AddDays(1))
                 allDates.Add(date);
             return allDates.ToArray();
+        }
+
+        //Used to hold a date of a proposed inspection, as well as the months the algorithm selected base off the previous Inspection
+        private struct NextInspectionDate
+        {
+            public DateTime Date { get; }
+            public double Months { get; }
+
+            public NextInspectionDate(DateTime date, double months)
+            {
+                Date = date;
+                Months = months;
+            }
         }
     }
 }

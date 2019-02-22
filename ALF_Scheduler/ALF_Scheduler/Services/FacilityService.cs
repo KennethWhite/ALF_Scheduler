@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ALF_Scheduler.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,12 +7,12 @@ namespace ALF_Scheduler.Services
 {
     public class FacilityService
     {
-        private ApplicationDbContext DbContext { get; }
-
         public FacilityService(ApplicationDbContext context)
         {
             DbContext = context;
         }
+
+        private ApplicationDbContext DbContext { get; }
 
         public Facility AddOrUpdateFacility(Facility facility)
         {
@@ -30,7 +27,7 @@ namespace ALF_Scheduler.Services
 
         public void RemoveInspection(Facility facility)
         {
-            DbContext.Facilities.Remove(facility);    
+            DbContext.Facilities.Remove(facility);
             DbContext.SaveChanges();
         }
 
@@ -67,9 +64,5 @@ namespace ALF_Scheduler.Services
                 .OrderBy(inspection => inspection.InspectionDate)
                 .Skip(n - 1).First();
         }
-
-
     }
-
 }
-
