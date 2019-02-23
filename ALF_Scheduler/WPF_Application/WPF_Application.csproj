@@ -81,7 +81,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ApplicationDbContext.cs" />
+    <None Include="ApplicationDbContext.cs.bak" />
     <Compile Include="CalendarYear.xaml.cs">
       <DependentUpon>CalendarYear.xaml</DependentUpon>
     </Compile>
