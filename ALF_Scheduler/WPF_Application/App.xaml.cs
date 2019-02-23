@@ -6,7 +6,7 @@ using Microsoft.Win32;
 using Application = System.Windows.Application;
 using Window = System.Windows.Window;
 
-namespace ALF_Scheduler
+namespace WPF_Application
 {
     /// <summary>
     ///     Interaction logic for App.xaml
@@ -39,7 +39,7 @@ namespace ALF_Scheduler
             {
                 // Open document
                 var filename = dlg.FileName;
-                var home = new SchedulerHome(); //filename);
+                var home = new SchedulerHome(filename);
 
                 var mainWindow = new MainWindow();
                 if (onStartup) sender.Close();

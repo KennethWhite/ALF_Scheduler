@@ -3,8 +3,11 @@ using System.Text.RegularExpressions;
 using ALF_Scheduler.Domain.Models;
 using ALF_Scheduler.Models;
 using Microsoft.Office.Interop.Excel;
+using System.Collections.Generic;
+using ALF_Scheduler.Utilities;
+using Excel_Import_Export;
 
-namespace ALF_Scheduler.Utilities
+namespace ALF_Scheduler
 {
     /// <summary>
     ///     This <c>DataParser</c> class verifies and parses the incoming data to be
@@ -50,6 +53,38 @@ namespace ALF_Scheduler.Utilities
 
 
             return _facility;
+        }
+
+        public static List<Facility> FetchAll(string path)
+        {
+            Application xlApp;
+            Workbook xlWorkbook;
+
+            List<Facility> facList = new List<Facility>();
+
+            if (ExcelImporterExporter.LoadExcelFromFile(path, out xlApp, out xlWorkbook))
+            {
+                /* I cant figure out how this works, not even sure if the sheets command is the right one to use
+                Worksheet sheets = (Worksheet) xlWorkbook.Sheets[1]; //Excel isn't 0 based index, so have to use 1
+                Range r = (Range) sheets.Rows[1];
+                Facility f = ParseFacility(r);
+
+                bool skipHeader = true;
+                foreach (Range range in sheets.UsedRange)
+                {
+                    if (!skipHeader)
+                    {
+                        facList.Add(ParseFacility(range));
+                    }
+                    else
+                    {
+                        skipHeader = false;
+                    }
+                }
+                */
+            }
+
+            return facList;
         }
 
         private static Inspection CreateInspection(string date, string licensor = "", string code = "")

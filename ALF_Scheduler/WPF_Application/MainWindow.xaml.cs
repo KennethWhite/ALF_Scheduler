@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Navigation;
 using Microsoft.Win32;
 
-namespace ALF_Scheduler
+namespace WPF_Application
 {
     /// <summary>
     ///     Interaction logic for MainWindow.xaml

@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using ALF_Scheduler;
 
-namespace ALF_Scheduler
+namespace WPF_Application
 {
     /// <summary>
     ///     Interaction logic for SchedulerHome.xaml
@@ -20,26 +22,35 @@ namespace ALF_Scheduler
         ///     grabbed from the Open File Dialog Window in <see cref="App.OpenFile(Window, bool)" />
         /// </summary>
         /// <param name="path">The full path of the specified file to import.</param>
-        public SchedulerHome()
+        public SchedulerHome(string path)
         {
             //string path) {
             InitializeComponent();
             CalendarYearPage = new CalendarYear();
 
             // TODO @KENNY import excel file
-//            if (ExcelImporterExporter.LoadExcelFromFile(path, out XlApp, out XlWorkbook)) {
-//                DbContext = new ApplicationDbContext(new Microsoft.EntityFrameworkCore.DbContextOptions<ApplicationDbContext>());
-//                CreateFacilities();
-//            }
+            //            if (ExcelImporterExporter.LoadExcelFromFile(path, out XlApp, out XlWorkbook)) {
+            //                DbContext = new ApplicationDbContext(new Microsoft.EntityFrameworkCore.DbContextOptions<ApplicationDbContext>());
+            //                CreateFacilities();
+            //            }
 
             // This is where the DataParser should parse into facility object and db
+
             //List<Facility> items = FacilityService.FetchAll();
-            var items = new List<Facility>(); //delete once I can do that ^
+            //var items = new List<Facility>(); //delete once I can do that ^
+
+            List<Facility> items = DataParser.FetchAll(path);
+
             FacilityList.ItemsSource = items;
             HelperMethods.DateSelection(items,
                 MonthlyCalendar); //delete this if you use the CreateFacilities method below
 
             DetailsInit();
+        }
+
+        public SchedulerHome()
+        {
+
         }
 
         private CalendarYear CalendarYearPage { get; }
