@@ -12,10 +12,9 @@ namespace WPF_Application
         /// </summary>
         /// <param name="facilities">The list of facilities.</param>
         /// <param name="month">The Calendar object the dates should be added to.</param>
-        public static void DateSelection(List<Facility> facilities, Calendar month)
+        public static void DateSelection(Calendar month)
         {
-            //foreach (var facility in facilities)
-            //{
+            //foreach (var facility in App.Facilities) {
             //    AddSelectedDates(facility, month);
             //    AddBlackoutDates(facility, month);
             //}

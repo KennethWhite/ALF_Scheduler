@@ -17,13 +17,13 @@ namespace WPF_Application
         private GridViewColumnHeader _lastHeaderClicked;
 
         /// <summary>
-        ///     This constructor initializes the main page - Scheduler Home.
+        ///     This constructor initializes the Scheduler Home page.
         /// </summary>
         public SchedulerHome()
         {
             InitializeComponent();
             FacilityList.ItemsSource = App.Facilities;
-            HelperMethods.DateSelection(App.Facilities, MonthlyCalendar); //delete this if you use the CreateFacilities method below
+            HelperMethods.DateSelection(MonthlyCalendar);
 
             DetailsInit();
         }

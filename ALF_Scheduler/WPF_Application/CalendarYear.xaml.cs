@@ -47,7 +47,7 @@ namespace WPF_Application
                 calendar.SelectionMode = CalendarSelectionMode.MultipleRange;
                 calendar.CalendarButtonStyle = (Style) Resources["CalendarButtonStyle"];
 
-                HelperMethods.DateSelection(App.Facilities, calendar);
+                HelperMethods.DateSelection(calendar);
 
                 Grid.SetRow(calendar, row);
                 Grid.SetColumn(calendar, column);

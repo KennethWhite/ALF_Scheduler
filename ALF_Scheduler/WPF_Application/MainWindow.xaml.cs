@@ -112,9 +112,11 @@ namespace WPF_Application
                 {
                     case MessageBoxResult.Yes:
                         SaveFile();
+                        ExcelImporterExporter.CloseExcelApp(App.XlApp, App.XlWorkbook);
                         Environment.Exit(0);
                         break;
                     case MessageBoxResult.No:
+                        ExcelImporterExporter.CloseExcelApp(App.XlApp, App.XlWorkbook);
                         Environment.Exit(0);
                         break;
                     case MessageBoxResult.Cancel:

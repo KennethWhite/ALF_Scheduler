@@ -15,10 +15,12 @@ namespace WPF_Application
     ///     Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application {
+
+        public static Workbook XlWorkbook;
+        public static Microsoft.Office.Interop.Excel.Application XlApp;
+
         public static ApplicationDbContext DbContext { get; set; }
-        public static Workbook XlWorkbook { get; }
-        public static Microsoft.Office.Interop.Excel.Application XlApp { get; }
-        public static List<Facility> Facilities { get; }
+        public static List<Facility> Facilities { get; set; }
         public static CalendarYear CalendarYearPage { get; set; }
 
         private void Application_Startup(object sender, StartupEventArgs e) {
@@ -60,17 +62,17 @@ namespace WPF_Application
         public static void Init(string path) {
             CalendarYearPage = new CalendarYear();
 
-            //if (ExcelImporterExporter.LoadExcelFromFile(path, out XlApp, out XlWorkbook)) {
-            //    DbContext = new ApplicationDbContext(new Microsoft.EntityFrameworkCore.DbContextOptions<ApplicationDbContext>());
-            //    CreateFacilities
-            //}
+            if (ExcelImporterExporter.LoadExcelFromFile(path, out XlApp, out XlWorkbook)) {
+                //DbContext = new ApplicationDbContext(new Microsoft.EntityFrameworkCore.DbContextOptions<ApplicationDbContext>());
+                //CreateFacilities
+            }
 
             // This is where the DataParser should parse into facility object and db
 
-            //List<Facility> items = FacilityService.FetchAll();
-            var items = new List<Facility>(); //delete once I can do that ^
+            //Facilities = FacilityService.FetchAll();
+            Facilities = new List<Facility>(); //delete once I can do that ^
 
-            //List<Facility> items = DataParser.FetchAll(path);
+            //Facilities = DataParser.FetchAll(path);
         }
 
         //        public void ConfigureServices(IServiceCollection services)
