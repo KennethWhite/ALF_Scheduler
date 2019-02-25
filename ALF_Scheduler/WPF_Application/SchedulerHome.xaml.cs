@@ -6,6 +6,8 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Linq;
+using System.Reflection;
 
 namespace WPF_Application
 {
@@ -20,6 +22,14 @@ namespace WPF_Application
 
         private bool isDetailTabBuilt = false; // checks if details tab has alredy been built or not.
 
+        private string[] labelContent =
+                    {
+                "Facility Name", "Name of Licensee", "License Number", "Unit", "City", "ZipCode", "Number Of Beds",
+                "Most Recent Full Inspection",
+                "Previous Year Full Inspection", "Two Year Full Inspection", "Inspection Result", "Dates Of SOD",
+                "Enforcement Notes", "Complaints",
+                "Proposed Date", "Schedule Interval", "Month 15", "Month 18",
+                "Special Info" };
         Facility fac1 = new Facility();
         /// <summary>
         ///     This constructor initializes the Scheduler Home page.
@@ -55,14 +65,7 @@ namespace WPF_Application
                 Grid grid = DetailsGrid;
                 grid.ColumnDefinitions.Add(new ColumnDefinition());
                 grid.ColumnDefinitions.Add(new ColumnDefinition());
-                string[] labelContent =
-                {
-                "Facility Name", "Name of Licensee", "License Number", "Unit", "City", "ZipCode", "Number Of Beds",
-                "Most Recent Full Inspection",
-                "Previous Year Full Inspection", "Two Year Full Inspection", "Inspection Result", "Dates Of SOD",
-                "Enforcement Notes", "Failed Follow Up", "Complaints",
-                "Proposed Date", "Schedule Interval", "Month 15", "Month 18", "Number Of Licensors", "Sample Size",
-                "Special Info" };
+                
 
 
                 for (var x = 0; x < labelContent.Length; x++)
@@ -77,23 +80,6 @@ namespace WPF_Application
                     Grid.SetColumn(label, 0);
                     Grid.SetRow(label, x);
                     grid.Children.Add(label);
-                    //var stack = new StackPanel();
-                    //stack.HorizontalAlignment = HorizontalAlignment.Stretch;
-                    //stack.Orientation = Orientation.Horizontal;
-                    //var label = CreateLabel(labelContent[x]);
-                    //stack.Children.Add(label);
-                    //label = CreateLabel("", 240, HorizontalAlignment.Right);
-                    //stack.Children.Add(label);
-
-                    //if (x == 0)
-                    //{
-                    //    var editButton = new Button();
-                    //    editButton.Content = "Edit Facility";
-                    //    editButton.Width = 70;
-                    //    stack.Children.Add(editButton);
-                    //}
-
-                    //list.Items.Add(stack);
                 }
 
                 TabItemDetails.Content = grid;
@@ -125,22 +111,20 @@ namespace WPF_Application
         ///     This method gathers data from the selected facility in the ListView and displays it next to its respective property
         ///     label.
         /// </summary>
-        public void OpenDetails(//Facility facToShow) uncomment this when dataparser works, and there is data to be read. Won't work with a mock facility passed in right now.
-            )
+        public void OpenDetails(Facility facToShow)
         {
-            //List<object> fac = facToShow.returnFacility(facToShow);
-            //object[] s = fac.ToArray();
-            for(int row = 0; row < DetailsGrid.RowDefinitions.Count; row++)
+            List<string> facProperties = facToShow.returnFacility(facToShow);
+            for(int row = 0; row < labelContent.Length; row++)
             {
                 TextBox txt = new TextBox();
-                txt.Height = 15;
+                txt.Height = 20;
                 txt.IsReadOnly = true;
 
-                txt.Text = "lakewood";
+
+                txt.Text = facProperties[row];
                 Grid.SetColumn(txt, 1);
                 Grid.SetRow(txt, row);
                 DetailsGrid.Children.Add(txt);
-                
             }
         }
 
@@ -155,8 +139,7 @@ namespace WPF_Application
             else if(TabItemDetails.IsSelected)
             {
                 if (isDetailTabBuilt != false)
-                    //OpenDetails(fac1);
-                    OpenDetails();
+                    OpenDetails(App.Facilities[0]);
                     
             }
 

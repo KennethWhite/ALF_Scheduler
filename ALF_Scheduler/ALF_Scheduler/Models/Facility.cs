@@ -61,7 +61,7 @@ namespace ALF_Scheduler
         }
 
         /// <value>Gets the Facility's full inspection date from two years ago.</value>
-        public Inspection TwoYearFullInspection => NthPreviousInspection(2);
+        public Inspection TwoYearFullInspection => NthPreviousInspection(1);
 
         //TODO connect inspection results with config file (NO, NO24, ENF, YES) 
         /// <value>Gets the inspection result for the facility.</value>
@@ -135,10 +135,13 @@ namespace ALF_Scheduler
         /// </summary>
         /// <param name="fac"></param>
         /// <returns></returns>
-        public List<object> returnFacility(Facility fac)
+        public List<string> returnFacility(Facility fac)
         {
-            List<object> f = new List<object>();
-            f.Add(fac.AllInspections);
+            List<string> f = new List<string>();
+
+            //string allInspections = ListToString(fac.AllInspections);
+            //f.Add(allInspections);
+
             f.Add(fac.FacilityName);
             f.Add(fac.NameOfLicensee);
             f.Add(fac.LicenseNumber.ToString());
@@ -146,9 +149,9 @@ namespace ALF_Scheduler
             f.Add(fac.City);
             f.Add(fac.ZipCode);
             f.Add(fac.NumberOfBeds.ToString());
-            f.Add(fac.MostRecentFullInspection);
-            f.Add(fac.PreviousFullInspection);
-            f.Add(fac.TwoYearFullInspection);
+            f.Add(fac.MostRecentFullInspection.InspectionDate.ToShortDateString());
+            f.Add(fac.PreviousFullInspection.InspectionDate.ToShortDateString());
+            f.Add(fac.TwoYearFullInspection.InspectionDate.ToShortDateString());
             f.Add(fac.InspectionResult);
             f.Add(fac.DatesOfSOD.ToShortDateString());
             f.Add(fac.EnforcementNotes);
@@ -157,12 +160,28 @@ namespace ALF_Scheduler
             f.Add(fac.ScheduleInterval.ToString());
             f.Add(fac.Month15.ToShortDateString());
             f.Add(fac.Month18.ToShortDateString());
-            f.Add(fac.LicensorList);
             f.Add(fac.SpecialInfo);
-            f.Add(fac.LastFullInspection());
+            f.Add(fac.LastFullInspection().InspectionDate.ToShortDateString());
 
             return f;
 
+        }
+        private string ListToString(List<Inspection> theList)
+        {
+            if(theList.Count == 0)
+                return "No Record";
+
+            string toReturn = "";
+            StringBuilder sb = new StringBuilder(toReturn);
+            foreach (Inspection i in theList)
+            {
+                sb.Append(i.InspectionDate.ToShortDateString() + ", ");
+            }
+            toReturn = sb.ToString();
+            if(toReturn.EndsWith(", "))
+                toReturn = toReturn.Remove(toReturn.Length-2);
+
+            return toReturn;
         }
     }
 }
