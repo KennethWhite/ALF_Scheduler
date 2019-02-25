@@ -44,17 +44,17 @@
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="Name" Width="140"
-                                                    DisplayMemberBinding="{Binding FacilityName}" />
+                                                    DisplayMemberBinding="{Binding Scheduler.Models.Facility.FacilityName}" />
                                     <GridViewColumn Header="Last Inspection" Width="100"
-                                                    DisplayMemberBinding="{Binding Inspection}" />
+                                                    DisplayMemberBinding="{Binding Scheduler.Models.Facility.MostRecentFullInspection}" />
                                     <!--DisplayMemberBinding="{Binding MostRecentFullInspection}"/>-->
                                     <GridViewColumn Header="Result" Width="53"
-                                                    DisplayMemberBinding="{Binding InspectionResult}" />
+                                                    DisplayMemberBinding="{Binding Scheduler.Models.Facility.InspectionResult}" />
                                     <GridViewColumn Header="Month Interval" Width="100"
-                                                    DisplayMemberBinding="{Binding Inspection}" />
+                                                    DisplayMemberBinding="{Binding Scheduler.Models.Facility.ScheduleInterval}" />
                                     <!--DisplayMemberBinding="{Binding ScheduleInterval}"/>-->
                                     <GridViewColumn Header="Next Inspection" Width="103"
-                                                    DisplayMemberBinding="{Binding Inspection}" />
+                                                    DisplayMemberBinding="{Binding Scheduler.Models.Facility.ProposedDate}" />
                                     <!--DisplayMemberBinding="{Binding ProposedDate}"/>-->
                                 </GridView>
                             </ListView.View>
