@@ -85,7 +85,7 @@ namespace WPF_Application
             int totalRows = XlWorksheet.UsedRange.Rows.Count;
 
             //Excel objects are indexed starting at 1, and first row is the header
-            for (int index = 2; index < totalRows; index++)
+            for (int index = 2; index <= totalRows; index++)
             {
                 Facilities.Add(DataParser.ParseFacility(XlWorksheet.UsedRange.Cells[index, 1] as Range));
             }
