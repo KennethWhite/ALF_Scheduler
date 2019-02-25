@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Navigation;
 using Microsoft.Win32;
+using Excel_Import_Export;
 
 namespace WPF_Application
 {
@@ -61,12 +62,12 @@ namespace WPF_Application
                     {
                         // Save document
                         var filename = dlg.FileName;
-                        //Excel_Import_Export.ExcelImporterExporter.SaveWorkbookToSpecifiedFile(filename, app.XlWorkbook);
+                        ExcelImporterExporter.SaveWorkbookToSpecifiedFile(filename, App.XlWorkbook);
                     }
 
                     break;
                 case MessageBoxResult.No:
-                    //Excel_Import_Export.ExcelImporterExporter.SaveWorkbookToOriginalFile(app.XlWorkbook);
+                    ExcelImporterExporter.SaveWorkbookToOriginalFile(App.XlWorkbook);
                     break;
             }
         }
