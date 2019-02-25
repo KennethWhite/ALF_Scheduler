@@ -1,9 +1,9 @@
-﻿<Page x:Name="CalendarPage" x:Class="ALF_Scheduler.CalendarYear"
+﻿<Page x:Name="CalendarPage" x:Class="WPF_Application.CalendarYear"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:ALF_Scheduler"
+      xmlns:local="clr-namespace:WPF_Application"
       xmlns:primitives="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
       mc:Ignorable="d"
       Title="ALF Scheduler - Calendar Year">
@@ -30,8 +30,15 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Label Name="calendarYearLabel" Grid.Row="0" Grid.Column="0" Margin="5,30,0,0" Content="Calendar Year "
-                   Grid.RowSpan="1" FontSize="20" />
+            <StackPanel Orientation="Horizontal" Margin="0,20,0,10" HorizontalAlignment="Center" Grid.Row="0" Grid.RowSpan="1" Grid.ColumnSpan="4">
+                <Button Name="previousYearButton" Background="Transparent" BorderThickness="0" Padding="15" Click="previousYearButton_Click">
+                    <Path Stroke="Black" StrokeEndLineCap="Round" Data="M 0 8 L 6 4 M 0 8 L 6 12" />
+                </Button>
+                <Label Name="calendarYearLabel" Padding="10" FontSize="20" />
+                <Button Name="nextYearButton" Background="Transparent" BorderThickness="0" Padding="15" Click="nextYearButton_Click">
+                    <Path Stroke="Black" StrokeEndLineCap="Round" Data="M 8 8 L 2 4 M 8 8 L 2 12" />
+                </Button>
+            </StackPanel>
         </Grid>
     </Viewbox>
 </Page>

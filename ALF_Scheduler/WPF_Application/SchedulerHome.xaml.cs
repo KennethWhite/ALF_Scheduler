@@ -18,44 +18,17 @@ namespace WPF_Application
         private GridViewColumnHeader _lastHeaderClicked;
 
         /// <summary>
-        ///     This constructor initializes the overall application and data/database with the specified excel file path
-        ///     grabbed from the Open File Dialog Window in <see cref="App.OpenFile(Window, bool)" />
+        ///     This constructor initializes the main page - Scheduler Home.
         /// </summary>
-        /// <param name="path">The full path of the specified file to import.</param>
-        public SchedulerHome(string path)
+        public SchedulerHome()
         {
-            //string path) {
             InitializeComponent();
-            CalendarYearPage = new CalendarYear();
-
-            // TODO @KENNY import excel file
-            //            if (ExcelImporterExporter.LoadExcelFromFile(path, out XlApp, out XlWorkbook)) {
-            //                DbContext = new ApplicationDbContext(new Microsoft.EntityFrameworkCore.DbContextOptions<ApplicationDbContext>());
-            //                CreateFacilities();
-            //            }
-
-            // This is where the DataParser should parse into facility object and db
-
-            //List<Facility> items = FacilityService.FetchAll();
-            //var items = new List<Facility>(); //delete once I can do that ^
-
-            List<Facility> items = DataParser.FetchAll(path);
-
-            FacilityList.ItemsSource = items;
-            HelperMethods.DateSelection(items,
-                MonthlyCalendar); //delete this if you use the CreateFacilities method below
+            FacilityList.ItemsSource = App.Facilities;
+            HelperMethods.DateSelection(App.Facilities, MonthlyCalendar); //delete this if you use the CreateFacilities method below
 
             DetailsInit();
         }
-
-        public SchedulerHome()
-        {
-
-        }
-
-        private CalendarYear CalendarYearPage { get; }
-
-
+       
 //        public void ConfigureServices(IServiceCollection services)
 //        {
 //            services.AddScoped<FacilityService>();
@@ -199,7 +172,7 @@ namespace WPF_Application
         /// </summary>
         private void CalendarYearButton_Click(object sender, RoutedEventArgs e)
         {
-            HelperMethods.OpenCalendar(CalendarYearPage);
+            NavigationService.Navigate(App.CalendarYearPage);
         }
 
         /// <summary>

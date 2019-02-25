@@ -138,7 +138,7 @@ namespace WPF_Application
         /// </summary>
         private void Menu_YearView_Click(object sender, RoutedEventArgs e)
         {
-            //HelperMethods.OpenCalendar();
+            NavigationService.Navigate(App.CalendarYearPage);
         }
 
         /// <summary>

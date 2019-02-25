@@ -1,20 +1,12 @@
-﻿using System;
+﻿using ALF_Scheduler;
+using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
-using ALF_Scheduler.Models;
 
-namespace ALF_Scheduler
+namespace WPF_Application
 {
     internal class HelperMethods
     {
-        /// <summary>
-        ///     This is a helper method for navigating to the calendarYear page.
-        /// </summary>
-        public static void OpenCalendar(Page page)
-        {
-            page.NavigationService.Navigate(page);
-        }
-
         /// <summary>
         ///     This method adds each facility's proposed date (from the list of facilities given) into the calendar object.
         /// </summary>
@@ -22,11 +14,11 @@ namespace ALF_Scheduler
         /// <param name="month">The Calendar object the dates should be added to.</param>
         public static void DateSelection(List<Facility> facilities, Calendar month)
         {
-            foreach (var facility in facilities)
-            {
-                AddSelectedDates(facility, month);
-                AddBlackoutDates(facility, month);
-            }
+            //foreach (var facility in facilities)
+            //{
+            //    AddSelectedDates(facility, month);
+            //    AddBlackoutDates(facility, month);
+            //}
         }
 
         /// <summary>
