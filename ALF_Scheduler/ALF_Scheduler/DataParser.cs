@@ -40,16 +40,16 @@ namespace ALF_Scheduler
         {
             _facility = fac;
             _row = excelRow;
-            _facility.FacilityName = (string) _row.Value[0];
-            SetLicensee((string) _row.Value[1]);
-            _facility.Unit = _row.Value[2].ToString();
-            SetLicenseNumber(_row.Value[3].ToString());
-            _facility.ZipCode = _row.Value[4].ToString();
-            _facility.City = _row.Value[5].ToString();
-            _facility.AddInspection(CreateInspection(_row.Value[6].ToString()));
-            _facility.AddInspection(CreateInspection(_row.Value[7].ToString()));
-            _facility.LicensorList = _row.Value[13].ToString();
-            _facility.EnforcementNotes = _row.Value[14].ToString();
+            _facility.FacilityName = (string) (_row.Cells[1,1] as Range).Value2;
+            SetLicensee((string)(_row.Cells[1, 2] as Range).Value2);
+            _facility.Unit = (string)(_row.Cells[1, 3] as Range).Value2;
+            _facility.LicenseNumber = ((double)(_row.Cells[1, 4] as Range).Value2).ToString();
+            _facility.ZipCode = ((double)(_row.Cells[1, 5] as Range).Value2).ToString();
+            _facility.City = (string)(_row.Cells[1, 6] as Range).Value2;
+            _facility.AddInspection(CreateInspection((string)(_row.Cells[1, 7] as Range).Text));
+            _facility.AddInspection(CreateInspection((string)(_row.Cells[1, 8] as Range).Text));
+            _facility.LicensorList = (string)(_row.Cells[1, 14] as Range).Value2;
+            _facility.EnforcementNotes = (string)(_row.Cells[1, 15] as Range).Value2;
 
 
             return _facility;
@@ -89,7 +89,7 @@ namespace ALF_Scheduler
 
         private static Inspection CreateInspection(string date, string licensor = "", string code = "")
         {
-            var ret = new Inspection {InspectionDate = CreateDateTime(date)};
+            var ret = new Inspection { InspectionDate = DateTime.FromOADate(double.Parse(date)) };
             if (!string.IsNullOrEmpty(code)) ret.Code = Code.getCodeByName(code);
             ret.Licensor = licensor;
             return ret;
@@ -105,7 +105,7 @@ namespace ALF_Scheduler
         {
             if (licensee.Contains(","))
             {
-                var firstLast = licensee.Split(new[] {", "}, StringSplitOptions.RemoveEmptyEntries);
+                var firstLast = licensee.Split(new[] {","}, StringSplitOptions.RemoveEmptyEntries);
                 _facility.LicenseeLastName = firstLast[0];
                 _facility.LicenseeFirstName = firstLast[1];
             }
@@ -116,29 +116,6 @@ namespace ALF_Scheduler
         }
 
 
-        /// <summary>
-        ///     This method parses and assigns the facility's license number <paramref name="number" />.
-        /// </summary>
-        /// <param name="number">The facility's license number as a string.</param>
-        /// <exception cref="InvalidCastException">
-        ///     InvalidCastException thrown if the string cannot
-        ///     be converted to an int.
-        /// </exception>
-        private static void SetLicenseNumber(string number)
-        {
-            try
-            {
-                _facility.LicenseNumber = Convert.ToInt32(number);
-            }
-            catch (InvalidCastException e)
-            {
-                ErrorLogger.LogInfo("License number string was unable to be converted to an int. {0]", e);
-            }
-            catch (Exception e)
-            {
-                ErrorLogger.LogInfo($"{e.Message}", e);
-            }
-        }
 
         /// <summary>
         ///     This method parsed the number of <paramref name="beds" /> in the facility, or upon failure to parse defaults to

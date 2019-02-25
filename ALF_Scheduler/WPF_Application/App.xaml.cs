@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using ALF_Scheduler;
 using ALF_Scheduler.Domain.Models;
+using ALF_Scheduler.Utilities;
 using Excel_Import_Export;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Win32;
@@ -16,8 +17,9 @@ namespace WPF_Application
     /// </summary>
     public partial class App : Application {
 
-        public static Workbook XlWorkbook;
-        public static Microsoft.Office.Interop.Excel.Application XlApp;
+        public static Workbook XlWorkbook { get; set; }
+        public static Worksheet XlWorksheet { get; set; }
+        public static Microsoft.Office.Interop.Excel.Application XlApp { get; set; }
 
         public static ApplicationDbContext DbContext { get; set; }
         public static List<Facility> Facilities { get; set; }
@@ -50,6 +52,7 @@ namespace WPF_Application
                 if (onStartup) sender.Close();
                 mainWindow.Show();
             } else if (!onStartup) {
+                ExcelImporterExporter.CloseExcelApp(XlApp, XlWorkbook);
                 Environment.Exit(0);
             }
         }
@@ -59,39 +62,36 @@ namespace WPF_Application
         ///     grabbed from the Open File Dialog Window in <see cref="App.OpenFile(Window, bool)" />
         /// </summary>
         /// <param name="path">The full path of the specified file to import.</param>
-        public static void Init(string path) {
+        public static void Init(string path)
+        {
             CalendarYearPage = new CalendarYear();
 
-            if (ExcelImporterExporter.LoadExcelFromFile(path, out XlApp, out XlWorkbook)) {
-                //DbContext = new ApplicationDbContext(new Microsoft.EntityFrameworkCore.DbContextOptions<ApplicationDbContext>());
-                //CreateFacilities
+            Workbook xBook;
+            Microsoft.Office.Interop.Excel.Application xApp;
+            if (!ExcelImporterExporter.LoadExcelFromFile(path, out xApp, out xBook))
+            {
+                ErrorLogger.LogInfo($"Failed to load the file at {path}.");
             }
 
-            // This is where the DataParser should parse into facility object and db
+            XlWorkbook = xBook;
+            XlApp = xApp;
+            XlWorksheet = (Worksheet)XlWorkbook.Worksheets[1];
+            Facilities = new List<Facility>();
 
-            //Facilities = FacilityService.FetchAll();
-            Facilities = new List<Facility>(); //delete once I can do that ^
+            //This will cause Excel to clear formats in empty cells so the count is correct
+            XlWorksheet.Columns.ClearFormats();
+            XlWorksheet.Rows.ClearFormats();
 
-            //Facilities = DataParser.FetchAll(path);
+            int totalRows = XlWorksheet.UsedRange.Rows.Count;
+
+            //Excel objects are indexed starting at 1, and first row is the header
+            for (int index = 2; index < totalRows; index++)
+            {
+                Facilities.Add(DataParser.ParseFacility(XlWorksheet.UsedRange.Cells[index, 1] as Range));
+            }
+
         }
 
-        //        public void ConfigureServices(IServiceCollection services)
-        //        {
-        //            services.AddScoped<FacilityService>();
-        //            services.AddScoped<Inspection>();
-        //
-        //            var connection = new SqliteConnection("DataSource=:memory:");
-        //            connection.Open();
-        //            services.AddDbContext<ApplicationDbContext>(builder =>
-        //            {
-        //                builder.UseSqlite(connection);
-        //            });
-        //
-        //            //var dependencyContext = DependencyContext.Default;
-        //            //var assemblies = dependencyContext.RuntimeLibraries.SelectMany(lib =>
-        //            //    lib.GetDefaultAssemblyNames(dependencyContext)
-        //            //        .Where(a => a.Name.Contains("Scheduler")).Select(Assembly.Load)).ToArray();
-        //            //services.AddAutoMapper(assemblies);
-        //        }
+   
     }
 }

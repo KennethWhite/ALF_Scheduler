@@ -13,9 +13,8 @@ namespace ALF_Scheduler
 {
     public class Facility : Entity
     {
-        private int _LicenseNumber;
         private Inspection _previousFullInspection;
-        private List<Inspection> AllInspections { get; set; }
+        private List<Inspection> AllInspections { get; set; } = new List<Inspection>();
 
         /// <value>Gets the Facility name.</value>
         public string FacilityName { get; set; }
@@ -37,11 +36,7 @@ namespace ALF_Scheduler
         public string LicenseeLastName { get; set; }
 
         /// <value>Gets the license number.</value>
-        public int LicenseNumber
-        {
-            get => _LicenseNumber;
-            set => _LicenseNumber = Convert.ToInt32(value);
-        }
+        public string LicenseNumber { get; set; }
 
         /// <value>Gets the Facility's unit.</value>
         public string Unit { get; set; }
