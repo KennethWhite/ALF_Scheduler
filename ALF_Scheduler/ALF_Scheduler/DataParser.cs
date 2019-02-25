@@ -55,38 +55,6 @@ namespace ALF_Scheduler
             return _facility;
         }
 
-        public static List<Facility> FetchAll(string path)
-        {
-            Application xlApp;
-            Workbook xlWorkbook;
-
-            List<Facility> facList = new List<Facility>();
-
-            if (ExcelImporterExporter.LoadExcelFromFile(path, out xlApp, out xlWorkbook))
-            {
-                /* I cant figure out how this works, not even sure if the sheets command is the right one to use
-                Worksheet sheets = (Worksheet) xlWorkbook.Sheets[1]; //Excel isn't 0 based index, so have to use 1
-                Range r = (Range) sheets.Rows[1];
-                Facility f = ParseFacility(r);
-
-                bool skipHeader = true;
-                foreach (Range range in sheets.UsedRange)
-                {
-                    if (!skipHeader)
-                    {
-                        facList.Add(ParseFacility(range));
-                    }
-                    else
-                    {
-                        skipHeader = false;
-                    }
-                }
-                */
-            }
-
-            return facList;
-        }
-
         private static Inspection CreateInspection(string date, string licensor = "", string code = "")
         {
             var ret = new Inspection { InspectionDate = DateTime.FromOADate(double.Parse(date)) };
@@ -114,8 +82,6 @@ namespace ALF_Scheduler
                 _facility.LicenseeLastName = licensee;
             }
         }
-
-
 
         /// <summary>
         ///     This method parsed the number of <paramref name="beds" /> in the facility, or upon failure to parse defaults to
