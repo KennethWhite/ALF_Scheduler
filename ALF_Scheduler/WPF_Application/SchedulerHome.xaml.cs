@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using ALF_Scheduler;
 
 namespace WPF_Application
 {
@@ -28,56 +27,6 @@ namespace WPF_Application
 
             DetailsInit();
         }
-       
-//        public void ConfigureServices(IServiceCollection services)
-//        {
-//            services.AddScoped<FacilityService>();
-//            services.AddScoped<Inspection>();
-//
-//            var connection = new SqliteConnection("DataSource=:memory:");
-//            connection.Open();
-//            services.AddDbContext<ApplicationDbContext>(builder =>
-//            {
-//                builder.UseSqlite(connection);
-//            });
-//
-//            //var dependencyContext = DependencyContext.Default;
-//            //var assemblies = dependencyContext.RuntimeLibraries.SelectMany(lib =>
-//            //    lib.GetDefaultAssemblyNames(dependencyContext)
-//            //        .Where(a => a.Name.Contains("Scheduler")).Select(Assembly.Load)).ToArray();
-//            //services.AddAutoMapper(assemblies);
-//        }
-
-
-        //TODO @KENNY is this already dealt with in your new dataparser? This and next method was just my attempt, feel free to delete or change.
-        /// <summary>
-        /// This helper method creates facilities for each row in the excel file. 
-        /// </summary>
-        //private void CreateFacilities() {
-        //    Services.FacilityService facilityService = new Services.FacilityService(DbContext);
-        //    for (int row = 1; row < XlWorkbook.Worksheets.Count; row++) {
-        //        DataParser dp = new DataParser(new Facility());
-        //        int column = 0;
-        //        Excel.Worksheet item = XlWorkbook.Worksheets.Item[row];
-        //        dp.Name(item.Cells[row, column++]);
-        //        dp.Licensee(item.Cells[row, column++]);
-        //        dp.Unit(item.Cells[row, column++]);
-        //        dp.LicenseNumber(item.Cells[row, column++]);
-        //        dp.ZipCode(item.Cells[row, column++]);
-        //        dp.City(item.Cells[row, column++]);
-        //        dp.PreviousInspection(item.Cells[row, column++]);
-        //        dp.MostRecentInspection(item.Cells[row, column++]);
-        //        column++; column++; //don't need to parse intervals
-        //        dp.ProposedDate(item.Cells[row, column++]);
-        //        column++; column++; //don't need to parse 17th/18th month deadline
-        //        dp.LicensorList(item.Cells[row, column++]);
-        //        dp.InspectionResult(item.Cells[row, column++]);
-        //        dp.EnforcementNotes(item.Cells[row, column++]);
-        //        facilityService.AddOrUpdateFacility(dp.Facility);
-        //    }
-
-        //    HelperMethods.DateSelection(facilityService.FetchAll(), MonthlyCalendar);
-        //}
 
         /// <summary>
         ///     This method searches through the list of facilities displayed for the specific string provided by the user.
