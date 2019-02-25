@@ -12,7 +12,7 @@
         <Button x:Name="SearchButton" Content="Search" HorizontalAlignment="Left" Margin="651,46,0,0" VerticalAlignment="Top" Width="75" Click="SearchButton_Click"/>
         <TabControl HorizontalAlignment="Left" Height="285" Margin="50,90,0,0" VerticalAlignment="Top" Width="480" SelectionChanged="TabControl_SelectionChanged">
             <TabItem Name="TabItemFacilities" Header="Facilities" IsSelected="True">
-                <ListView Name="FacilityList">
+                <ListView Name="FacilityList" MouseDoubleClick="FacilityList_MouseDoubleClick">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Name" Width="140" DisplayMemberBinding="{Binding Name}"/>

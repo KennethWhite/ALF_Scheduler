@@ -19,16 +19,15 @@ namespace ALF_Scheduler
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window //
     {
-        Facility fac1;
+        List<Facility> items = new List<Facility>();
+        bool isDetailsTabBuilt = false;//bool used to make sure the Details tab only gets built once. Otherwise flicking between tabs causes it to rebuild over and over, making it unreadable.
 
         public MainWindow() {
             InitializeComponent();
-            List<Facility> items = new List<Facility>();
 
-            // TODO connect Facility DB for display
-            fac1 = new Facility();
+            Facility fac1 = new Facility();
             DataParser dp = new DataParser(fac1);
             dp.Name("Lakeland Adult Family Home");
             dp.Licensee("Mendez, Catherine");
@@ -62,7 +61,7 @@ namespace ALF_Scheduler
 
             FacilityList.ItemsSource = items;
             AddSelectedDates(items);
-            DetailsInit();
+            //DetailsInit();
         }
 
         /// <summary>
@@ -76,39 +75,67 @@ namespace ALF_Scheduler
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e) {
-            string facility = SearchText.Text;
-            // TODO search for facility based on text content ^ and open it in details page
+            string facilityToSearch = SearchText.Text;
+            int facilityIndexNumber = searchBar(facilityToSearch);
             TabItemDetails.IsSelected = true;
+            if(facilityIndexNumber != -1)//if the search results found something, then open deets tab.
+                OpenDetails(items[facilityIndexNumber]);
+
         }
 
-        // TODO formatting and add ability to scroll
-        private void DetailsInit() {
-            Grid grid = DetailsGrid;
-            grid.ColumnDefinitions.Add(new ColumnDefinition());
-            grid.ColumnDefinitions.Add(new ColumnDefinition());
-            string[] labelContent = { "Facility Name", "Name of Licensee", "License Number", "Unit", "City", "ZipCode", "Number Of Beds", "Most Recent Full Inspection",
+        //This method will accept a string to be compared to all the other facility objs in the total list. It will return the first index it can find that matches with the searched for text. If not found, it will return -1.
+        private int searchBar(string toSearch)
+        {          
+           for(int j = 0; j < items.Count; j++)
+            {
+                string[] facProperties = items[j].returnFacility(items[j]);
+                for(int i = 0; i < facProperties.Length; i++)
+                {
+                    if (facProperties[i] != null)
+                    {
+                        string toCheck = facProperties[i].ToUpper();
+                        if (toCheck.CompareTo(toSearch.ToUpper()) == 0)
+                            return j;//to get here means the search results found something.
+                    }                   
+                        
+                }
+            }
+            return -1;//to get here means the search results found nothing.
+        }
+        // TODO ability to scroll
+        private void DetailsInit()
+        {
+            if(isDetailsTabBuilt != true)
+            {
+                Grid grid = DetailsGrid;
+                grid.ColumnDefinitions.Add(new ColumnDefinition());
+                grid.ColumnDefinitions.Add(new ColumnDefinition());
+                string[] labelContent = { "Facility Name", "Name of Licensee", "License Number", "Unit", "City", "ZipCode", "Number Of Beds", "Most Recent Full Inspection",
                     "One Year Full Inspection", "Two Year Full Inspection", "Inspection Result", "Dates Of SOD", "Enforcement Notes", "Failed Follow Up", "Complaints",
                     "Proposed Date", "Schedule Interval", "Month 15", "Month 18", "Number Of Licensors", "Sample Size", "Special Info" };
-            
-            for (int x = 0; x < labelContent.Length; x++) {
-                RowDefinition rowDefinition = new RowDefinition();
-                rowDefinition.Height = GridLength.Auto;
-                grid.RowDefinitions.Add(rowDefinition);
-                Label label = new Label();
-                label.Content = labelContent[x];
-                
-                Grid.SetColumn(label, 0);
-                Grid.SetRow(label, x);
-                grid.Children.Add(label);
+
+                for (int x = 0; x < labelContent.Length; x++)
+                {
+                    RowDefinition rowDefinition = new RowDefinition();
+                    rowDefinition.Height = GridLength.Auto;
+                    grid.RowDefinitions.Add(rowDefinition);
+                    Label label = new Label();
+                    label.Content = labelContent[x];
+
+                    Grid.SetColumn(label, 0);
+                    Grid.SetRow(label, x);
+                    grid.Children.Add(label);
+                }
+
+                TabItemDetails.Content = grid;
+                isDetailsTabBuilt = true;
             }
             
-            TabItemDetails.Content = grid;
         }
 
-        private void OpenDetails()
+        private void OpenDetails(Facility facToShow)
         {
-            //TODO figure out how to pass in the Facility Object to be displayed on Details tab.
-            string[] facProperties = fac1.returnFacility(fac1);
+            string[] facProperties = facToShow.returnFacility(facToShow);
             for (int row = 0; row < DetailsGrid.RowDefinitions.Count; row++) {
                 TextBox textbox = new TextBox();
                 textbox.Height = 15;
@@ -126,13 +153,24 @@ namespace ALF_Scheduler
                 Console.WriteLine("tab control selection changed" + TabItemFacilities);
             } else if (TabItemDetails.IsSelected) {
                 Console.WriteLine("tab control selection changed" + TabItemDetails);
-                OpenDetails();
+                DetailsInit();
+                //OpenDetails();
             }
         }
 
         private void CalendarYearButton_Click(object sender, RoutedEventArgs e) {
             CalendarYear calendarYearPage = new CalendarYear();
             this.Content = calendarYearPage;
+        }
+
+        private void FacilityList_MouseDoubleClick(object sender, MouseButtonEventArgs e)//Can now double click one of the Facility ListView Items, to be displayed in Details tab.
+        {
+            if(FacilityList.HasItems)//makes sure somethings in the list first
+            {
+                Facility selectedFac = (Facility)FacilityList.SelectedItem;
+                TabItemDetails.IsSelected = true;
+                OpenDetails(selectedFac);
+            }
         }
     }
 }
