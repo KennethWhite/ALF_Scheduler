@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using ALF_Scheduler.Domain.Models;
 using ALF_Scheduler.Models;
 
@@ -132,6 +133,41 @@ namespace ALF_Scheduler
         public void AddInspection(Inspection toAdd)
         {
             AllInspections.Add(toAdd);
+        }
+
+        /// <summary>
+        /// returnFacility will return a List<object> of all of the passed in Facilitiy's values, except AddInspection, and NthPreviousInspection.
+        /// </summary>
+        /// <param name="fac"></param>
+        /// <returns></returns>
+        public List<object> returnFacility(Facility fac)
+        {
+            List<object> f = new List<object>();
+            f.Add(fac.AllInspections);
+            f.Add(fac.FacilityName);
+            f.Add(fac.NameOfLicensee);
+            f.Add(fac.LicenseNumber.ToString());
+            f.Add(fac.Unit);
+            f.Add(fac.City);
+            f.Add(fac.ZipCode);
+            f.Add(fac.NumberOfBeds.ToString());
+            f.Add(fac.MostRecentFullInspection);
+            f.Add(fac.PreviousFullInspection);
+            f.Add(fac.TwoYearFullInspection);
+            f.Add(fac.InspectionResult);
+            f.Add(fac.DatesOfSOD.ToShortDateString());
+            f.Add(fac.EnforcementNotes);
+            f.Add(fac.Complaints);
+            f.Add(fac.ProposedDate.ToShortDateString());
+            f.Add(fac.ScheduleInterval.ToString());
+            f.Add(fac.Month15.ToShortDateString());
+            f.Add(fac.Month18.ToShortDateString());
+            f.Add(fac.LicensorList);
+            f.Add(fac.SpecialInfo);
+            f.Add(fac.LastFullInspection());
+
+            return f;
+
         }
     }
 }

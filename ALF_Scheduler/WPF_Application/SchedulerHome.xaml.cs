@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ALF_Scheduler;
+using ALF_Scheduler.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
@@ -16,6 +18,9 @@ namespace WPF_Application
 
         private GridViewColumnHeader _lastHeaderClicked;
 
+        private bool isDetailTabBuilt = false; // checks if details tab has alredy been built or not.
+
+        Facility fac1 = new Facility();
         /// <summary>
         ///     This constructor initializes the Scheduler Home page.
         /// </summary>
@@ -24,8 +29,8 @@ namespace WPF_Application
             InitializeComponent();
             FacilityList.ItemsSource = App.Facilities;
             HelperMethods.DateSelection(MonthlyCalendar);
+            TabItemDetails = DetailsInit();
 
-            DetailsInit();
         }
 
         /// <summary>
@@ -33,50 +38,69 @@ namespace WPF_Application
         /// </summary>
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            var facility = SearchText.Text;
-            // TODO search for facility based on text content ^ and open it in details page
+            var toSearch = SearchText.Text;
+            Facility found = new Facility();//assign the found Facility here when found
             TabItemDetails.IsSelected = true;
+
         }
 
         /// <summary>
         ///     This method initializes the Details tab with Facility object property names.
         /// </summary>
-        private void DetailsInit()
+        private TabItem DetailsInit()
         {
-            var list = DetailsView;
-
-            string[] labelContent =
+            if(isDetailTabBuilt != true)
             {
+                //var list = DetailsView;
+                Grid grid = DetailsGrid;
+                grid.ColumnDefinitions.Add(new ColumnDefinition());
+                grid.ColumnDefinitions.Add(new ColumnDefinition());
+                string[] labelContent =
+                {
                 "Facility Name", "Name of Licensee", "License Number", "Unit", "City", "ZipCode", "Number Of Beds",
                 "Most Recent Full Inspection",
                 "Previous Year Full Inspection", "Two Year Full Inspection", "Inspection Result", "Dates Of SOD",
                 "Enforcement Notes", "Failed Follow Up", "Complaints",
                 "Proposed Date", "Schedule Interval", "Month 15", "Month 18", "Number Of Licensors", "Sample Size",
-                "Special Info"
-            };
+                "Special Info" };
 
-            for (var x = 0; x < labelContent.Length; x++)
-            {
-                var stack = new StackPanel();
-                stack.HorizontalAlignment = HorizontalAlignment.Stretch;
-                stack.Orientation = Orientation.Horizontal;
-                var label = CreateLabel(labelContent[x]);
-                stack.Children.Add(label);
-                label = CreateLabel("", 240, HorizontalAlignment.Right);
-                stack.Children.Add(label);
 
-                if (x == 0)
+                for (var x = 0; x < labelContent.Length; x++)
                 {
-                    var editButton = new Button();
-                    editButton.Content = "Edit Facility";
-                    editButton.Width = 70;
-                    stack.Children.Add(editButton);
+
+                    RowDefinition rowDefinition = new RowDefinition();
+                    rowDefinition.Height = GridLength.Auto;
+                    grid.RowDefinitions.Add(rowDefinition);
+                    Label label = new Label();
+                    label.Content = labelContent[x];
+
+                    Grid.SetColumn(label, 0);
+                    Grid.SetRow(label, x);
+                    grid.Children.Add(label);
+                    //var stack = new StackPanel();
+                    //stack.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    //stack.Orientation = Orientation.Horizontal;
+                    //var label = CreateLabel(labelContent[x]);
+                    //stack.Children.Add(label);
+                    //label = CreateLabel("", 240, HorizontalAlignment.Right);
+                    //stack.Children.Add(label);
+
+                    //if (x == 0)
+                    //{
+                    //    var editButton = new Button();
+                    //    editButton.Content = "Edit Facility";
+                    //    editButton.Width = 70;
+                    //    stack.Children.Add(editButton);
+                    //}
+
+                    //list.Items.Add(stack);
                 }
 
-                list.Items.Add(stack);
+                TabItemDetails.Content = grid;
+                isDetailTabBuilt = true;
+                return TabItemDetails;
             }
-
-            TabItemDetails.Content = list;
+            return TabItemDetails;
         }
 
         /// <summary>
@@ -101,9 +125,23 @@ namespace WPF_Application
         ///     This method gathers data from the selected facility in the ListView and displays it next to its respective property
         ///     label.
         /// </summary>
-        public void OpenDetails()
+        public void OpenDetails(//Facility facToShow) uncomment this when dataparser works, and there is data to be read. Won't work with a mock facility passed in right now.
+            )
         {
-            //TODO input specific facility info into the labels, needs to be accessible based on tab switch as well (see below)
+            //List<object> fac = facToShow.returnFacility(facToShow);
+            //object[] s = fac.ToArray();
+            for(int row = 0; row < DetailsGrid.RowDefinitions.Count; row++)
+            {
+                TextBox txt = new TextBox();
+                txt.Height = 15;
+                txt.IsReadOnly = true;
+
+                txt.Text = "lakewood";
+                Grid.SetColumn(txt, 1);
+                Grid.SetRow(txt, row);
+                DetailsGrid.Children.Add(txt);
+                
+            }
         }
 
         /// <summary>
@@ -111,9 +149,17 @@ namespace WPF_Application
         /// </summary>
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //if (TabItemDetails.IsSelected) {
-            //    OpenDetails(); //send specific facility based on what's selected
-            //} 
+            if (TabItemFacilities.IsSelected){
+                ; //had to temporariy do nothing here, otherwise it wouldn't run
+            }
+            else if(TabItemDetails.IsSelected)
+            {
+                if (isDetailTabBuilt != false)
+                    //OpenDetails(fac1);
+                    OpenDetails();
+                    
+            }
+
         }
 
         /// <summary>
@@ -129,6 +175,7 @@ namespace WPF_Application
         /// </summary>
         private void SubmitForm_Click(object sender, RoutedEventArgs e)
         {
+
         }
 
         private void ColumnHeader_Click(object sender, RoutedEventArgs e)
