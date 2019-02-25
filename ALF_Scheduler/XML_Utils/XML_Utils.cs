@@ -8,9 +8,31 @@ namespace XML_Utils
     public static class XML_Utils
     {
         /// <summary>
+        /// Should be run on program start. Creates neccessary files/folders for proper execution
+        /// </summary>
+        public static void CreateInitFolders()
+        {
+            //This must be run on program init
+            Directory.CreateDirectory(@".\import");
+            Directory.CreateDirectory(@".\export");
+            Directory.CreateDirectory(@".\default");
+            var defPath = @".\default\Default_Codes.xml";
+            if (!File.Exists(defPath)) CreateInitCodeXml(defPath);
+            try
+            {
+                //Basically checks if there is a settings file in .\default
+                GetConfigPathFromDir(@".\default", "settings");
+            }
+            catch (FileNotFoundException)
+            {
+                CreateGenericSettingsFile(@".\default");
+            }
+        }
+
+        /// <summary>
         /// Returns the preferred import directory. Default is .\import, otherwise gets from settings file
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns the preferred import directory.</returns>
         public static string GetImportDir()
         {
             try
@@ -33,7 +55,7 @@ namespace XML_Utils
         /// <summary>
         /// Returns the preferred export directory. Default is .\export, otherwise gets from settings file
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns the preferred export directory.</returns>
         public static string GetExportDir()
         {
             var settingsDoc = LoadSettingFile();
@@ -49,7 +71,8 @@ namespace XML_Utils
         /// <summary>
         /// Checks if settings file exists in default directory. If we choose to implement settings file, there will need to be a settings file here by default to at least point to custom import directories, to load imported settings.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Will return the default settings path if it exists.</returns>
+        /// <exception cref="FileNotFoundException">Throws exception if no default settings file exists.</exception>
         public static string DefaultSettingsFileExist()
         {
             try
@@ -63,9 +86,10 @@ namespace XML_Utils
         }
 
         /// <summary>
-        /// Gets a settings file from where ever one is located, either default directory, or from custom import dir
+        /// Gets a settings file from where ever one is located, either default directory, or from custom import directory.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns the settings file as an XDocument</returns>
+        /// <exception cref="FileNotFoundException">Throws exception if no root settings file in the default directory.</exception>
         public static XDocument LoadSettingFile()
         {
             var settingsPath = DefaultSettingsFileExist();
@@ -97,9 +121,10 @@ namespace XML_Utils
         /// <summary>
         /// Gets path of most recent config file given a directory to search and a type of config xml
         /// </summary>
-        /// <param name="directory"></param>
-        /// <param name="type"></param>
-        /// <returns></returns>
+        /// <param name="directory">Folder path to look for conifiguration file in.</param>
+        /// <param name="type">Type of configuration file to look for.</param>
+        /// <returns>Returns the path of specified configuration file.</returns>
+        /// <exception cref="FileNotFoundException">Throws exception if it could not find type of configuration file specified.</exception>
         public static string GetConfigPathFromDir(string directory, string type)
         {
             var files = Directory.GetFiles(directory, "*.xml", SearchOption.TopDirectoryOnly);
@@ -112,13 +137,13 @@ namespace XML_Utils
             }
 
             if (returnPath != null) return returnPath;
-            throw new FileNotFoundException("Could not find settings file in directory specified");
+            throw new FileNotFoundException("Could not find " + type + " file in directory specified");
         }
 
         /// <summary>
         /// Will load codes file from default path or if settings file contains a customImportDir, go to that dir and check if there is codes xml
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns the code file from either custom or default directory. Prefers custom directory.</returns>
         public static XDocument LoadCodeFile()
         {
             var importDir = GetImportDir();
@@ -151,9 +176,9 @@ namespace XML_Utils
         /// <summary>
         /// Returns the path of the string whose file was last written to.
         /// </summary>
-        /// <param name="current"></param>
-        /// <param name="toTest"></param>
-        /// <returns></returns>
+        /// <param name="current">Path containing the current most recent file.</param>
+        /// <param name="toTest">Path to file to see how it compares to current most recent file.</param>
+        /// <returns>Returns the path of the file that was last written to.</returns>
         private static string MostRecentFile(string current, string toTest)
         {
             if (current == null) return toTest;
@@ -166,31 +191,9 @@ namespace XML_Utils
         }
 
         /// <summary>
-        /// Should be run on program start. Creates neccessary files/folders for proper execution
-        /// </summary>
-        public static void CreateInitFolders()
-        {
-            //This must be run on program init
-            Directory.CreateDirectory(@".\import");
-            Directory.CreateDirectory(@".\export");
-            Directory.CreateDirectory(@".\default");
-            var defPath = @".\default\Default_Codes.xml";
-            if (!File.Exists(defPath)) CreateInitCodeXml(defPath);
-            try
-            {
-                //Basically checks if there is a settings file in .\default
-                GetConfigPathFromDir(@".\default", "settings");
-            }
-            catch (FileNotFoundException)
-            {
-                CreateGenericSettingsFile(@".\default");
-            }
-        }
-
-        /// <summary>
         /// Generates a settings file with no custom data in it
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Folder path to create an empty settings file.</param>
         public static void CreateGenericSettingsFile(string path)
         {
             var doc = new XDocument(
@@ -206,7 +209,7 @@ namespace XML_Utils
         /// <summary>
         /// Writes current application settings to folder, either given or default path. Can be given folder or .xml path.
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Path to export current application settings to. If given just a folder, will create a timestamped name.</param>
         public static void ExportCurrentSettings(string path)
         {
             var fileName = "Settings_Export_" + DateTime.Now + ".xml";
@@ -251,7 +254,7 @@ namespace XML_Utils
         /// <summary>
         /// Creates initial code definitons xml file to specified path
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Path to create default code file at. Needs to include a .xml file name.</param>
         public static void CreateInitCodeXml(string path)
         {
             var doc = new XDocument(
