@@ -33,7 +33,7 @@ namespace WPF_Application
         }
 
         /// <summary>
-        ///     This is a helper method for saving the file.
+        ///     This helper method opens a save file dialog for saving the file.
         /// </summary>
         private void SaveFile()
         {
@@ -50,6 +50,8 @@ namespace WPF_Application
                     dlg.FileName = "Document"; // Default file name
                     dlg.DefaultExt = ".xlsx"; // Default file extension
                     dlg.Filter = "Excel documents (.xlsx)|*.xlsx"; // Filter files by extension
+                    dlg.CheckFileExists = true;
+                    dlg.CheckPathExists = true;
 
                     // Show save file dialog box
                     var result = dlg.ShowDialog();
