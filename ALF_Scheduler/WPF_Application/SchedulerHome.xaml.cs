@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Input;
 
 namespace WPF_Application
 {
@@ -61,13 +62,10 @@ namespace WPF_Application
         {
             if(isDetailTabBuilt != true)
             {
-                //var list = DetailsView;
                 Grid grid = DetailsGrid;
                 grid.ColumnDefinitions.Add(new ColumnDefinition());
                 grid.ColumnDefinitions.Add(new ColumnDefinition());
                 
-
-
                 for (var x = 0; x < labelContent.Length; x++)
                 {
 
@@ -212,6 +210,16 @@ namespace WPF_Application
             var sd = new SortDescription(sortBy, direction);
             dataView.SortDescriptions.Add(sd);
             dataView.Refresh();
+        }
+
+        private void FacilityList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if(FacilityList.HasItems)
+            {
+                Facility selectedFac = (Facility)FacilityList.SelectedItem;
+                TabItemDetails.IsSelected = true;
+                OpenDetails(selectedFac);
+            }
         }
     }
 }

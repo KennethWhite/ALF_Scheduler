@@ -40,7 +40,7 @@
                         SelectionChanged="TabControl_SelectionChanged">
                 <TabItem Name="TabItemFacilities" Header="Facilities" IsSelected="True">
                     <ScrollViewer>
-                        <ListView Name="FacilityList" GridViewColumnHeader.Click="ColumnHeader_Click">
+                        <ListView Name="FacilityList" GridViewColumnHeader.Click="ColumnHeader_Click" MouseDoubleClick="FacilityList_MouseDoubleClick">
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="Name" Width="140"
