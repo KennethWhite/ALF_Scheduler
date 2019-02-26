@@ -40,26 +40,8 @@ namespace WPF_Application
         {
             InitializeComponent();
             FacilityList.ItemsSource = App.Facilities;
-            CreateGridView();
             HelperMethods.DateSelection(MonthlyCalendar);
             TabItemDetails = DetailsInit();
-        }
-
-        public void CreateGridView()
-        {
-            /*
-            <GridViewColumn Header="Name" Width="140" />
-            <GridViewColumn Header="Last Inspection" Width="100" />
-            <GridViewColumn Header="Result" Width="53" />
-            <GridViewColumn Header="Month Interval" Width="100" />
-            <GridViewColumn Header="Next Inspection" Width="103" />*/
-
-            //FacilityList.View = facilityGridView;
-            //g.Columns[0].DisplayMemberBinding = new Binding("FacilityName");
-            //g.Columns[1].DisplayMemberBinding = new Binding("MostRecentFullInspectionString");
-            //g.Columns[2].DisplayMemberBinding = new Binding("InspectionResult");
-            //g.Columns[3].DisplayMemberBinding = new Binding("ScheduleInterval");
-            //g.Columns[4].DisplayMemberBinding = new Binding("ProposedDateString");
         }
 
         /// <summary>

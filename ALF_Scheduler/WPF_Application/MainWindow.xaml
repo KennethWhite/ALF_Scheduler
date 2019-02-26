@@ -6,7 +6,7 @@
                   xmlns:local="clr-namespace:WPF_Application"
                   mc:Ignorable="d"
                   Closing="NavigationWindow_Closing"
-                  Title="ALF Scheduler" Height="750" Width="900">
+                  Title="ALF Scheduler" Height="750" Width="900" Source="SchedulerHome.xaml">
     <NavigationWindow.Content>
         <Grid>
             <Menu>
