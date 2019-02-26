@@ -10,22 +10,22 @@ namespace XML_Utils
         /// <summary>
         /// Should be run on program start. Creates neccessary files/folders for proper execution
         /// </summary>
-        public static void CreateInitFolders()
+        public static void Init()
         {
             //This must be run on program init
-            Directory.CreateDirectory(@".\import");
-            Directory.CreateDirectory(@".\export");
-            Directory.CreateDirectory(@".\default");
-            var defPath = @".\default\Default_Codes.xml";
+            Directory.CreateDirectory("./import");
+            Directory.CreateDirectory("./export");
+            Directory.CreateDirectory("./default");
+            var defPath = "./default/Default_Codes.xml";
             if (!File.Exists(defPath)) CreateInitCodeXml(defPath);
             try
             {
                 //Basically checks if there is a settings file in .\default
-                GetConfigPathFromDir(@".\default", "settings");
+                GetConfigPathFromDir("./default", "settings");
             }
             catch (FileNotFoundException)
             {
-                CreateGenericSettingsFile(@".\default");
+                CreateGenericSettingsFile("./default");
             }
         }
 
@@ -49,7 +49,7 @@ namespace XML_Utils
                 //No custom import directory exists
             }
 
-            return @".\import";
+            return "./import";
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace XML_Utils
                 if (importDir != null) return importDir;
             }
 
-            return @".\export";
+            return "./export";
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace XML_Utils
         {
             try
             {
-                return GetConfigPathFromDir(@".\default", "settings");
+                return GetConfigPathFromDir("./default", "settings");
             }
             catch (FileNotFoundException)
             {
@@ -104,7 +104,7 @@ namespace XML_Utils
                         var newPath = GetConfigPathFromDir(customImportDir, "settings");
                         return XDocument.Load(newPath);
                     }
-                    catch (FileNotFoundException e)
+                    catch (FileNotFoundException)
                     {
                         if (defSettings != null) return defSettings;
                     }
@@ -133,6 +133,9 @@ namespace XML_Utils
             {
                 var doc = XDocument.Load(filePath);
                 var docType = doc.Element("configuration")?.Attribute("type")?.ToString();
+                docType = docType.Replace("\"", "");
+                docType = docType.Replace("\\", "");
+                docType = docType.Remove(0, 5);
                 if (docType != null && docType.Equals(type)) returnPath = MostRecentFile(returnPath, filePath);
             }
 
@@ -162,7 +165,7 @@ namespace XML_Utils
             if (codePath == null)
                 try
                 {
-                    codePath = GetConfigPathFromDir(@".\default", "codes");
+                    codePath = GetConfigPathFromDir("./default", "codes");
                 }
                 catch (FileNotFoundException)
                 {
@@ -203,7 +206,7 @@ namespace XML_Utils
                 )
             );
 
-            doc.Save(path + @"\Default_Settings.xml");
+            doc.Save(path + "/Default_Settings.xml");
         }
 
         /// <summary>
@@ -230,10 +233,10 @@ namespace XML_Utils
                     //If path is just a dir
                     if (attr.HasFlag(FileAttributes.Directory))
                     {
-                        if (path.EndsWith(@"\"))
+                        if (path.EndsWith("/") || path.EndsWith("\\"))
                             doc.Save(path + fileName);
                         else
-                            doc.Save(path + @"\" + fileName);
+                            doc.Save(path + "/" + fileName);
                     }
 
                     //Check if is .xml path then save
@@ -241,14 +244,14 @@ namespace XML_Utils
                     if (ext.Equals(".xml", StringComparison.InvariantCultureIgnoreCase))
                         doc.Save(path);
                     else
-                        doc.Save(@".\export\" + fileName);
+                        doc.Save("./export/" + fileName);
                 }
                 catch (Exception)
                 {
-                    doc.Save(@".\export\" + fileName);
+                    doc.Save("./export/" + fileName);
                 }
             else
-                doc.Save(@".\export\" + fileName);
+                doc.Save("./export/" + fileName);
         }
 
         /// <summary>
