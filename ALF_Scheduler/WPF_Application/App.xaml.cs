@@ -38,17 +38,17 @@ namespace WPF_Application
             dlg.CheckFileExists = true;
             dlg.CheckPathExists = true;
 
-            // Show open file dialog box
-            var result = dlg.ShowDialog();
 
             // Process open file dialog box results
-            if (result == true) {
+            if (dlg.ShowDialog() == true) {
                 // Open document
                 var filename = dlg.FileName;
                 Init(filename);
 
                 var home = new SchedulerHome();
-                var mainWindow = new MainWindow();
+                var mainWindow = (MainWindow)sender;
+                mainWindow.Frame.Source = new Uri("pack://application:,,,/SchedulerHome.xaml");
+                
                 if (onStartup) sender.Close();
                 mainWindow.Show();
             } else if (!onStartup) {

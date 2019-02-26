@@ -38,8 +38,19 @@ namespace WPF_Application
         {
             InitializeComponent();
             FacilityList.ItemsSource = App.Facilities;
+            CreateGridView();
             HelperMethods.DateSelection(MonthlyCalendar);
             TabItemDetails = DetailsInit();
+        }
+
+        public void CreateGridView()
+        {
+            var g = FacilityList.View as GridView;
+            g.Columns[0].DisplayMemberBinding = new Binding("FacilityName");
+            g.Columns[1].DisplayMemberBinding = new Binding("LastFullInspection.InspectionDate");
+            g.Columns[2].DisplayMemberBinding = new Binding("InspectionResult");
+            g.Columns[3].DisplayMemberBinding = new Binding("ScheduleInterval");
+            g.Columns[4].DisplayMemberBinding = new Binding("ProposedDate");
         }
 
         /// <summary>
@@ -47,10 +58,12 @@ namespace WPF_Application
         /// </summary>
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            var toSearch = SearchText.Text;
-            Facility found = new Facility();//assign the found Facility here when found
-            TabItemDetails.IsSelected = true;
-
+            //var toSearch = SearchText.Text;
+            //if(App.Facilities.Contains())
+            //{
+                
+            //}
+            //TabItemDetails.IsSelected = true;
         }
 
         /// <summary>
@@ -60,25 +73,14 @@ namespace WPF_Application
         {
             if(isDetailTabBuilt != true)
             {
-                Grid grid = DetailsGrid;
-                grid.ColumnDefinitions.Add(new ColumnDefinition());
-                grid.ColumnDefinitions.Add(new ColumnDefinition());
-                
+                if (StackPanelInfo.Children.Count != 0) StackPanelInfo.Children.Clear();
                 for (var x = 0; x < labelContent.Length; x++)
                 {
-
-                    RowDefinition rowDefinition = new RowDefinition();
-                    rowDefinition.Height = GridLength.Auto;
-                    grid.RowDefinitions.Add(rowDefinition);
                     Label label = new Label();
                     label.Content = labelContent[x];
-
-                    Grid.SetColumn(label, 0);
-                    Grid.SetRow(label, x);
-                    grid.Children.Add(label);
+                    StackPanelLabels.Children.Add(label);
                 }
-
-                TabItemDetails.Content = grid;
+                
                 isDetailTabBuilt = true;
                 return TabItemDetails;
             }
@@ -114,13 +116,11 @@ namespace WPF_Application
             {
                 TextBox txt = new TextBox();
                 txt.Height = 20;
+                txt.Margin = new Thickness(0, 3, 0, 3);
                 txt.IsReadOnly = true;
-
-
+                
                 txt.Text = facProperties[row];
-                Grid.SetColumn(txt, 1);
-                Grid.SetRow(txt, row);
-                DetailsGrid.Children.Add(txt);
+                StackPanelInfo.Children.Add(txt);
             }
         }
 
@@ -129,8 +129,8 @@ namespace WPF_Application
         /// </summary>
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (TabItemFacilities.IsSelected){
-                ; //had to temporariy do nothing here, otherwise it wouldn't run
+            if (TabItemFacilities.IsSelected || TabItemInspectionResult.IsSelected){
+                if (StackPanelInfo != null) StackPanelInfo.Children.Clear();
             }
             else if(TabItemDetails.IsSelected)
             {

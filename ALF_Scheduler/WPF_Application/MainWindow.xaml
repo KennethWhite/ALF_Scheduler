@@ -6,7 +6,7 @@
                   xmlns:local="clr-namespace:WPF_Application"
                   mc:Ignorable="d"
                   Closing="NavigationWindow_Closing"
-                  Title="ALF Scheduler" Height="750" Width="850" Source="SchedulerHome.xaml">
+                  Title="ALF Scheduler" Height="750" Width="850">
     <NavigationWindow.Content>
         <Grid>
             <Menu>
@@ -21,7 +21,7 @@
                     <MenuItem Name="Menu_Filter" Header="_Filter" Click="Menu_Filter_Click" />
                 </MenuItem>
             </Menu>
-            <Frame Source="SchedulerHome.xaml" />
+            <Frame Name="Frame" />
         </Grid>
     </NavigationWindow.Content>
 </NavigationWindow>

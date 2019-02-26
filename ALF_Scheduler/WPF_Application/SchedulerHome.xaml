@@ -43,19 +43,11 @@
                         <ListView Name="FacilityList" GridViewColumnHeader.Click="ColumnHeader_Click" MouseDoubleClick="FacilityList_MouseDoubleClick">
                             <ListView.View>
                                 <GridView>
-                                    <GridViewColumn Header="Name" Width="140"
-                                                    DisplayMemberBinding="{Binding FacilityName}" />
-                                    <GridViewColumn Header="Last Inspection" Width="100"
-                                                    DisplayMemberBinding="{Binding MostRecentFullInspection}" />
-                                    <!--DisplayMemberBinding="{Binding MostRecentFullInspection}"/>-->
-                                    <GridViewColumn Header="Result" Width="53"
-                                                    DisplayMemberBinding="{Binding InspectionResult}" />
-                                    <GridViewColumn Header="Month Interval" Width="100"
-                                                    DisplayMemberBinding="{Binding Inspection}" />
-                                    <!--DisplayMemberBinding="{Binding ScheduleInterval}"/>-->
-                                    <GridViewColumn Header="Next Inspection" Width="103"
-                                                    DisplayMemberBinding="{Binding Inspection}" />
-                                    <!--DisplayMemberBinding="{Binding ProposedDate}"/>-->
+                                    <GridViewColumn Header="Name" Width="140" />
+                                    <GridViewColumn Header="Last Inspection" Width="100" />
+                                    <GridViewColumn Header="Result" Width="53" />
+                                    <GridViewColumn Header="Month Interval" Width="100" />
+                                    <GridViewColumn Header="Next Inspection" Width="103" />
                                 </GridView>
                             </ListView.View>
                         </ListView>
@@ -63,10 +55,17 @@
                 </TabItem>
                 <TabItem Name="TabItemDetails" Header="Details" Margin="-2,-2,-2,2">
                     <ScrollViewer VerticalScrollBarVisibility="Visible">
-                        <Grid Name="DetailsGrid" Margin="10"></Grid>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Name="StackPanelLabels" Width="250">
+                                
+                            </StackPanel>
+                            <StackPanel Name="StackPanelInfo" Width="250">
+                                
+                            </StackPanel>
+                        </StackPanel>
                     </ScrollViewer>
                 </TabItem>
-                <TabItem Name="InspectionResultPage" Header="Inspection Result Form" Height="22"
+                <TabItem Name="TabItemInspectionResult" Header="Inspection Result Form" Height="22"
                          VerticalAlignment="Top">
                     <Grid Margin="50,20,50,20">
                         <Grid.RowDefinitions>
