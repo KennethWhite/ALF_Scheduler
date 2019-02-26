@@ -1,7 +1,7 @@
 ﻿using System;
 using ALF_Scheduler.Models;
 
-namespace ALF_Scheduler.Domain.Models
+namespace ALF_Scheduler.Models
 {
     public class Inspection : Entity
     {

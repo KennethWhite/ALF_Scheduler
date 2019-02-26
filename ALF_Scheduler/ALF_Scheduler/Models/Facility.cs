@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ALF_Scheduler.Domain.Models;
-using ALF_Scheduler.Models;
 
 /// <summary>
 /// This class is used to store the metadata in properties for each facility.
 /// </summary>
 
-namespace ALF_Scheduler
+namespace ALF_Scheduler.Models
 {
     public class Facility : Entity
     {
@@ -52,6 +50,7 @@ namespace ALF_Scheduler
 
         /// <value>Gets the Facility's most recent full inspection information.</value>
         public Inspection MostRecentFullInspection => LastFullInspection();
+        public string MostRecentFullInspectionString => LastFullInspection().InspectionDate.ToShortDateString();
 
         /// <value>Gets the Facility's full inspection information from a year ago.</value>
         public Inspection PreviousFullInspection
@@ -85,6 +84,7 @@ namespace ALF_Scheduler
 
         /// <value>Gets the proposed inspection date.</value>
         public DateTime ProposedDate { get; set; }
+        public string ProposedDateString { get => ProposedDate.ToShortDateString(); }
 
         /// <value>Gets the time interval between the most recent inspection, and the proposed date.</value>
         /// <remarks>The difference in time is calculated by multiplying the difference in days by the average months in a year.</remarks>

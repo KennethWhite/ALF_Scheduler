@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Windows;
 using ALF_Scheduler;
-using ALF_Scheduler.Domain.Models;
 using ALF_Scheduler.Utilities;
 using Excel_Import_Export;
 using Microsoft.Office.Interop.Excel;
@@ -10,6 +9,7 @@ using Microsoft.Win32;
 using Application = System.Windows.Application;
 using Window = System.Windows.Window;
 using XML_Utils;
+using ALF_Scheduler.Models;
 
 namespace WPF_Application
 {
@@ -29,6 +29,7 @@ namespace WPF_Application
         private void Application_Startup(object sender, StartupEventArgs e) {
             XML_Utils.XML_Utils.Init(); //This needs to be run to set up initial code file and folders
             OpenFile(new MainWindow());
+            GenerateSchedule();
         }
 
         public static void OpenFile(Window sender, bool onStartup = false) {
@@ -94,6 +95,30 @@ namespace WPF_Application
 
         }
 
-   
+
+
+        /// <summary>
+        /// Triggers schedule generation for the facility list then loads them into the facility objects.
+        /// </summary>
+        private void GenerateSchedule()
+        {
+            ScheduleReturn schedule = ScheduleGeneration.ScheduleGeneration.GenerateSchedule(App.Facilities, 15.99);
+
+            foreach (KeyValuePair<Facility, DateTime> keyValue in schedule.FacilitySchedule)
+            {
+                try
+                {
+                    Facilities.Find(fac => fac.Equals(keyValue.Key)).ProposedDate = keyValue.Value;
+                }
+                catch (Exception notFound)
+                {
+                    ErrorLogger.LogInfo("Couldn't find matching facility in App.Facilities, thus ProposedDate could not be set.", notFound);
+                }
+            }
+
+            //MonthAvgLabel.Visibility = Visibility.Visible;
+            //MonthAvgVal.Visibility = Visibility.Visible;
+            //MonthAvgVal.Content = schedule.GlobalAvg;
+        }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using ALF_Scheduler.Domain.Models;
 using ALF_Scheduler.Models;
 using Microsoft.Office.Interop.Excel;
 using System.Collections.Generic;

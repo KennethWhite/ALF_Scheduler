@@ -1,7 +1,7 @@
 using ALF_Scheduler.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ALF_Scheduler.Domain.Models
+namespace ALF_Scheduler.Models
 {
     public class ApplicationDbContext : DbContext
     {

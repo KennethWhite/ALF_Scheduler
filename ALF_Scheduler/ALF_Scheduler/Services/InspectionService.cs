@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ALF_Scheduler.Domain.Models;
+using ALF_Scheduler.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ALF_Scheduler.Services

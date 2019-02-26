@@ -43,11 +43,11 @@
                         <ListView Name="FacilityList" GridViewColumnHeader.Click="ColumnHeader_Click" MouseDoubleClick="FacilityList_MouseDoubleClick">
                             <ListView.View>
                                 <GridView>
-                                    <GridViewColumn Header="Name" Width="140" />
-                                    <GridViewColumn Header="Last Inspection" Width="100" />
-                                    <GridViewColumn Header="Result" Width="53" />
-                                    <GridViewColumn Header="Month Interval" Width="100" />
-                                    <GridViewColumn Header="Next Inspection" Width="103" />
+                                    <GridViewColumn Header="Name" Width="140" DisplayMemberBinding="{Binding FacilityName}"/>
+                                    <GridViewColumn Header="Last Inspection" Width="100" DisplayMemberBinding="{Binding MostRecentFullInspectionString}"/>
+                                    <GridViewColumn Header="Result" Width="53" DisplayMemberBinding="{Binding InspectionResult}"/>
+                                    <GridViewColumn Header="Month Interval" Width="100" DisplayMemberBinding="{Binding ScheduleInterval}"/>
+                                    <GridViewColumn Header="Next Inspection" Width="103" DisplayMemberBinding="{Binding ProposedDateString}"/>
                                 </GridView>
                             </ListView.View>
                         </ListView>
@@ -99,9 +99,9 @@
                       VerticalAlignment="Top" Margin="547,160,0,0" />
             <Button Name="CalendarYearButton" Content="Whole Year" HorizontalAlignment="Left" Margin="547,333,0,0"
                     VerticalAlignment="Top" Width="75" Click="CalendarYearButton_Click" />
-            <Button Name="GenerateScheduleButton" Content="Generate Schedule" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="547,363,0,0" Width="115" Click="GenerateSchedule_Click" />
-            <Label Name="MonthAvgLabel" Content="Monthly average: " Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="547,383,0,0"/>
-            <Label Name="MonthAvgVal" Content="" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="645,383,0,0" />
+            <!--<Button Name="GenerateScheduleButton" Content="Generate Schedule" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="547,363,0,0" Width="115" />-->
+            <!--<Label Name="MonthAvgLabel" Content="Monthly average: " Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="547,383,0,0"/>-->
+            <!--<Label Name="MonthAvgVal" Content="" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="645,383,0,0" />-->
         </Grid>
     </Viewbox>
 </Page>

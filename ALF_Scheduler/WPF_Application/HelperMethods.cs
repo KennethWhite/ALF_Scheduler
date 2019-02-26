@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
+using ALF_Scheduler.Models;
 
 namespace WPF_Application
 {

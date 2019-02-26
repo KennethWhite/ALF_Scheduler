@@ -47,12 +47,19 @@ namespace WPF_Application
 
         public void CreateGridView()
         {
-            var g = FacilityList.View as GridView;
-            g.Columns[0].DisplayMemberBinding = new Binding("FacilityName");
-            g.Columns[1].DisplayMemberBinding = new Binding("LastFullInspection.InspectionDate");
-            g.Columns[2].DisplayMemberBinding = new Binding("InspectionResult");
-            g.Columns[3].DisplayMemberBinding = new Binding("ScheduleInterval");
-            g.Columns[4].DisplayMemberBinding = new Binding("ProposedDate");
+            /*
+            <GridViewColumn Header="Name" Width="140" />
+            <GridViewColumn Header="Last Inspection" Width="100" />
+            <GridViewColumn Header="Result" Width="53" />
+            <GridViewColumn Header="Month Interval" Width="100" />
+            <GridViewColumn Header="Next Inspection" Width="103" />*/
+
+            //FacilityList.View = facilityGridView;
+            //g.Columns[0].DisplayMemberBinding = new Binding("FacilityName");
+            //g.Columns[1].DisplayMemberBinding = new Binding("MostRecentFullInspectionString");
+            //g.Columns[2].DisplayMemberBinding = new Binding("InspectionResult");
+            //g.Columns[3].DisplayMemberBinding = new Binding("ScheduleInterval");
+            //g.Columns[4].DisplayMemberBinding = new Binding("ProposedDateString");
         }
 
         /// <summary>
@@ -152,30 +159,6 @@ namespace WPF_Application
         }
 
         /// <summary>
-        /// Triggers schedule generation for the facility list then loads them into the facility objects.
-        /// </summary>
-        private void GenerateSchedule_Click(object sender, RoutedEventArgs e)
-        {
-            ScheduleReturn schedule = ScheduleGeneration.ScheduleGeneration.GenerateSchedule(App.Facilities, 15.99);
-
-            foreach (KeyValuePair<Facility,DateTime> keyValue in schedule.FacilitySchedule)
-            {
-                try
-                {
-                    App.Facilities.Find(fac => fac.Equals(keyValue.Key)).ProposedDate = keyValue.Value;
-                }
-                catch (Exception notFound)
-                {
-                    ErrorLogger.LogInfo("Couldn't find matching facility in App.Facilities, thus ProposedDate could not be set.", notFound);
-                }
-            }
-
-            MonthAvgLabel.Visibility = Visibility.Visible;
-            MonthAvgVal.Visibility = Visibility.Visible;
-            MonthAvgVal.Content = schedule.GlobalAvg;
-        }
-
-        /// <summary>
         ///     This click event will update the specified facility's most recent inspection information.
         /// </summary>
 
@@ -237,6 +220,7 @@ namespace WPF_Application
             if(FacilityList.HasItems)
             { 
                 TabItemDetails.IsSelected = true;
+                StackPanelInfo.Children.Clear();
                 OpenDetails((Facility)FacilityList.SelectedItem);
             }
         }
