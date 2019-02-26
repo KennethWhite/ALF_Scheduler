@@ -121,7 +121,7 @@ namespace ALF_Scheduler
         {
             if (!AllInspections.Any()) throw new InvalidOperationException("Facility List is Empty");
             var sortList = AllInspections;
-            sortList.Sort((i1, i2) => i1.InspectionDate.CompareTo(i2.InspectionDate));
+            sortList.Sort((i1, i2) => i2.InspectionDate.CompareTo(i1.InspectionDate));
             return sortList.ElementAt(n);
         }
 

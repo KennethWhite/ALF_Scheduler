@@ -48,6 +48,10 @@ namespace ALF_Scheduler.Models
 
         public static Code getCodeByName(string name)
         {
+            if (CodesList == null || !CodesList.Any())
+            {
+                getCodes();
+            }
             var codes =
                 (from code in CodesList
                     where code.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase)

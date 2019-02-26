@@ -1,5 +1,4 @@
 ﻿using ALF_Scheduler;
-using ALF_Scheduler.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,6 +7,9 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Linq;
 using System.Reflection;
+using ALF_Scheduler.Models;
+using ScheduleGeneration;
+using ALF_Scheduler.Utilities;
 using System.Windows.Input;
 
 namespace WPF_Application
@@ -147,6 +149,30 @@ namespace WPF_Application
         private void CalendarYearButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(App.CalendarYearPage);
+        }
+
+        /// <summary>
+        /// Triggers schedule generation for the facility list then loads them into the facility objects.
+        /// </summary>
+        private void GenerateSchedule_Click(object sender, RoutedEventArgs e)
+        {
+            ScheduleReturn schedule = ScheduleGeneration.ScheduleGeneration.GenerateSchedule(App.Facilities, 15.99);
+
+            foreach (KeyValuePair<Facility,DateTime> keyValue in schedule.FacilitySchedule)
+            {
+                try
+                {
+                    App.Facilities.Find(fac => fac.Equals(keyValue.Key)).ProposedDate = keyValue.Value;
+                }
+                catch (Exception notFound)
+                {
+                    ErrorLogger.LogInfo("Couldn't find matching facility in App.Facilities, thus ProposedDate could not be set.", notFound);
+                }
+            }
+
+            MonthAvgLabel.Visibility = Visibility.Visible;
+            MonthAvgVal.Visibility = Visibility.Visible;
+            MonthAvgVal.Content = schedule.GlobalAvg;
         }
 
         /// <summary>

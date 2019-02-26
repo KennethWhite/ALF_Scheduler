@@ -124,9 +124,17 @@
       <Project>{462f8e07-16c9-413c-a800-141d6ac3f741}</Project>
       <Name>Excel_Import_Export</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Schedule_Algorithm\Schedule_Algorithm.csproj">
+      <Project>{fa780254-dc8f-4f37-82af-0f51b4ca9bba}</Project>
+      <Name>Schedule_Algorithm</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UtilityLibrary\UtilityLibrary.csproj">
       <Project>{cefff79d-2b84-4a97-8350-2398bf37da45}</Project>
       <Name>UtilityLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XML_Utils\XML_Utils.csproj">
+      <Project>{75563ebe-f227-48bf-8e17-69145c2087df}</Project>
+      <Name>XML_Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
