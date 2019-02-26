@@ -141,16 +141,17 @@ namespace WPF_Application
         /// <summary>
         ///     This method handles the user clicking the Year button in the menu.
         /// </summary>
-        private void Menu_YearView_Click(object sender, RoutedEventArgs e)
+        private void Menu_HomeView_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(App.CalendarYearPage);
+            NavigationService.Navigate(App.HomePage);
         }
 
         /// <summary>
-        ///     This method handles the user clicking the Filter button in the menu.
+        ///     This method handles the user clicking the Year button in the menu.
         /// </summary>
-        private void Menu_Filter_Click(object sender, RoutedEventArgs e)
+        private void Menu_YearView_Click(object sender, RoutedEventArgs e)
         {
+            NavigationService.Navigate(App.CalendarYearPage);
         }
     }
 }

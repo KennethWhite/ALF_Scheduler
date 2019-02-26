@@ -30,20 +30,20 @@
 
     <Viewbox>
         <Grid>
-            <Label Content="Assisted Living Facilities" HorizontalAlignment="Left" Margin="15,80,0,550" Height="35"
+            <Label Content="Assisted Living Facilities" HorizontalAlignment="Left" Margin="5,80,0,550" Height="35"
                    Width="240" FontSize="16" />
-            <TextBox x:Name="SearchText" HorizontalAlignment="Left" Height="20" Margin="510,97,0,0" TextWrapping="Wrap"
+            <TextBox x:Name="SearchText" HorizontalAlignment="Left" Height="20" Margin="570,97,0,0" TextWrapping="Wrap"
                      VerticalAlignment="Top" Width="130" Opacity="0.5" />
-            <Button x:Name="SearchButton" Content="Search" HorizontalAlignment="Left" Margin="651,96,0,0"
+            <Button x:Name="SearchButton" Content="Search" HorizontalAlignment="Left" Margin="711,96,0,0"
                     VerticalAlignment="Top" Width="75" Click="SearchButton_Click" IsDefault="true"/>
-            <TabControl HorizontalAlignment="Left" Height="400" Margin="15,140,0,0" VerticalAlignment="Top" Width="525"
+            <TabControl HorizontalAlignment="Left" Height="400" Margin="5,140,0,0" VerticalAlignment="Top" Width="585"
                         SelectionChanged="TabControl_SelectionChanged">
                 <TabItem Name="TabItemFacilities" Header="Facilities" IsSelected="True">
                     <ScrollViewer>
                         <ListView Name="FacilityList" GridViewColumnHeader.Click="ColumnHeader_Click" MouseDoubleClick="FacilityList_MouseDoubleClick">
                             <ListView.View>
                                 <GridView>
-                                    <GridViewColumn Header="Name" Width="140" DisplayMemberBinding="{Binding FacilityName}"/>
+                                    <GridViewColumn Header="Name" Width="200" DisplayMemberBinding="{Binding FacilityName}"/>
                                     <GridViewColumn Header="Last Inspection" Width="100" DisplayMemberBinding="{Binding MostRecentFullInspectionString}"/>
                                     <GridViewColumn Header="Result" Width="53" DisplayMemberBinding="{Binding InspectionResult}"/>
                                     <GridViewColumn Header="Month Interval" Width="100" DisplayMemberBinding="{Binding ScheduleInterval}"/>
@@ -96,8 +96,8 @@
                 </TabItem>
             </TabControl>
             <Calendar Name="MonthlyCalendar" SelectionMode="MultipleRange" HorizontalAlignment="Left"
-                      VerticalAlignment="Top" Margin="547,160,0,0" />
-            <Button Name="CalendarYearButton" Content="Whole Year" HorizontalAlignment="Left" Margin="547,333,0,0"
+                      VerticalAlignment="Top" Margin="607,160,0,0" />
+            <Button Name="CalendarYearButton" Content="Whole Year" HorizontalAlignment="Left" Margin="607,333,0,0"
                     VerticalAlignment="Top" Width="75" Click="CalendarYearButton_Click" />
             <!--<Button Name="GenerateScheduleButton" Content="Generate Schedule" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="547,363,0,0" Width="115" />-->
             <!--<Label Name="MonthAvgLabel" Content="Monthly average: " Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="547,383,0,0"/>-->

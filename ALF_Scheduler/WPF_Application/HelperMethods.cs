@@ -28,7 +28,7 @@ namespace WPF_Application
         /// <param name="month">The Calendar object the date should be added to.</param>
         public static void AddSelectedDates(Facility facility, Calendar month)
         {
-            month.SelectedDates.Add(DateTime.Parse(facility.ProposedDate.ToString()));
+            month.SelectedDates.Add(DateTime.Parse(facility.ProposedDateString));
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace WPF_Application
         public static void AddBlackoutDates(Facility facility, Calendar month)
         {
             month.BlackoutDates.Add(
-                new CalendarDateRange(DateTime.Parse(facility.MostRecentFullInspection.ToString())));
+                new CalendarDateRange(DateTime.Parse(facility.MostRecentFullInspectionString)));
         }
     }
 }

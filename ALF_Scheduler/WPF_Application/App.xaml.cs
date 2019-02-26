@@ -25,6 +25,7 @@ namespace WPF_Application
         public static ApplicationDbContext DbContext { get; set; }
         public static List<Facility> Facilities { get; set; }
         public static CalendarYear CalendarYearPage { get; set; }
+        public static SchedulerHome HomePage { get; set; }
 
         private void Application_Startup(object sender, StartupEventArgs e) {
             XML_Utils.XML_Utils.Init(); //This needs to be run to set up initial code file and folders
@@ -48,7 +49,7 @@ namespace WPF_Application
                 var filename = dlg.FileName;
                 Init(filename);
 
-                var home = new SchedulerHome();
+                HomePage = new SchedulerHome();
                 var mainWindow = (MainWindow)sender;
                 mainWindow.Frame.Source = new Uri("pack://application:,,,/SchedulerHome.xaml");
                 
