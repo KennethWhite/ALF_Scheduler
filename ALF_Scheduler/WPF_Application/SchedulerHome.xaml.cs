@@ -31,7 +31,6 @@ namespace WPF_Application
                 "Enforcement Notes", "Complaints",
                 "Proposed Date", "Schedule Interval", "Month 15", "Month 18",
                 "Special Info" };
-        Facility fac1 = new Facility();
         /// <summary>
         ///     This constructor initializes the Scheduler Home page.
         /// </summary>
@@ -41,7 +40,6 @@ namespace WPF_Application
             FacilityList.ItemsSource = App.Facilities;
             HelperMethods.DateSelection(MonthlyCalendar);
             TabItemDetails = DetailsInit();
-
         }
 
         /// <summary>
@@ -154,10 +152,6 @@ namespace WPF_Application
         /// <summary>
         ///     This click event will update the specified facility's most recent inspection information.
         /// </summary>
-        private void SubmitForm_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void ColumnHeader_Click(object sender, RoutedEventArgs e)
         {
@@ -215,11 +209,15 @@ namespace WPF_Application
         private void FacilityList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if(FacilityList.HasItems)
-            {
-                Facility selectedFac = (Facility)FacilityList.SelectedItem;
+            { 
                 TabItemDetails.IsSelected = true;
-                OpenDetails(selectedFac);
+                OpenDetails((Facility)FacilityList.SelectedItem);
             }
+        }
+
+        private void SubmitForm_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
