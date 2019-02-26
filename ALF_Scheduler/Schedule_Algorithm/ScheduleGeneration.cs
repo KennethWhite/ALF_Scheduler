@@ -26,6 +26,11 @@ namespace ScheduleGeneration
                 var date_lastInspection = lastInspec.InspectionDate;
                 var code_lastInspection = lastInspec.Code;
 
+                if (lastInspec == null || date_lastInspection == null || code_lastInspection == null)
+                {
+                    goto EndOfLoop;
+                }
+
                 NextInspectionDate newNextInspection;
 
                 if (offsetMonths < 0.01 && offsetMonths > -0.01)
@@ -53,6 +58,7 @@ namespace ScheduleGeneration
 
                 var curAvg = Math.Round(curSum / curSize, 2);
                 offsetMonths = Math.Round(curAvg - desiredAvg, 2);
+                EndOfLoop: ;
             }
 
             var size = months.Count;

@@ -47,9 +47,10 @@ namespace ALF_Scheduler
             _facility.ZipCode = ((double)(_row.Cells[1, 5] as Range).Value2).ToString();
             _facility.City = (string)(_row.Cells[1, 6] as Range).Value2;
             _facility.AddInspection(CreateInspection((string)(_row.Cells[1, 7] as Range).Text));
-            _facility.AddInspection(CreateInspection((string)(_row.Cells[1, 8] as Range).Text));
-            _facility.LicensorList = (string)(_row.Cells[1, 14] as Range).Value2;
             _facility.EnforcementNotes = (string)(_row.Cells[1, 15] as Range).Value2;
+            _facility.AddInspection(CreateInspection((string)(_row.Cells[1, 8] as Range).Text, null, _facility.EnforcementNotes));
+            _facility.LicensorList = (string)(_row.Cells[1, 14] as Range).Value2;
+            
 
 
             return _facility;

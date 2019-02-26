@@ -9,6 +9,7 @@ using Microsoft.Office.Interop.Excel;
 using Microsoft.Win32;
 using Application = System.Windows.Application;
 using Window = System.Windows.Window;
+using XML_Utils;
 
 namespace WPF_Application
 {
@@ -26,6 +27,7 @@ namespace WPF_Application
         public static CalendarYear CalendarYearPage { get; set; }
 
         private void Application_Startup(object sender, StartupEventArgs e) {
+            XML_Utils.XML_Utils.Init(); //This needs to be run to set up initial code file and folders
             OpenFile(new MainWindow());
         }
 
