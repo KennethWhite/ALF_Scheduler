@@ -10,6 +10,7 @@ using System.Reflection;
 using ALF_Scheduler.Models;
 using ScheduleGeneration;
 using ALF_Scheduler.Utilities;
+using System.Windows.Input;
 
 namespace WPF_Application
 {
@@ -32,7 +33,6 @@ namespace WPF_Application
                 "Enforcement Notes", "Complaints",
                 "Proposed Date", "Schedule Interval", "Month 15", "Month 18",
                 "Special Info" };
-        Facility fac1 = new Facility();
         /// <summary>
         ///     This constructor initializes the Scheduler Home page.
         /// </summary>
@@ -42,7 +42,6 @@ namespace WPF_Application
             FacilityList.ItemsSource = App.Facilities;
             HelperMethods.DateSelection(MonthlyCalendar);
             TabItemDetails = DetailsInit();
-
         }
 
         /// <summary>
@@ -63,13 +62,10 @@ namespace WPF_Application
         {
             if(isDetailTabBuilt != true)
             {
-                //var list = DetailsView;
                 Grid grid = DetailsGrid;
                 grid.ColumnDefinitions.Add(new ColumnDefinition());
                 grid.ColumnDefinitions.Add(new ColumnDefinition());
                 
-
-
                 for (var x = 0; x < labelContent.Length; x++)
                 {
 
@@ -182,10 +178,6 @@ namespace WPF_Application
         /// <summary>
         ///     This click event will update the specified facility's most recent inspection information.
         /// </summary>
-        private void SubmitForm_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void ColumnHeader_Click(object sender, RoutedEventArgs e)
         {
@@ -238,6 +230,20 @@ namespace WPF_Application
             var sd = new SortDescription(sortBy, direction);
             dataView.SortDescriptions.Add(sd);
             dataView.Refresh();
+        }
+
+        private void FacilityList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if(FacilityList.HasItems)
+            { 
+                TabItemDetails.IsSelected = true;
+                OpenDetails((Facility)FacilityList.SelectedItem);
+            }
+        }
+
+        private void SubmitForm_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
