@@ -161,6 +161,7 @@ namespace WPF_Application
                 if (_detailsChanged)
                 {
                     DetailsSubmitButton.Visibility = Visibility.Hidden;
+                    DetailsRevertButton.Visibility = Visibility.Hidden;
                     _detailsChanged = false;
                 }
             }
