@@ -135,7 +135,7 @@ namespace ALF_Scheduler.Models
         /// </summary>
         /// <param name="fac"></param>
         /// <returns></returns>
-        public List<string> returnFacility(Facility fac)
+        public static List<string> returnFacility(Facility fac)
         {
             List<string> f = new List<string>();
 
@@ -166,6 +166,16 @@ namespace ALF_Scheduler.Models
             return f;
 
         }
+
+        /// <summary>
+        /// returnFacility will return a List<string> of all of the Facilitiy's values, except AddInspection, and NthPreviousInspection.
+        /// </summary>
+        public List<string> returnFacility()
+        {
+            return returnFacility(this);
+        }
+
+
         private string ListToString(List<Inspection> theList)
         {
             if(theList.Count == 0)

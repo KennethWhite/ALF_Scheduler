@@ -59,12 +59,30 @@ namespace WPF_Application
         /// </summary>
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            //var toSearch = SearchText.Text;
-            //if(App.Facilities.Contains())
-            //{
-                
-            //}
-            //TabItemDetails.IsSelected = true;
+            ResetSearchButton.Visibility = Visibility.Visible;
+
+            var keyword = SearchText.Text.ToUpper();
+
+            List<Facility> tempList = new List<Facility>();
+
+            foreach (Facility fac in App.Facilities)
+            {
+                var datastr = "";
+                foreach (var data in fac.returnFacility())
+                {
+                    datastr += data + ";";
+                }
+                if (datastr.ToUpper().Contains(keyword)) tempList.Add(fac);
+            }
+
+            FacilityList.ItemsSource = tempList;
+        }
+
+        private void ResetSearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            ResetSearchButton.Visibility = Visibility.Hidden;
+            FacilityList.ItemsSource = App.Facilities;
+            SearchText.Text = null;
         }
 
         /// <summary>
@@ -94,7 +112,7 @@ namespace WPF_Application
         /// </summary>
         public void OpenDetails(Facility facToShow)
         {
-            List<string> facProperties = facToShow.returnFacility(facToShow);
+            List<string> facProperties = facToShow.returnFacility();
             for(int row = 0; row < labelContent.Length; row++)
             {
                 TextBox txt = new TextBox();
