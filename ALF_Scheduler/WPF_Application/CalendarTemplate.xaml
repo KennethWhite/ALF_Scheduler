@@ -153,7 +153,7 @@
                      RadiusY="1"
                      Opacity="0">
                             <Rectangle.Fill>
-                                <SolidColorBrush Color="{DynamicResource SelectedBackgroundColor}" />
+                                <SolidColorBrush Color="{DynamicResource SelectedUnfocusedColor}" />
                             </Rectangle.Fill>
                         </Rectangle>
                         <Rectangle x:Name="SelectedBackground"
@@ -624,25 +624,25 @@
           Value="{StaticResource CalendarItemStyle}" />
         <Setter Property="Foreground"
           Value="#FF333333" />
-        <Setter Property="Background">
+        <!--<Setter Property="Background">
             <Setter.Value>
                 <LinearGradientBrush EndPoint="0.5,1"
                            StartPoint="0.5,0">
 
-                    <!--The first two gradient stops specifies the background for 
-            the calendar's heading and navigation buttons.-->
+                    --><!--The first two gradient stops specifies the background for 
+            the calendar's heading and navigation buttons.--><!--
                     <GradientStop Color="{DynamicResource HeaderTopColor}"
                       Offset="0" />
                     <GradientStop Color="{DynamicResource ControlMediumColor}"
                       Offset="0.16" />
 
-                    <!--The next gradient stop specifies the background for 
-            the calendar area.-->
+                    --><!--The next gradient stop specifies the background for 
+            the calendar area.--><!--
                     <GradientStop Color="{DynamicResource ControlLightColor}"
                       Offset="0.16" />
                 </LinearGradientBrush>
             </Setter.Value>
-        </Setter>
+        </Setter>-->
         <Setter Property="BorderBrush">
             <Setter.Value>
                 <LinearGradientBrush EndPoint="0,1"
@@ -685,7 +685,7 @@
     <Color x:Key="SelectedUnfocusedColor">#FFDDDDDD</Color>
 
     <Color x:Key="ControlLightColor">White</Color>
-    <Color x:Key="ControlMediumColor">#ccc</Color>
+    <Color x:Key="ControlMediumColor">#FF7381F9</Color>
     <Color x:Key="ControlDarkColor">#FF211AA9</Color>
 
     <Color x:Key="ControlMouseOverColor">#FF3843C4</Color>
@@ -709,7 +709,7 @@
     <Color x:Key="DefaultBorderBrushDarkColor">Black</Color>
 
     <!--Control-specific resources.-->
-    <Color x:Key="HeaderTopColor">#ccc</Color>
+    <Color x:Key="HeaderTopColor">#FFC5CBF9</Color>
     <Color x:Key="DatagridCurrentCellBorderColor">Black</Color>
     <Color x:Key="SliderTrackDarkColor">#FFC5CBF9</Color>
 
