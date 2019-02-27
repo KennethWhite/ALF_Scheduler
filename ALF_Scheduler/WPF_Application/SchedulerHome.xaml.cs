@@ -49,6 +49,7 @@ namespace WPF_Application
             HelperMethods.DateSelection(MonthlyCalendar);
             TabItemDetails = DetailsInit();
             InspectionResultFormInit();
+            FacilityList.LostFocus += (s, e) => FacilityList.SelectedItem = null;
         }
 
         private void InspectionResultFormInit()
@@ -162,6 +163,7 @@ namespace WPF_Application
             Brush green = new SolidColorBrush(Color.FromArgb(90, 0, 255, 0));
             txt.Background = green;
             DetailsSubmitButton.Visibility = Visibility.Visible;
+            DetailsRevertButton.Visibility = Visibility.Visible;
         }
 
         /// <summary>
@@ -213,7 +215,12 @@ namespace WPF_Application
                         if (_lastDirection == ListSortDirection.Ascending)
                             direction = ListSortDirection.Descending;
                         else
-                            direction = ListSortDirection.Ascending;
+                        {
+                            CollectionViewSource.GetDefaultView(FacilityList.ItemsSource).SortDescriptions.Clear();
+                            _lastHeaderClicked.Column.HeaderTemplate = null;
+                            _lastHeaderClicked = null;
+                            return;
+                        }
                     }
 
                     var columnBinding = headerClicked.Column.DisplayMemberBinding as Binding;
@@ -258,10 +265,14 @@ namespace WPF_Application
         {
             if(FacilityList.HasItems)
             { 
-                TabItemDetails.IsSelected = true;
-                StackPanelInfo.Children.Clear();
-                _currentDisplayedFacility = (Facility)FacilityList.SelectedItem;
-                OpenDetails(_currentDisplayedFacility);
+                var selected = FacilityList.SelectedItem;
+                if(selected != null)
+                {
+                    TabItemDetails.IsSelected = true;
+                    StackPanelInfo.Children.Clear();
+                    _currentDisplayedFacility = (Facility)selected;
+                    OpenDetails(_currentDisplayedFacility);
+                }
             }
         }
 
@@ -300,6 +311,16 @@ namespace WPF_Application
             return ret;
         }
 
+        private void DetailsRevertButton_Click(object sender, RoutedEventArgs e)
+        {
+            _detailsChanged = false;
+            DetailsSubmitButton.Visibility = Visibility.Hidden;
+            DetailsRevertButton.Visibility = Visibility.Hidden;
+
+            StackPanelInfo.Children.Clear();
+            OpenDetails(_currentDisplayedFacility);
+        }
+
         /// <summary>
         /// Updates the current selected Faciltiy's details when this button is cliked.
         /// </summary>
@@ -313,6 +334,7 @@ namespace WPF_Application
 
             _detailsChanged = true;
             DetailsSubmitButton.Visibility = Visibility.Hidden;
+            DetailsRevertButton.Visibility = Visibility.Hidden;
 
             foreach (TextBox txt in info)
             {
@@ -327,8 +349,8 @@ namespace WPF_Application
                         var ara = txt.Text.Split(new char[] { ',' });
                         if (ara.Length >= 2)
                         {
-                            fac.LicenseeLastName = ara[0];
-                            fac.LicenseeFirstName = ara[1];
+                            fac.LicenseeLastName = ara[0].Trim();
+                            fac.LicenseeFirstName = ara[1].Trim();
                         }
                         break;
                     case 2:
@@ -388,9 +410,11 @@ namespace WPF_Application
                     default:
                         break;
                 }
-                count++;
-                FacilityList.Items.Refresh();
+                count++;                
             }
+            FacilityList.Items.Refresh();
+            StackPanelInfo.Children.Clear();
+            OpenDetails(_currentDisplayedFacility);
         }
     }
 }
