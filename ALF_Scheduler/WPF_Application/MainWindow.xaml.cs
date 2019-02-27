@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Navigation;
 using Microsoft.Win32;
 using Excel_Import_Export;
+using System.Windows.Controls.Primitives;
 
 namespace WPF_Application
 {
@@ -143,7 +144,7 @@ namespace WPF_Application
         /// </summary>
         private void Menu_HomeView_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(App.HomePage);
+            Frame.Navigate(App.HomePage);
         }
 
         /// <summary>
@@ -151,7 +152,7 @@ namespace WPF_Application
         /// </summary>
         private void Menu_YearView_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(App.CalendarYearPage);
+            Frame.Navigate(App.CalendarYearPage);
         }
     }
 }

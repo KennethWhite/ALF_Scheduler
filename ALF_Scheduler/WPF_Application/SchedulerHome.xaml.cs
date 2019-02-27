@@ -12,6 +12,7 @@ using ScheduleGeneration;
 using ALF_Scheduler.Utilities;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Controls.Primitives;
 
 namespace WPF_Application
 {
