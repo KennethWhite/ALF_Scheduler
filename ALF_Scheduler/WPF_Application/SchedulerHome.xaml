@@ -38,6 +38,8 @@
                     VerticalAlignment="Top" Width="75" Click="SearchButton_Click" IsDefault="true"/>
             <Button x:Name="ResetSearchButton" Content="Reset" HorizontalAlignment="Left" Margin="711,121,0,0"
                     VerticalAlignment="Top" Width="75" Click="ResetSearchButton_Click" IsDefault="true" Visibility="Hidden"/>
+            <Button x:Name="DetailsSubmitButton" Content="Submit Changes" HorizontalAlignment="Left" Margin="607,520,0,0"
+                    VerticalAlignment="Top" Width="100" Click="DetailsSubmitButton_Click" IsDefault="true" Visibility="Hidden"/>
             <TabControl HorizontalAlignment="Left" Height="400" Margin="5,140,0,0" VerticalAlignment="Top" Width="585"
                         SelectionChanged="TabControl_SelectionChanged">
                 <TabItem Name="TabItemFacilities" Header="Facilities" IsSelected="True">
@@ -59,10 +61,10 @@
                     <ScrollViewer VerticalScrollBarVisibility="Visible">
                         <StackPanel Orientation="Horizontal">
                             <StackPanel Name="StackPanelLabels" Width="250">
-                                
+
                             </StackPanel>
                             <StackPanel Name="StackPanelInfo" Width="250">
-                                
+
                             </StackPanel>
                         </StackPanel>
                     </ScrollViewer>

@@ -11,6 +11,7 @@ using ALF_Scheduler.Models;
 using ScheduleGeneration;
 using ALF_Scheduler.Utilities;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace WPF_Application
 {
@@ -22,6 +23,8 @@ namespace WPF_Application
         private ListSortDirection _lastDirection = ListSortDirection.Ascending;
 
         private GridViewColumnHeader _lastHeaderClicked;
+        private bool _detailsChanged;
+        private Facility _currentDisplayedFacility;
 
         private bool isDetailTabBuilt = false; // checks if details tab has alredy been built or not.
 
@@ -112,17 +115,33 @@ namespace WPF_Application
         /// </summary>
         public void OpenDetails(Facility facToShow)
         {
+            _currentDisplayedFacility = facToShow;
             List<string> facProperties = facToShow.returnFacility();
             for(int row = 0; row < labelContent.Length; row++)
             {
                 TextBox txt = new TextBox();
                 txt.Height = 20;
                 txt.Margin = new Thickness(0, 3, 0, 3);
-                txt.IsReadOnly = true;
-                
+                txt.IsReadOnly = false;
+
+                if(row == 7 || row == 8 || row == 9 || row == 15 || row == 16 || row == 17 || row == 19)
+                {
+                    txt.IsReadOnly = true;
+                }
+
                 txt.Text = facProperties[row];
                 StackPanelInfo.Children.Add(txt);
+                txt.TextChanged += new TextChangedEventHandler(DetailsTextChanged);
             }
+        }
+
+        private void DetailsTextChanged(object sender, EventArgs e)
+        {
+            _detailsChanged = true;
+            TextBox txt = (TextBox) sender;
+            Brush green = new SolidColorBrush(Color.FromArgb(90, 0, 255, 0));
+            txt.Background = green;
+            DetailsSubmitButton.Visibility = Visibility.Visible;
         }
 
         /// <summary>
@@ -132,6 +151,11 @@ namespace WPF_Application
         {
             if (TabItemFacilities.IsSelected || TabItemInspectionResult.IsSelected){
                 if (StackPanelInfo != null) StackPanelInfo.Children.Clear();
+                if (_detailsChanged)
+                {
+                    DetailsSubmitButton.Visibility = Visibility.Hidden;
+                    _detailsChanged = false;
+                }
             }
             else if(TabItemDetails.IsSelected)
             {
@@ -212,6 +236,7 @@ namespace WPF_Application
             { 
                 TabItemDetails.IsSelected = true;
                 StackPanelInfo.Children.Clear();
+
                 OpenDetails((Facility)FacilityList.SelectedItem);
             }
         }
@@ -236,6 +261,93 @@ namespace WPF_Application
             if (!string.IsNullOrEmpty(code)) ret.Code = Code.getCodeByName(code);
             ret.Licensor = licensor;
             return ret;
+        }
+
+        private void DetailsSubmitButton_Click(object sender, RoutedEventArgs e)
+        {
+            var info = StackPanelInfo.Children;
+            int count = 0;
+            var fac = _currentDisplayedFacility;
+
+            _detailsChanged = true;
+            DetailsSubmitButton.Visibility = Visibility.Hidden;
+
+            foreach (TextBox txt in info)
+            {
+                txt.Background = Brushes.White;
+                //TODO Maybe error checking?
+                switch (count)
+                {
+                    case 0:
+                        fac.FacilityName = txt.Text;
+                        break;
+                    case 1:
+                        var ara = txt.Text.Split(new char[] { ',' });
+                        if (ara.Length >= 2)
+                        {
+                            fac.LicenseeLastName = ara[0];
+                            fac.LicenseeFirstName = ara[1];
+                        }
+                        break;
+                    case 2:
+                        fac.LicenseNumber = txt.Text;
+                        break;
+                    case 3:
+                        fac.Unit = txt.Text;
+                        break;
+                    case 4:
+                        fac.City = txt.Text;
+                        break;
+                    case 5:
+                        fac.ZipCode = txt.Text;
+                        break;
+                    case 6:
+                        fac.NumberOfBeds = int.Parse(txt.Text);
+                        break;
+                    case 7:
+                        //Don't want to change prev inspection dates
+                        break;
+                    case 8:
+                        //Don't want to change prev inspection dates
+                        break;
+                    case 9:
+                        //Don't want to change prev inspection dates
+                        break;
+                    case 10:
+                        fac.InspectionResult = txt.Text;
+                        break;
+                    case 11:
+                        fac.DatesOfSOD = DateTime.Parse(txt.Text);
+                        break;
+                    case 12:
+                        fac.EnforcementNotes = txt.Text;
+                        break;
+                    case 13:
+                        fac.Complaints = txt.Text;
+                        break;
+                    case 14:
+                        fac.ProposedDate = DateTime.Parse(txt.Text);
+                        break;
+                    case 15:
+                        //Don't want to change calculated value
+                        break;
+                    case 16:
+                        //Don't want to change calculated value
+                        break;
+                    case 17:
+                        //Don't want to change calculated value
+                        break;
+                    case 18:
+                        fac.SpecialInfo = txt.Text;
+                        break;
+                    case 19:
+                        //Don't want to change prev inspection dates
+                        break;
+                    default:
+                        break;
+                }
+                count++;
+            }
         }
     }
 }
