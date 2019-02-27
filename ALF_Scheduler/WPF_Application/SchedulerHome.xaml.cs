@@ -85,6 +85,7 @@ namespace WPF_Application
             }
 
             FacilityList.ItemsSource = tempList;
+            TabItemFacilities.IsSelected = true;
         }
 
         /// <summary>
@@ -113,7 +114,7 @@ namespace WPF_Application
                     label.Content = labelContent[x];
                     StackPanelLabels.Children.Add(label);
                 }
-                
+                _currentDisplayedFacility = App.Facilities[0];
                 isDetailTabBuilt = true;
                 return TabItemDetails;
             }
@@ -177,7 +178,7 @@ namespace WPF_Application
             else if(TabItemDetails.IsSelected)
             {
                 if (isDetailTabBuilt != false)
-                    OpenDetails(App.Facilities[0]);
+                    OpenDetails(_currentDisplayedFacility);
                     
             }
         }
@@ -258,8 +259,8 @@ namespace WPF_Application
             { 
                 TabItemDetails.IsSelected = true;
                 StackPanelInfo.Children.Clear();
-
-                OpenDetails((Facility)FacilityList.SelectedItem);
+                _currentDisplayedFacility = (Facility)FacilityList.SelectedItem;
+                OpenDetails(_currentDisplayedFacility);
             }
         }
 
@@ -269,13 +270,23 @@ namespace WPF_Application
             string code = ResultCodeCombo.SelectedItem.ToString();
             string date = dateBox.SelectedDate.Value.ToShortDateString();
 
-            var check = App.Facilities.Find(x => x.FacilityName.CompareTo(find) == 0);
-            if (check != null)
+            if (find != null && code != null && date != null)
             {
-                Inspection toAdd = CreateInspection(date, check.LicensorList, code);
-                check.AddInspection(toAdd);
+                var check = App.Facilities.Find(x => x.FacilityName.CompareTo(find) == 0);
+                if (check != null)
+                {
+                    Inspection toAdd = CreateInspection(date, check.LicensorList, code);
+                    check.AddInspection(toAdd);
+                }
+                _currentDisplayedFacility = check;
+                OpenDetails(check);
+                TabItemDetails.IsSelected = true;
             }
-            
+            else
+            {
+                TabItemInspectionResult.IsSelected = true;
+            }
+
         }
         private static Inspection CreateInspection(string date, string licensor = "", string code = "")
         {
