@@ -152,21 +152,6 @@ namespace WPF_Application
         }
 
         /// <summary>
-        /// Text changed handler for Details tab text boxes
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void DetailsTextChanged(object sender, EventArgs e)
-        {
-            _detailsChanged = true;
-            TextBox txt = (TextBox) sender;
-            Brush green = new SolidColorBrush(Color.FromArgb(90, 0, 255, 0));
-            txt.Background = green;
-            DetailsSubmitButton.Visibility = Visibility.Visible;
-            DetailsRevertButton.Visibility = Visibility.Visible;
-        }
-
-        /// <summary>
         ///     This event is triggered when you switch tabs in the TabControl.
         /// </summary>
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -311,6 +296,26 @@ namespace WPF_Application
             return ret;
         }
 
+        /// <summary>
+        /// Text changed handler for Details tab text boxes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DetailsTextChanged(object sender, EventArgs e)
+        {
+            _detailsChanged = true;
+            TextBox txt = (TextBox)sender;
+            Brush green = new SolidColorBrush(Color.FromArgb(90, 0, 255, 0));
+            txt.Background = green;
+            DetailsSubmitButton.Visibility = Visibility.Visible;
+            DetailsRevertButton.Visibility = Visibility.Visible;
+        }
+
+        /// <summary>
+        /// Will revert changes made to details tab.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DetailsRevertButton_Click(object sender, RoutedEventArgs e)
         {
             _detailsChanged = false;
@@ -331,90 +336,104 @@ namespace WPF_Application
             var info = StackPanelInfo.Children;
             int count = 0;
             var fac = _currentDisplayedFacility;
+            TextBox selText = null;
 
-            _detailsChanged = true;
-            DetailsSubmitButton.Visibility = Visibility.Hidden;
-            DetailsRevertButton.Visibility = Visibility.Hidden;
-
-            foreach (TextBox txt in info)
+            try
             {
-                txt.Background = Brushes.White;
-                //TODO Maybe error checking?
-                switch (count)
+                foreach (TextBox txt in info)
                 {
-                    case 0:
-                        fac.FacilityName = txt.Text;
-                        break;
-                    case 1:
-                        var ara = txt.Text.Split(new char[] { ',' });
-                        if (ara.Length >= 2)
-                        {
-                            fac.LicenseeLastName = ara[0].Trim();
-                            fac.LicenseeFirstName = ara[1].Trim();
-                        }
-                        break;
-                    case 2:
-                        fac.LicenseNumber = txt.Text;
-                        break;
-                    case 3:
-                        fac.Unit = txt.Text;
-                        break;
-                    case 4:
-                        fac.City = txt.Text;
-                        break;
-                    case 5:
-                        fac.ZipCode = txt.Text;
-                        break;
-                    case 6:
-                        fac.NumberOfBeds = int.Parse(txt.Text);
-                        break;
-                    case 7:
-                        //Don't want to change prev inspection dates
-                        break;
-                    case 8:
-                        //Don't want to change prev inspection dates
-                        break;
-                    case 9:
-                        //Don't want to change prev inspection dates
-                        break;
-                    case 10:
-                        fac.InspectionResult = txt.Text;
-                        break;
-                    case 11:
-                        fac.DatesOfSOD = DateTime.Parse(txt.Text);
-                        break;
-                    case 12:
-                        fac.EnforcementNotes = txt.Text;
-                        break;
-                    case 13:
-                        fac.Complaints = txt.Text;
-                        break;
-                    case 14:
-                        fac.ProposedDate = DateTime.Parse(txt.Text);
-                        break;
-                    case 15:
-                        //Don't want to change calculated value
-                        break;
-                    case 16:
-                        //Don't want to change calculated value
-                        break;
-                    case 17:
-                        //Don't want to change calculated value
-                        break;
-                    case 18:
-                        fac.SpecialInfo = txt.Text;
-                        break;
-                    case 19:
-                        //Don't want to change prev inspection dates
-                        break;
-                    default:
-                        break;
+                    selText = txt;
+                    //TODO Maybe error checking?
+                    switch (count)
+                    {
+                        case 0:
+                            fac.FacilityName = txt.Text;
+                            break;
+                        case 1:
+                            var ara = txt.Text.Split(new char[] { ',' });
+                            if (ara.Length >= 2)
+                            {
+                                fac.LicenseeLastName = ara[0].Trim();
+                                fac.LicenseeFirstName = ara[1].Trim();
+                            }
+                            break;
+                        case 2:
+                            fac.LicenseNumber = txt.Text;
+                            break;
+                        case 3:
+                            fac.Unit = txt.Text;
+                            break;
+                        case 4:
+                            fac.City = txt.Text;
+                            break;
+                        case 5:
+                            fac.ZipCode = txt.Text;
+                            break;
+                        case 6:
+                            fac.NumberOfBeds = int.Parse(txt.Text);
+                            break;
+                        case 7:
+                            //Don't want to change prev inspection dates
+                            break;
+                        case 8:
+                            //Don't want to change prev inspection dates
+                            break;
+                        case 9:
+                            //Don't want to change prev inspection dates
+                            break;
+                        case 10:
+                            fac.InspectionResult = txt.Text;
+                            break;
+                        case 11:
+                            fac.DatesOfSOD = DateTime.Parse(txt.Text);
+                            break;
+                        case 12:
+                            fac.EnforcementNotes = txt.Text;
+                            break;
+                        case 13:
+                            fac.Complaints = txt.Text;
+                            break;
+                        case 14:
+                            fac.ProposedDate = DateTime.Parse(txt.Text);
+                            break;
+                        case 15:
+                            //Don't want to change calculated value
+                            break;
+                        case 16:
+                            //Don't want to change calculated value
+                            break;
+                        case 17:
+                            //Don't want to change calculated value
+                            break;
+                        case 18:
+                            fac.SpecialInfo = txt.Text;
+                            break;
+                        case 19:
+                            //Don't want to change prev inspection dates
+                            break;
+                        default:
+                            break;
+                    }
+                    count++;
                 }
-                count++;                
+                foreach (TextBox txt in info)
+                {
+                    txt.Background = Brushes.White;
+                }
+                _detailsChanged = true;
+                DetailsSubmitButton.Visibility = Visibility.Hidden;
+                DetailsRevertButton.Visibility = Visibility.Hidden;
+
+                FacilityList.Items.Refresh();
+                StackPanelInfo.Children.Clear();
+                OpenDetails(_currentDisplayedFacility);
             }
-            FacilityList.Items.Refresh();
-            StackPanelInfo.Children.Clear();
-            OpenDetails(_currentDisplayedFacility);
+            catch (Exception)
+            {
+                Brush red = new SolidColorBrush(Color.FromArgb(90, 255, 0, 0));
+                selText.Background = red;
+                MessageBoxResult msg = MessageBox.Show("The data: '" + selText.Text + "' is invalid for the data type.", "Data entry error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }    
         }
     }
 }
