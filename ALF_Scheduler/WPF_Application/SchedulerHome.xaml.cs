@@ -128,6 +128,7 @@ namespace WPF_Application
         /// </summary>
         public void OpenDetails(Facility facToShow)
         {
+            StackPanelInfo.Children.Clear();
             _currentDisplayedFacility = facToShow;
             List<string> facProperties = facToShow.returnFacility();
             for(int row = 0; row < labelContent.Length; row++)
@@ -195,7 +196,6 @@ namespace WPF_Application
         /// <summary>
         ///     This click event will update the specified facility's most recent inspection information.
         /// </summary>
-
         private void ColumnHeader_Click(object sender, RoutedEventArgs e)
         {
             var headerClicked = e.OriginalSource as GridViewColumnHeader;
@@ -279,9 +279,12 @@ namespace WPF_Application
                     Inspection toAdd = CreateInspection(date, check.LicensorList, code);
                     check.AddInspection(toAdd);
                 }
-                _currentDisplayedFacility = check;
                 OpenDetails(check);
                 TabItemDetails.IsSelected = true;
+
+                FacilityBox.Text = null;
+                ResultCodeCombo.SelectedItem = null;
+                dateBox.Text = null;
             }
             else
             {
