@@ -240,8 +240,8 @@ namespace WPF_Application
         /// <summary>
         /// Default Microsoft sort method.
         /// </summary>
-        /// <param name="sortBy"></param>
-        /// <param name="direction"></param>
+        /// <param name="sortBy">The header name of the column to sort by.</param>
+        /// <param name="direction">Sort direction of desired sort.</param>
         private void Sort(string sortBy, ListSortDirection direction)
         {
             //Not too sure if this will sort, but I think it should. Can't really test it though yet because excel file not coming in.
