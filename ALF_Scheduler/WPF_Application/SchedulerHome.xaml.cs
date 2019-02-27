@@ -374,6 +374,7 @@ namespace WPF_Application
                         break;
                 }
                 count++;
+                FacilityList.Items.Refresh();
             }
         }
     }
