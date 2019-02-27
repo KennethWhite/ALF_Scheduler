@@ -32,7 +32,9 @@ namespace WPF_Application
                 "Previous Year Full Inspection", "Two Year Full Inspection", "Inspection Result", "Dates Of SOD",
                 "Enforcement Notes", "Complaints",
                 "Proposed Date", "Schedule Interval", "Month 15", "Month 18",
-                "Special Info" };
+                "Special Info", "Last Full Inspection"};
+
+        string[] codes = { "NO", "NO24", "YES", "ENF", "CHOWN" };
         /// <summary>
         ///     This constructor initializes the Scheduler Home page.
         /// </summary>
@@ -42,6 +44,14 @@ namespace WPF_Application
             FacilityList.ItemsSource = App.Facilities;
             HelperMethods.DateSelection(MonthlyCalendar);
             TabItemDetails = DetailsInit();
+            InspectionResultFormInit();
+        }
+
+        private void InspectionResultFormInit()
+        {
+            
+            FacilityBox.ItemsSource = App.Facilities;
+            ResultCodeCombo.ItemsSource = codes;  
         }
 
         /// <summary>
@@ -76,24 +86,6 @@ namespace WPF_Application
                 return TabItemDetails;
             }
             return TabItemDetails;
-        }
-
-        /// <summary>
-        ///     This method creates a new label for each item in the details tab.
-        /// </summary>
-        /// <param name="content">The string content to be displayed.</param>
-        /// <param name="width">The width of the label, default is 175px.</param>
-        /// <param name="alignRight">The horizontal text alignment, default left.</param>
-        private Label CreateLabel(string content, double width = 175,
-            HorizontalAlignment alignRight = HorizontalAlignment.Left)
-        {
-            var label = new Label();
-            label.Content = content;
-            label.FontSize = 12;
-            label.Padding = new Thickness(5);
-            label.Width = width;
-            label.HorizontalAlignment = alignRight;
-            return label;
         }
 
         /// <summary>
@@ -207,9 +199,26 @@ namespace WPF_Application
             }
         }
 
-        private void SubmitForm_Click(object sender, RoutedEventArgs e)
+        private void SubmitForm_Click(object sender, RoutedEventArgs e)//Need to connect with Colton on how to build  Code, then Inspection, then add Inspection to corresponding Facility in App.Facilities.
         {
+            string find = FacilityBox.Text;
+            string code = ResultCodeCombo.SelectedItem.ToString();
+            string date = dateBox.SelectedDate.Value.ToShortDateString();
 
+            var check = App.Facilities.Find(x => x.FacilityName.CompareTo(find) == 0);
+            if (check != null)
+            {
+                Inspection toAdd = CreateInspection(date, check.LicensorList, code);
+                check.AddInspection(toAdd);
+            }
+            
+        }
+        private static Inspection CreateInspection(string date, string licensor = "", string code = "")
+        {
+            var ret = new Inspection { InspectionDate = DateTime.Parse(date) };
+            if (!string.IsNullOrEmpty(code)) ret.Code = Code.getCodeByName(code);
+            ret.Licensor = licensor;
+            return ret;
         }
     }
 }

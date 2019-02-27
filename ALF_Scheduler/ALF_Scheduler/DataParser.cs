@@ -52,6 +52,10 @@ namespace ALF_Scheduler
             var code = (string)(_row.Cells[1, 15] as Range).Value2;
             _facility.InspectionResult = code.ToUpper();
             _facility.SpecialInfo = (string)(_row.Cells[1, 20] as Range).Value2;
+            string beds = ((double)(_row.Cells[1, 19] as Range).Value2).ToString();
+            SetNumberOfBeds(beds);
+            _facility.Complaints = (string)(_row.Cells[1, 16] as Range).Value2;
+
 
 
             return _facility;

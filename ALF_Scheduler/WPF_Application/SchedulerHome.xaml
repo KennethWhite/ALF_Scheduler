@@ -66,7 +66,7 @@
                     </ScrollViewer>
                 </TabItem>
                 <TabItem Name="TabItemInspectionResult" Header="Inspection Result Form" Height="22"
-                         VerticalAlignment="Top">
+                         VerticalAlignment="Top" >
                     <Grid Margin="50,20,50,20">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -82,14 +82,14 @@
 
                         <Label Content="Facility Name" Margin="0,10,0,10" Grid.Column="0" Grid.Row="0" />
                         <!--set itemssource to a list of all the facility names-->
-                        <ComboBox Height="20" Width="200" Grid.Column="1" Grid.Row="0" />
+                        <ComboBox Name="FacilityBox" Height="20" Width="200" Grid.Column="1" Grid.Row="0" DisplayMemberPath="FacilityName"/>
                         <Label Content="Inspection Date" Grid.Column="0" Grid.Row="1" />
-                        <DatePicker Grid.Column="1" Grid.Row="1" />
+                        <DatePicker Name ="dateBox" Grid.Column="1" Grid.Row="1"/>
                         <Label Content="Result Code" Margin="0,10,0,10" Grid.Column="0" Grid.Row="2" />
                         <!--set itemssource to a list of all the result codes-->
-                        <ComboBox Height="20" Width="200" Grid.Column="1" Grid.Row="2" />
+                        <ComboBox Name="ResultCodeCombo" Height="20" Width="200" Grid.Column="1" Grid.Row="2"/>
                         <Label Content="Enforcement Notes" Grid.Column="0" Grid.Row="3" />
-                        <TextBox Height="Auto" Width="200" Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" />
+                        <TextBox Name ="EnforcementBox" Height="Auto" Width="200" Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" />
                         <Button Name="SubmitForm" Content="Submit" Margin="0,10,0,10" Grid.Column="1" Grid.Row="4"
                                 Width="75" HorizontalAlignment="Right" Click="SubmitForm_Click" />
                     </Grid>
