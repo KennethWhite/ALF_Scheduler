@@ -121,7 +121,6 @@ namespace WPF_Application
                     OpenDetails(App.Facilities[0]);
                     
             }
-
         }
 
         /// <summary>

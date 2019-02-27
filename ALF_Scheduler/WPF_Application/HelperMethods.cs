@@ -17,11 +17,13 @@ namespace WPF_Application
         {
             foreach (var facility in App.Facilities) {
                 var date = new DateTime();
+                var black = facility.MostRecentFullInspection.InspectionDate;
                 if (month.DisplayDateStart != null) {
                     date = (DateTime)month.DisplayDateStart;
                     var proposed = facility.ProposedDate;
                     if (date.Month.Equals(proposed.Month) && date.Year.Equals(proposed.Year)) {
                         AddSelectedDates(facility, month);
+                    } else if (date.Month.Equals(black.Month) && date.Year.Equals(black.Year)) {
                         AddBlackoutDates(facility, month);
                     }
                 } else {

@@ -44,7 +44,8 @@ namespace WPF_Application
                     IsTodayHighlighted = true,
                     Margin = new Thickness(10),
                     SelectionMode = CalendarSelectionMode.MultipleRange,
-                    CalendarButtonStyle = (Style)Resources["CalendarButtonStyle"]
+                    CalendarButtonStyle = (Style)Resources["CalendarButtonStyle"],
+                    IsHitTestVisible = false
                 };
 
                 HelperMethods.DateSelection(calendar);
