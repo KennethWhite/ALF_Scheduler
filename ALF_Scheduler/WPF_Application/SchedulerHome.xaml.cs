@@ -87,6 +87,11 @@ namespace WPF_Application
             FacilityList.ItemsSource = tempList;
         }
 
+        /// <summary>
+        /// Button to show original list without search criteria.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ResetSearchButton_Click(object sender, RoutedEventArgs e)
         {
             ResetSearchButton.Visibility = Visibility.Hidden;
@@ -132,6 +137,7 @@ namespace WPF_Application
 
                 if(row == 7 || row == 8 || row == 9 || row == 15 || row == 16 || row == 17 || row == 19)
                 {
+                    //We don't want to be able to edit certain fields
                     txt.IsReadOnly = true;
                 }
 
@@ -141,6 +147,11 @@ namespace WPF_Application
             }
         }
 
+        /// <summary>
+        /// Text changed handler for Details tab text boxes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DetailsTextChanged(object sender, EventArgs e)
         {
             _detailsChanged = true;
@@ -224,6 +235,11 @@ namespace WPF_Application
                 }
         }
 
+        /// <summary>
+        /// Default Microsoft sort method.
+        /// </summary>
+        /// <param name="sortBy"></param>
+        /// <param name="direction"></param>
         private void Sort(string sortBy, ListSortDirection direction)
         {
             //Not too sure if this will sort, but I think it should. Can't really test it though yet because excel file not coming in.
@@ -269,6 +285,11 @@ namespace WPF_Application
             return ret;
         }
 
+        /// <summary>
+        /// Updates the current selected Faciltiy's details when this button is cliked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DetailsSubmitButton_Click(object sender, RoutedEventArgs e)
         {
             var info = StackPanelInfo.Children;
