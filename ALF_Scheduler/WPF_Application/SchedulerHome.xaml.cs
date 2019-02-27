@@ -37,7 +37,7 @@ namespace WPF_Application
                 "Proposed Date", "Schedule Interval", "Month 15", "Month 18",
                 "Special Info", "Last Full Inspection"};
 
-        string[] codes = { "NO", "NO24", "YES", "ENF", "CHOWN" };
+        
         /// <summary>
         ///     This constructor initializes the Scheduler Home page.
         /// </summary>
@@ -54,7 +54,13 @@ namespace WPF_Application
         {
             
             FacilityBox.ItemsSource = App.Facilities;
-            ResultCodeCombo.ItemsSource = codes;  
+            List<Code> codes = Code.getCodes();
+            List<string> codeStr = new List<string>();
+            foreach (var item in codes)
+            {
+                codeStr.Add(item.Name);
+            }
+            ResultCodeCombo.ItemsSource = codeStr;  
         }
 
         /// <summary>
