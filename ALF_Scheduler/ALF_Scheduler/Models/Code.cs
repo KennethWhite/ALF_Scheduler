@@ -13,6 +13,10 @@ namespace ALF_Scheduler.Models
 
         public static List<Code> CodesList { get; private set; }
 
+        /// <summary>
+        /// Returns a list of Codes objects. Codes are coming from the code configuration xml file.
+        /// </summary>
+        /// <returns>Returns list of code objects</returns>
         public static List<Code> getCodes()
         {
             var doc = XML_Utils.XML_Utils.LoadCodeFile();
@@ -46,6 +50,11 @@ namespace ALF_Scheduler.Models
             return outList;
         }
 
+        /// <summary>
+        /// Will return code object by given name. Checks member variable CodesList if there are any if not then it will get available codes. If run statically, will always need to grab from file.
+        /// </summary>
+        /// <param name="name">String containing the code's name</param>
+        /// <returns>Returns a code object matching code name, or null if no code was found.</returns>
         public static Code getCodeByName(string name)
         {
             if (CodesList == null || !CodesList.Any())
@@ -58,7 +67,10 @@ namespace ALF_Scheduler.Models
                     select code).ToList();
 
             if (codes.Count > 0) return codes.ElementAt(0);
-            throw new KeyNotFoundException("Could not find a code with that name");
+
+            return null;
+            //TODO do we want to return null or exception?
+            //throw new KeyNotFoundException("Could not find a code with that name");
         }
     }
 }
