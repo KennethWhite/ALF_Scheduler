@@ -30,7 +30,6 @@ namespace WPF_Application
         private void Application_Startup(object sender, StartupEventArgs e) {
             XML_Utils.XML_Utils.Init(); //This needs to be run to set up initial code file and folders
             OpenFile(new MainWindow());
-            GenerateSchedule();
         }
 
         public static void OpenFile(Window sender, bool onStartup = false) {
@@ -48,11 +47,13 @@ namespace WPF_Application
                 // Open document
                 var filename = dlg.FileName;
                 Init(filename);
+                GenerateSchedule();
 
                 HomePage = new SchedulerHome();
                 var mainWindow = (MainWindow)sender;
                 mainWindow.Frame.Source = new Uri("pack://application:,,,/SchedulerHome.xaml");
-                
+                CalendarYearPage = new CalendarYear();
+
                 if (onStartup) sender.Close();
                 mainWindow.Show();
             } else if (!onStartup) {
@@ -68,8 +69,6 @@ namespace WPF_Application
         /// <param name="path">The full path of the specified file to import.</param>
         public static void Init(string path)
         {
-            CalendarYearPage = new CalendarYear();
-
             Workbook xBook;
             Microsoft.Office.Interop.Excel.Application xApp;
             if (!ExcelImporterExporter.LoadExcelFromFile(path, out xApp, out xBook))
@@ -95,13 +94,12 @@ namespace WPF_Application
             }
 
         }
-
-
+        
 
         /// <summary>
         /// Triggers schedule generation for the facility list then loads them into the facility objects.
         /// </summary>
-        private void GenerateSchedule()
+        private static void GenerateSchedule()
         {
             ScheduleReturn schedule = ScheduleGeneration.ScheduleGeneration.GenerateSchedule(App.Facilities, 15.99);
 

@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:ALF_Scheduler">
+                    xmlns:local="clr-namespace:WPF_Application">
 
     <!--Style for the days of a month.-->
     <Style TargetType="CalendarDayButton"

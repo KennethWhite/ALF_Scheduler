@@ -15,10 +15,20 @@ namespace WPF_Application
         /// <param name="month">The Calendar object the dates should be added to.</param>
         public static void DateSelection(Calendar month)
         {
-            //foreach (var facility in App.Facilities) {
-            //    AddSelectedDates(facility, month);
-            //    AddBlackoutDates(facility, month);
-            //}
+            foreach (var facility in App.Facilities) {
+                var date = new DateTime();
+                if (month.DisplayDateStart != null) {
+                    date = (DateTime)month.DisplayDateStart;
+                    var proposed = facility.ProposedDate;
+                    if (date.Month.Equals(proposed.Month) && date.Year.Equals(proposed.Year)) {
+                        AddSelectedDates(facility, month);
+                        AddBlackoutDates(facility, month);
+                    }
+                } else {
+                    AddSelectedDates(facility, month);
+                    AddBlackoutDates(facility, month);
+                }
+            }
         }
 
         /// <summary>
