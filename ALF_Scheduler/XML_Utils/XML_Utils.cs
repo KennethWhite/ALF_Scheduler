@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Xml.Linq;
+
 
 namespace XML_Utils
 {
@@ -115,6 +115,7 @@ namespace XML_Utils
                 }
             }
 
+            
             throw new FileNotFoundException("No root settings file in default directory");
         }
 
