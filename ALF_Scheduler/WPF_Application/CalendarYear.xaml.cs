@@ -36,16 +36,16 @@ namespace WPF_Application
             var column = 0;
             for (var x = 1; x <= 12; x++)
             {
-                if (x < 10) month = string.Format("0{0}", x);
-                else month = x.ToString();
+                month = x.ToString();
 
-                calendar = new Calendar();
-                calendar.DisplayDateStart = DateTime.Parse(string.Format("{0}/01/{1}", month, year));
-                calendar.DisplayDateEnd = DateTime.Parse(string.Format("{0}/{1}/{2}", month, DateTime.DaysInMonth(year, x), year));
-                calendar.IsTodayHighlighted = true;
-                calendar.Margin = new Thickness(10);
-                calendar.SelectionMode = CalendarSelectionMode.MultipleRange;
-                calendar.CalendarButtonStyle = (Style) Resources["CalendarButtonStyle"];
+                calendar = new Calendar {
+                    DisplayDateStart = DateTime.Parse(string.Format("{0}/01/{1}", month, year)),
+                    DisplayDateEnd = DateTime.Parse(string.Format("{0}/{1}/{2}", month, DateTime.DaysInMonth(year, x), year)),
+                    IsTodayHighlighted = true,
+                    Margin = new Thickness(10),
+                    SelectionMode = CalendarSelectionMode.MultipleRange,
+                    CalendarButtonStyle = (Style)Resources["CalendarButtonStyle"]
+                };
 
                 HelperMethods.DateSelection(calendar);
 
