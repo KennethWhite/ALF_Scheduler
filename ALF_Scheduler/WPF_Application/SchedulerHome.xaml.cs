@@ -91,6 +91,14 @@ namespace WPF_Application
         }
 
         /// <summary>
+        ///     This method opens the specified facility in the details tab.
+        /// </summary>
+        /// <param name="facility">The facility to be displayed in the details tab.</param>
+        internal void DisplayFacility(Facility facility) {
+            OpenDetails(facility);
+        }
+
+        /// <summary>
         /// Button to show original list without search criteria.
         /// </summary>
         /// <param name="sender"></param>
@@ -129,6 +137,7 @@ namespace WPF_Application
         /// </summary>
         public void OpenDetails(Facility facToShow)
         {
+            TabItemDetails.IsSelected = true;
             StackPanelInfo.Children.Clear();
             _currentDisplayedFacility = facToShow;
             List<string> facProperties = facToShow.returnFacility();
@@ -254,7 +263,6 @@ namespace WPF_Application
                 var selected = FacilityList.SelectedItem;
                 if(selected != null)
                 {
-                    TabItemDetails.IsSelected = true;
                     StackPanelInfo.Children.Clear();
                     _currentDisplayedFacility = (Facility)selected;
                     OpenDetails(_currentDisplayedFacility);
@@ -277,7 +285,6 @@ namespace WPF_Application
                     check.AddInspection(toAdd);
                 }
                 OpenDetails(check);
-                TabItemDetails.IsSelected = true;
 
                 FacilityBox.Text = null;
                 ResultCodeCombo.SelectedItem = null;

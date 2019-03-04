@@ -2,6 +2,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Shapes;
+using System.Windows.Controls.Primitives;
+using ALF_Scheduler.Models;
 
 namespace WPF_Application
 {
@@ -44,9 +46,10 @@ namespace WPF_Application
                     IsTodayHighlighted = true,
                     Margin = new Thickness(10),
                     SelectionMode = CalendarSelectionMode.MultipleRange,
-                    CalendarButtonStyle = (Style)Resources["CalendarButtonStyle"],
-                    IsHitTestVisible = false
+                    //CalendarButtonStyle = (Style)Resources["CalendarButtonStyle"],
+                    IsHitTestVisible = true
                 };
+                calendar.GotMouseCapture += Calendar_GotMouseCapture;
 
                 HelperMethods.DateSelection(calendar);
 
@@ -65,6 +68,25 @@ namespace WPF_Application
                 }
             }
         }
+
+        /// <summary>
+        ///     This method grabs the selected date from the calendar to be displayed in the details tab
+        ///     if a facility's proposed date matches the selected date.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Calendar_GotMouseCapture(object sender, System.Windows.Input.MouseEventArgs e) {
+            var source = e.OriginalSource as CalendarDayButton;
+            if (source != null) {
+                DateTime date = DateTime.Parse(source.DataContext.ToString());
+                Facility facility = App.Facilities.Find(x => x.ProposedDate.Equals(date));
+                if (facility != null) {
+                    NavigationService.Navigate(App.HomePage);
+                    App.HomePage.DisplayFacility(facility);
+                }
+            }
+        }
+
         private void previousYearButton_Click(object sender, RoutedEventArgs e) {
             calendarGrid.Children.RemoveRange(1, calendarGrid.Children.Count - 1);
             CreateCalendars(--curYear);
