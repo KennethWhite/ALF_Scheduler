@@ -191,6 +191,31 @@ namespace WPF_Application
         }
 
         /// <summary>
+        /// Triggers schedule generation for the facility list then loads them into the facility objects.
+        /// </summary>
+        private void GenerateSchedule_Click(object sender, RoutedEventArgs e)
+        {
+            ScheduleReturn schedule = ScheduleGeneration.ScheduleGeneration.GenerateSchedule(App.Facilities, 15.99);
+
+            foreach (KeyValuePair<Facility, DateTime> keyValue in schedule.FacilitySchedule)
+            {
+                try
+                {
+                    App.Facilities.Find(fac => fac.Equals(keyValue.Key)).ProposedDate = keyValue.Value;
+                    FacilityList.Items.Refresh();
+                }
+                catch (Exception notFound)
+                {
+                    ErrorLogger.LogInfo("Couldn't find matching facility in App.Facilities, thus ProposedDate could not be set.", notFound);
+                }
+            }
+           
+            MonthAvgLabel.Visibility = Visibility.Visible;
+            MonthAvgVal.Visibility = Visibility.Visible;
+            MonthAvgVal.Content = schedule.GlobalAvg;
+        }
+
+        /// <summary>
         ///     This click event will update the specified facility's most recent inspection information.
         /// </summary>
         private void ColumnHeader_Click(object sender, RoutedEventArgs e)

@@ -47,7 +47,6 @@ namespace WPF_Application
                 // Open document
                 var filename = dlg.FileName;
                 Init(filename);
-                GenerateSchedule();
 
                 HomePage = new SchedulerHome();
                 var mainWindow = (MainWindow)sender;
@@ -92,32 +91,6 @@ namespace WPF_Application
             {
                 Facilities.Add(DataParser.ParseFacility(XlWorksheet.UsedRange.Cells[index, 1] as Range));
             }
-
-        }
-        
-
-        /// <summary>
-        /// Triggers schedule generation for the facility list then loads them into the facility objects.
-        /// </summary>
-        private static void GenerateSchedule()
-        {
-            ScheduleReturn schedule = ScheduleGeneration.ScheduleGeneration.GenerateSchedule(App.Facilities, 15.99);
-
-            foreach (KeyValuePair<Facility, DateTime> keyValue in schedule.FacilitySchedule)
-            {
-                try
-                {
-                    Facilities.Find(fac => fac.Equals(keyValue.Key)).ProposedDate = keyValue.Value;
-                }
-                catch (Exception notFound)
-                {
-                    ErrorLogger.LogInfo("Couldn't find matching facility in App.Facilities, thus ProposedDate could not be set.", notFound);
-                }
-            }
-
-            //MonthAvgLabel.Visibility = Visibility.Visible;
-            //MonthAvgVal.Visibility = Visibility.Visible;
-            //MonthAvgVal.Content = schedule.GlobalAvg;
         }
     }
 }

@@ -52,9 +52,22 @@ namespace ALF_Scheduler.Models
         public Inspection MostRecentFullInspection => LastFullInspection();
         public string MostRecentFullInspectionString => LastFullInspection().InspectionDate.ToShortDateString();
 
-        public string MostRecentFullInspectionFormatString => LastFullInspection().InspectionDate.ToString("yyyy/MM/dd");
+        public string MostRecentFullInspectionFormatString => GetDateString(LastFullInspection().InspectionDate);
 
-        public string ProposedDateFormatString { get => ProposedDate.ToString("yyyy/MM/dd"); }
+        public string ProposedDateFormatString => GetDateString(ProposedDate);
+
+        /// <summary>
+        /// Gets a date in string format.
+        /// </summary>
+        /// <param name="date">Date to return</param>
+        /// <returns>Returns empty string if date is empty (01/01/0001)</returns>
+        private string GetDateString(DateTime date)
+        {
+            var outStr = date.ToString("yyyy/MM/dd");
+            if (date.Equals(new DateTime()))
+                outStr = "";
+            return outStr;
+        }
 
         /// <value>Gets the Facility's full inspection information from a year ago.</value>
         public Inspection PreviousFullInspection
