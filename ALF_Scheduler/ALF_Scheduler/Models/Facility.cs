@@ -61,7 +61,7 @@ namespace ALF_Scheduler.Models
         /// </summary>
         /// <param name="date">Date to return</param>
         /// <returns>Returns empty string if date is empty (01/01/0001)</returns>
-        private string GetDateString(DateTime date)
+        private static string GetDateString(DateTime date)
         {
             var outStr = date.ToString("yyyy/MM/dd");
             if (date.Equals(new DateTime()))
@@ -109,8 +109,12 @@ namespace ALF_Scheduler.Models
         {
             get
             {
-                var difference = ProposedDate.Subtract(MostRecentFullInspection.InspectionDate);
-                return (float) (difference.TotalDays / 30.42);
+                if(!ProposedDate.Equals(new DateTime()))
+                {
+                    var difference = ProposedDate.Subtract(MostRecentFullInspection.InspectionDate);
+                    return (float)(difference.TotalDays / 30.42);
+                }
+                return 0;
             }
         }
 
@@ -166,19 +170,19 @@ namespace ALF_Scheduler.Models
             f.Add(fac.City);
             f.Add(fac.ZipCode);
             f.Add(fac.NumberOfBeds.ToString());
-            f.Add(fac.MostRecentFullInspection.InspectionDate.ToShortDateString());
-            f.Add(fac.PreviousFullInspection.InspectionDate.ToShortDateString());
-            f.Add(fac.TwoYearFullInspection.InspectionDate.ToShortDateString());
+            f.Add(GetDateString(fac.MostRecentFullInspection.InspectionDate));
+            f.Add(GetDateString(fac.PreviousFullInspection.InspectionDate));
+            f.Add(GetDateString(fac.TwoYearFullInspection.InspectionDate));
             f.Add(fac.InspectionResult);
-            f.Add(fac.DatesOfSOD.ToShortDateString());
+            f.Add(GetDateString(fac.DatesOfSOD));
             f.Add(fac.EnforcementNotes);
             f.Add(fac.Complaints);
-            f.Add(fac.ProposedDate.ToShortDateString());
+            f.Add(GetDateString(fac.ProposedDate));
             f.Add(fac.ScheduleInterval.ToString());
-            f.Add(fac.Month15.ToShortDateString());
-            f.Add(fac.Month18.ToShortDateString());
+            f.Add(GetDateString(fac.Month15));
+            f.Add(GetDateString(fac.Month18));
             f.Add(fac.SpecialInfo);
-            f.Add(fac.LastFullInspection().InspectionDate.ToShortDateString());
+            f.Add(GetDateString(fac.LastFullInspection().InspectionDate));
 
             return f;
 

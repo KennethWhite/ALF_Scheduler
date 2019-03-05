@@ -152,6 +152,7 @@ namespace WPF_Application
                 {
                     //We don't want to be able to edit certain fields
                     txt.IsReadOnly = true;
+                    txt.Background = Brushes.Silver;
                 }
 
                 txt.Text = facProperties[row];
@@ -195,24 +196,32 @@ namespace WPF_Application
         /// </summary>
         private void GenerateSchedule_Click(object sender, RoutedEventArgs e)
         {
-            ScheduleReturn schedule = ScheduleGeneration.ScheduleGeneration.GenerateSchedule(App.Facilities, 15.99);
-
-            foreach (KeyValuePair<Facility, DateTime> keyValue in schedule.FacilitySchedule)
+            if(TabItemFacilities.IsSelected)
             {
-                try
+                ScheduleReturn schedule = ScheduleGeneration.ScheduleGeneration.GenerateSchedule(App.Facilities, 15.99);
+
+                foreach (KeyValuePair<Facility, DateTime> keyValue in schedule.FacilitySchedule)
                 {
-                    App.Facilities.Find(fac => fac.Equals(keyValue.Key)).ProposedDate = keyValue.Value;
-                    FacilityList.Items.Refresh();
+                    try
+                    {
+                        App.Facilities.Find(fac => fac.Equals(keyValue.Key)).ProposedDate = keyValue.Value;
+                        FacilityList.Items.Refresh();
+                    }
+                    catch (Exception notFound)
+                    {
+                        ErrorLogger.LogInfo("Couldn't find matching facility in App.Facilities, thus ProposedDate could not be set.", notFound);
+                    }
                 }
-                catch (Exception notFound)
-                {
-                    ErrorLogger.LogInfo("Couldn't find matching facility in App.Facilities, thus ProposedDate could not be set.", notFound);
-                }
+
+                MonthAvgLabel.Visibility = Visibility.Visible;
+                MonthAvgVal.Visibility = Visibility.Visible;
+                MonthAvgVal.Content = schedule.GlobalAvg;
             }
-           
-            MonthAvgLabel.Visibility = Visibility.Visible;
-            MonthAvgVal.Visibility = Visibility.Visible;
-            MonthAvgVal.Content = schedule.GlobalAvg;
+            else if (TabItemDetails.IsSelected)
+            {
+
+            }
+            
         }
 
         /// <summary>
