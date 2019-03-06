@@ -428,7 +428,10 @@ namespace WPF_Application
                             fac.ZipCode = txt.Text;
                             break;
                         case 6:
-                            fac.NumberOfBeds = int.Parse(txt.Text);
+                            if (txt.Text.Any())
+                                fac.NumberOfBeds = int.Parse(txt.Text);
+                            else
+                                fac.NumberOfBeds = 0;
                             break;
                         case 7:
                             //Don't want to change prev inspection dates
@@ -443,7 +446,10 @@ namespace WPF_Application
                             fac.InspectionResult = txt.Text;
                             break;
                         case 11:
-                            fac.DatesOfSOD = DateTime.Parse(txt.Text);
+                            if (txt.Text.Any())
+                                fac.DatesOfSOD = DateTime.Parse(txt.Text);
+                            else
+                                fac.DatesOfSOD = new DateTime();
                             break;
                         case 12:
                             fac.EnforcementNotes = txt.Text;
@@ -452,7 +458,10 @@ namespace WPF_Application
                             fac.Complaints = txt.Text;
                             break;
                         case 14:
-                            fac.ProposedDate = DateTime.Parse(txt.Text);
+                            if (txt.Text.Any())
+                                fac.ProposedDate = DateTime.Parse(txt.Text);
+                            else
+                                fac.ProposedDate = new DateTime();
                             break;
                         case 15:
                             //Don't want to change calculated value
