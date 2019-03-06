@@ -227,7 +227,7 @@ namespace WPF_Application
                     _globalAvg = ScheduleGeneration.ScheduleGeneration.GetGlobalAverage(App.Facilities);
                 }
 
-                var newDate = ScheduleGeneration.ScheduleGeneration.GenerateSingleDate(_currentDisplayedFacility, _globalAvg, _desiredAvg, App.Facilities);
+                var newDate = ScheduleGeneration.ScheduleGeneration.GenerateSingleDate(_currentDisplayedFacility, App.Facilities);
 
                 _currentDisplayedFacility.ProposedDate = newDate;
 

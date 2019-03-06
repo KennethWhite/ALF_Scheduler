@@ -8,7 +8,9 @@ namespace ScheduleGeneration
 {
     public class ScheduleGeneration
     {
-        //Used to hold a date of a proposed inspection, as well as the months the algorithm selected base off the previous Inspection
+        /// <summary>
+        /// Used to hold a date of a proposed inspection, as well as the months the algorithm selected base off the previous Inspection
+        /// </summary>
         private struct NextInspectionDate
         {
             public DateTime Date { get; }
@@ -21,6 +23,11 @@ namespace ScheduleGeneration
             }
         }
 
+        /// <summary>
+        /// Gets the average schedule interval for a list of Facilities.
+        /// </summary>
+        /// <param name="facilityList">List of facilities to get average from.</param>
+        /// <returns>Double representing the average of all the schedule intervals.</returns>
         public static double GetGlobalAverage(List<Facility> facilityList)
         {
             double total = 0;
@@ -39,7 +46,12 @@ namespace ScheduleGeneration
                 return 0;
         }
 
-        //Main driver of the method, give it a list of Facilities and a desired average, and it will return a ScheduleReturn object which contains the average months of the schedule, and a Dictionary of Facilities and their proposed inspection dates
+        /// <summary>
+        /// Main driver of the method, give it a list of Facilities and a desired average, and it will return a ScheduleReturn object which contains the average months of the schedule, and a Dictionary of Facilities and their proposed inspection dates
+        /// </summary>
+        /// <param name="facilityList">List of Facility Objects.</param>
+        /// <param name="desiredAvg">Desired average schedule interval.</param>
+        /// <returns>ScheduleReturn object, which contains the average of the schedule intervals, and a Key Value dictionary of facilities and their proprosed inspection dates.</returns>
         public static ScheduleReturn GenerateSchedule(List<Facility> facilityList, double desiredAvg)
         {
             double offsetMonths = 0;
@@ -103,7 +115,13 @@ namespace ScheduleGeneration
             return newSchedule;
         }
 
-        public static DateTime GenerateSingleDate(Facility facility, double curAvg, double desiredAvg, List<Facility> facList)
+        /// <summary>
+        /// Generates a date for a proposed inspection. Uses random chance to generate a proposed date given the Facility's last inspection. If no previous inspection, will generate random month between 6 and 9 months.
+        /// </summary>
+        /// <param name="facility">The facility to generate a proposed date for.</param>
+        /// <param name="facList"></param>
+        /// <returns></returns>
+        public static DateTime GenerateSingleDate(Facility facility, List<Facility> facList)
         {
             var lastInspec = facility.MostRecentFullInspection;
             var date_lastInspection = lastInspec.InspectionDate;
@@ -123,7 +141,7 @@ namespace ScheduleGeneration
 
             /* This is if we want to grab a date to perfectly align with average
             double best = GetClosestToValue(code_lastInspection.MinMonth, code_lastInspection.MaxMonth, desiredAvg);
-            int days = DoubleMonthToDays(best);
+            int days = MonthsToDays(best);
 
             return date_lastInspection.AddDays(days);
             */
@@ -152,12 +170,23 @@ namespace ScheduleGeneration
             return newDate;
         }
 
+        /// <summary>
+        /// Checks if a date is within +/- 2 weeks of other date.
+        /// </summary>
+        /// <param name="prevInspection">Date to add +/- 2 weeks to.</param>
+        /// <param name="nextInspection">Date to check if within +/- 2 weeks.</param>
+        /// <returns>Boolean whether or not within +/- 2 weeks of date.</returns>
         private static bool IsDateWithinTwoWeeksOfLast(DateTime prevInspection, DateTime nextInspection)
         {
             return nextInspection < prevInspection.AddDays(14) && nextInspection > prevInspection.AddDays(-14);
         }
 
-        //Used to check conflicts between a new proposed inspection and the list contain previous proposed inspection. Incoming dates must be in int format represented as its DateTime.DayOfYear
+        /// <summary>
+        /// Used to check conflicts between a new proposed inspection and the list contain previous proposed inspection. Default is 6 days past date. Incoming dates must be in int format represented as its DateTime.DayOfYear
+        /// </summary>
+        /// <param name="scheduledDays">List of ints representing a day of the year.</param>
+        /// <param name="startInspection">Int representing a day of the yeay.</param>
+        /// <returns>Boolean whether or not within 6 days of another date.</returns>
         private static bool IsUnscheduledDate(List<int> scheduledDays, int startInspection)
         {
             var notScheduled = true;
@@ -176,7 +205,12 @@ namespace ScheduleGeneration
             return notScheduled;
         }
 
-        //Provides a list of ints given a start and end value. Both inclusive
+        /// <summary>
+        /// Provides a list of ints given a start and end value. Both inclusive
+        /// </summary>
+        /// <param name="start">Start int.</param>
+        /// <param name="end">End int.</param>
+        /// <returns>List of ints within range. Inclusive.</returns>
         private static List<int> GetRange(int start, int end)
         {
             var list = new List<int>();
@@ -186,21 +220,34 @@ namespace ScheduleGeneration
             return list;
         }
 
-        //Takes the date of a previous Inspection and the Code of the previous Inspection, and randomly chooses a month within the code's allowed range
+        /// <summary>
+        /// Takes the date of a previous Inspection and the Code of the previous Inspection, and randomly chooses a month within the code's allowed range
+        /// </summary>
+        /// <param name="lastInspection">DateTime of previous inspection.</param>
+        /// <param name="lastCode">Result code of previous inspection.</param>
+        /// <returns>NextInspectionDate object, containing new date and the months in between the last inspection.</returns>
         private static NextInspectionDate PreferRandom(DateTime lastInspection, Code lastCode)
         {
             var minMonth = lastCode.MinMonth;
             var maxMonth = lastCode.MaxMonth;
 
             var months = Math.Round(NextDoubleInRange(minMonth, maxMonth), 2);
-            var daysBetween = DoubleMonthToDays(months);
+            var daysBetween = MonthsToDays(months);
 
             var newDate = lastInspection.AddDays(daysBetween);
 
             return new NextInspectionDate(newDate, months);
         }
 
-        //Takes the date and Code of the last Inspection, as well as the current count of months generated (totMonths), the sum of each of those months (monthSum), and the desired average. It then calculates the best value within the given Code's range of months to get the desired average
+        /// <summary>
+        /// Takes the date and Code of the last Inspection, as well as the current count of months generated (totMonths), the sum of each of those months (monthSum), and the desired average. It then calculates the best value within the given Code's range of months to get the desired average
+        /// </summary>
+        /// <param name="date">Date of last inspection.</param>
+        /// <param name="code">Result code of last inspection.</param>
+        /// <param name="totMonths">Count of the total months generated.</param>
+        /// <param name="monthSum">The sum of all the months generated.</param>
+        /// <param name="desiredAvg">The average schedule interval to attain to.</param>
+        /// <returns>NextInspectionDate object, containing new date and the months in between the last inspection.</returns>
         private static NextInspectionDate PreferAverage(DateTime date, Code code, int totMonths,
             double monthSum, double desiredAvg)
         {
@@ -211,14 +258,20 @@ namespace ScheduleGeneration
 
             var months = Math.Round(GetClosestToValue(minMonth, maxMonth, bestMonth), 2);
 
-            var daysBetween = DoubleMonthToDays(months);
+            var daysBetween = MonthsToDays(months);
 
             var newDate = date.AddDays(daysBetween);
 
             return new NextInspectionDate(newDate, months);
         }
 
-        //Used to get the closest value as a double given a minimum and maximum value permitted.
+        /// <summary>
+        /// Used to get the closest value as a double given a minimum and maximum value permitted.
+        /// </summary>
+        /// <param name="min">Int at the bottom of the range.</param>
+        /// <param name="max">Int at the top of the range.</param>
+        /// <param name="goal">Double as preffered value to get.</param>
+        /// <returns>A double that is closest to the goal value.</returns>
         private static double GetClosestToValue(int min, int max, double goal)
         {
             double value;
@@ -232,19 +285,32 @@ namespace ScheduleGeneration
             return value;
         }
 
-        //Returns the approximate month value given the days and assuming the average days per month is 30.42
-        private static double DaysToDoubleMonth(double days)
+        /// <summary>
+        /// Returns the approximate month value given the days and assuming the average days per month is 30.42
+        /// </summary>
+        /// <param name="days">Days to turn into months.</param>
+        /// <returns>Double represent the months from given days.</returns>
+        private static double DaysToMonths(double days)
         {
             return days / 30.42;
         }
 
-        //Returns the approximate day value given the month value and assuming the average days per month is 30.42
-        private static int DoubleMonthToDays(double months)
+        /// <summary>
+        /// Returns the approximate day value given the month value and assuming the average days per month is 30.42
+        /// </summary>
+        /// <param name="months">Montht to turn into days.</param>
+        /// <returns>Int representing the days from given months.</returns>
+        private static int MonthsToDays(double months)
         {
             return Convert.ToInt32(months * 30.42);
         }
 
-        //Returns a random double from within a range of given doubles
+        /// <summary>
+        /// Returns a random double from within a range of given doubles
+        /// </summary>
+        /// <param name="min">Lower boundary.</param>
+        /// <param name="max">Upper boundary.</param>
+        /// <returns>Random double from range of values.</returns>
         private static double NextDoubleInRange(double min, double max)
         {
             var random = new Random();
@@ -253,7 +319,12 @@ namespace ScheduleGeneration
             return next * (max - min) + min;
         }
 
-        //Returns an array of DateTimes of all the in between two dates. Both Inclusive
+        /// <summary>
+        /// Returns an array of DateTimes of all the in between two dates. Both Inclusive
+        /// </summary>
+        /// <param name="startDate">Date to start list at.</param>
+        /// <param name="endDate">Date to end list at.</param>
+        /// <returns>An array of DateTimes containing all the dates between given range.</returns>
         public static DateTime[] GetDatesBetween(DateTime startDate, DateTime endDate)
         {
             var allDates = new List<DateTime>();
