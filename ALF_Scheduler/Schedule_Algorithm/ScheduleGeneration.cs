@@ -8,6 +8,37 @@ namespace ScheduleGeneration
 {
     public class ScheduleGeneration
     {
+        //Used to hold a date of a proposed inspection, as well as the months the algorithm selected base off the previous Inspection
+        private struct NextInspectionDate
+        {
+            public DateTime Date { get; }
+            public double Months { get; }
+
+            public NextInspectionDate(DateTime date, double months)
+            {
+                Date = date;
+                Months = months;
+            }
+        }
+
+        public static double GetGlobalAverage(List<Facility> facilityList)
+        {
+            double total = 0;
+            double count = 0;
+
+            foreach (Facility fac in facilityList)
+            {
+                total += fac.ScheduleInterval;
+                if (fac.ScheduleInterval != 0)
+                    count++;
+            }
+
+            if (count != 0)
+                return Math.Round(total / count, 2);
+            else
+                return 0;
+        }
+
         //Main driver of the method, give it a list of Facilities and a desired average, and it will return a ScheduleReturn object which contains the average months of the schedule, and a Dictionary of Facilities and their proposed inspection dates
         public static ScheduleReturn GenerateSchedule(List<Facility> facilityList, double desiredAvg)
         {
@@ -26,7 +57,8 @@ namespace ScheduleGeneration
                 var date_lastInspection = lastInspec.InspectionDate;
                 var code_lastInspection = lastInspec.Code;
 
-                if (lastInspec == null || date_lastInspection == null || code_lastInspection == null)
+
+                if (lastInspec == null || date_lastInspection == null || code_lastInspection == null || date_lastInspection.Equals(new DateTime()) || code_lastInspection.Equals(new Code()))
                 {
                     goto EndOfLoop;
                 }
@@ -69,6 +101,55 @@ namespace ScheduleGeneration
             newSchedule.GlobalAvg = Math.Round(sum / size, 2);
 
             return newSchedule;
+        }
+
+        public static DateTime GenerateSingleDate(Facility facility, double curAvg, double desiredAvg, List<Facility> facList)
+        {
+            var lastInspec = facility.MostRecentFullInspection;
+            var date_lastInspection = lastInspec.InspectionDate;
+            var code_lastInspection = lastInspec.Code;
+            bool lastInspecNull = false;
+
+            if (lastInspec == null || date_lastInspection == null || code_lastInspection == null || date_lastInspection.Equals(new DateTime()) || code_lastInspection.Equals(new Code()))
+            {
+                //No prev inspection. Generate random 6-9 months out.
+                code_lastInspection = new Code();
+                code_lastInspection.MinMonth = 6;
+                code_lastInspection.MaxMonth = 9;
+                date_lastInspection = DateTime.Now;
+                lastInspecNull = true;
+                //return PreferRandom(date_lastInspection, code_lastInspection).Date;
+            }
+
+            /* This is if we want to grab a date to perfectly align with average
+            double best = GetClosestToValue(code_lastInspection.MinMonth, code_lastInspection.MaxMonth, desiredAvg);
+            int days = DoubleMonthToDays(best);
+
+            return date_lastInspection.AddDays(days);
+            */
+
+            GenNew:
+
+            DateTime newDate = PreferRandom(date_lastInspection, code_lastInspection).Date;
+
+            if(!lastInspecNull)
+            {
+                if (IsDateWithinTwoWeeksOfLast(date_lastInspection, newDate))
+                    goto GenNew;
+            }
+
+            List<int> scheduledDays = new List<int>();
+            foreach(Facility fac in facList)
+            {
+                var propDate = fac.ProposedDate;
+                if (!propDate.Equals(new DateTime()))
+                    scheduledDays.Add(propDate.DayOfYear);
+            }
+
+            if (!IsUnscheduledDate(scheduledDays, newDate.DayOfYear))
+                goto GenNew;
+
+            return newDate;
         }
 
         private static bool IsDateWithinTwoWeeksOfLast(DateTime prevInspection, DateTime nextInspection)
@@ -120,11 +201,11 @@ namespace ScheduleGeneration
         }
 
         //Takes the date and Code of the last Inspection, as well as the current count of months generated (totMonths), the sum of each of those months (monthSum), and the desired average. It then calculates the best value within the given Code's range of months to get the desired average
-        private static NextInspectionDate PreferAverage(DateTime lastInspection, Code lastCode, int totMonths,
+        private static NextInspectionDate PreferAverage(DateTime date, Code code, int totMonths,
             double monthSum, double desiredAvg)
         {
-            var minMonth = lastCode.MinMonth;
-            var maxMonth = lastCode.MaxMonth;
+            var minMonth = code.MinMonth;
+            var maxMonth = code.MaxMonth;
 
             var bestMonth = desiredAvg * (totMonths + 1) - monthSum;
 
@@ -132,7 +213,7 @@ namespace ScheduleGeneration
 
             var daysBetween = DoubleMonthToDays(months);
 
-            var newDate = lastInspection.AddDays(daysBetween);
+            var newDate = date.AddDays(daysBetween);
 
             return new NextInspectionDate(newDate, months);
         }
@@ -179,19 +260,6 @@ namespace ScheduleGeneration
             for (var date = startDate; date <= endDate; date = date.AddDays(1))
                 allDates.Add(date);
             return allDates.ToArray();
-        }
-
-        //Used to hold a date of a proposed inspection, as well as the months the algorithm selected base off the previous Inspection
-        private struct NextInspectionDate
-        {
-            public DateTime Date { get; }
-            public double Months { get; }
-
-            public NextInspectionDate(DateTime date, double months)
-            {
-                Date = date;
-                Months = months;
-            }
         }
     }
 }

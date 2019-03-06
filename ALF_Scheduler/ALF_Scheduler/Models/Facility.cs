@@ -140,9 +140,15 @@ namespace ALF_Scheduler.Models
         /// <value>Gets the Facility's full inspection information from a year ago.</value>
         private Inspection NthPreviousInspection(int n)
         {
-            if (!AllInspections.Any()) throw new InvalidOperationException("Facility List is Empty");
+            if (!AllInspections.Any()) //throw new InvalidOperationException("Facility List is Empty");
+                return new Inspection();
             var sortList = AllInspections;
             sortList.Sort((i1, i2) => i2.InspectionDate.CompareTo(i1.InspectionDate));
+
+            //Check index out of bounds, if true, get first
+            if (n > AllInspections.Count - 1)
+                n = 0;
+
             return sortList.ElementAt(n);
         }
 

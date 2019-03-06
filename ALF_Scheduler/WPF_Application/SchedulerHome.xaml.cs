@@ -26,6 +26,8 @@ namespace WPF_Application
         private GridViewColumnHeader _lastHeaderClicked;
         private bool _detailsChanged;
         private Facility _currentDisplayedFacility;
+        private double _globalAvg = -1;
+        private double _desiredAvg = 15.99;
 
         private bool isDetailTabBuilt = false; // checks if details tab has alredy been built or not.
 
@@ -198,14 +200,17 @@ namespace WPF_Application
         {
             if(TabItemFacilities.IsSelected)
             {
-                ScheduleReturn schedule = ScheduleGeneration.ScheduleGeneration.GenerateSchedule(App.Facilities, 15.99);
+                MessageBoxResult msg = MessageBox.Show("This will overwrite ALL proposed dates, are you sure you want to continue?\nIf you want to generate just one date, go into the facility's detail tab and then click Generate Schedule.", "Data Overwrite Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                if (msg != MessageBoxResult.Yes)
+                    return;
+                ScheduleReturn schedule = ScheduleGeneration.ScheduleGeneration.GenerateSchedule(App.Facilities, _desiredAvg);
 
                 foreach (KeyValuePair<Facility, DateTime> keyValue in schedule.FacilitySchedule)
                 {
                     try
                     {
                         App.Facilities.Find(fac => fac.Equals(keyValue.Key)).ProposedDate = keyValue.Value;
-                        FacilityList.Items.Refresh();
                     }
                     catch (Exception notFound)
                     {
@@ -213,15 +218,26 @@ namespace WPF_Application
                     }
                 }
 
-                MonthAvgLabel.Visibility = Visibility.Visible;
-                MonthAvgVal.Visibility = Visibility.Visible;
-                MonthAvgVal.Content = schedule.GlobalAvg;
+                _globalAvg = schedule.GlobalAvg;
             }
             else if (TabItemDetails.IsSelected)
             {
+                if (_globalAvg == -1)
+                {
+                    _globalAvg = ScheduleGeneration.ScheduleGeneration.GetGlobalAverage(App.Facilities);
+                }
 
+                var newDate = ScheduleGeneration.ScheduleGeneration.GenerateSingleDate(_currentDisplayedFacility, _globalAvg, _desiredAvg, App.Facilities);
+
+                _currentDisplayedFacility.ProposedDate = newDate;
+
+                _globalAvg = ScheduleGeneration.ScheduleGeneration.GetGlobalAverage(App.Facilities);
+                OpenDetails(_currentDisplayedFacility);
             }
-            
+            MonthAvgLabel.Visibility = Visibility.Visible;
+            MonthAvgVal.Visibility = Visibility.Visible;
+            MonthAvgVal.Content = _globalAvg;
+            FacilityList.Items.Refresh();
         }
 
         /// <summary>
