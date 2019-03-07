@@ -45,9 +45,6 @@ namespace ALF_Scheduler.Models
         /// <value>Gets the Facility's zipcode.</value>
         public string ZipCode { get; set; }
 
-        /// <value>Gets the number of beds in the facility.</value>
-        public int NumberOfBeds { get; set; }
-
         /// <value>Gets the Facility's most recent full inspection information.</value>
         public Inspection MostRecentFullInspection => LastFullInspection();
 
@@ -88,19 +85,20 @@ namespace ALF_Scheduler.Models
             get => MostRecentFullInspection.Code.Name;
         }
 
-        //TODO dates of SOD (Statement of Deficiencies report)
+        /// <value>Gets the number of beds in the facility.</value>
+        public int NumberOfBeds { get; set; }
+
+        /// <value>Gets the Facility's complaints.</value>
+        public string Complaints { get; set; }
+        
         /// <value>Gets the dates of SOD (statement of deficiencies report) for complaints done since the last inspection.</value>
-        public DateTime DatesOfSOD { get; set; }
+        public string DatesOfSOD { get; set; }
         
         /// <value>
         ///     Gets the Facility's enforcement notes (fines, stop placement, conditions, revocation, summary suspension) since
         ///     last inspection.
         /// </value>
         public string EnforcementNotes { get; set; }
-
-        
-        /// <value>Gets the Facility's complaints.</value>
-        public string Complaints { get; set; }
 
         /// <value>Gets the proposed inspection date.</value>
         public DateTime ProposedDate { get; set; }
@@ -130,7 +128,7 @@ namespace ALF_Scheduler.Models
         public DateTime Month18 => MostRecentFullInspection.InspectionDate.AddMonths(18);
 
         /// <value>Gets the string of inspectors from the most recent inspection.</value>
-        public string LicensorList { get; set; }
+        public string Licensors { get; set; }
 
         /// <value>Gets any special information listed for the facility.</value>
         public string SpecialInfo { get; set; }
@@ -199,8 +197,9 @@ namespace ALF_Scheduler.Models
                 GetDateString(fac.Month18),
                 fac.NumberOfBeds.ToString(),
                 fac.SpecialInfo,
+                fac.Licensors,
                 fac.Complaints,
-                GetDateString(fac.DatesOfSOD),
+                fac.DatesOfSOD,
             };
 
             return f;

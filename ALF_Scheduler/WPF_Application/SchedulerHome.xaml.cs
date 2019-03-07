@@ -32,25 +32,26 @@ namespace WPF_Application
         private bool isDetailTabBuilt = false; // checks if details tab has alredy been built or not.
 
         private string[] labelContent = {
-            "Facility Name", // 0
-            "Name of Licensee", // 1
-            "License Number", // 2
-            "Unit", // 3
-            "City", // 4
-            "ZipCode", // 5
-            "Proposed Date", // 14 -> 6
-            "Inspection Result", // 10 -> 7
-            "Enforcement Notes", // 12 -> 8
-            "Schedule Interval", // 15 -> 9
-            "Most Recent Full Inspection", // 7 -> 10
-            "Previous Year Full Inspection", // 8 -> 11
-            "Two Year Full Inspection", // 9 -> 12
-            "Month 15", // 16 -> 13
-            "Month 18", // 17 -> 14
-            "Number Of Beds", // 6 -> 15
-            "Special Info", // 18 -> 16
-            "Complaints", // 13 -> 17
-            "Dates Of SOD", // 11 -> 18
+            "Facility Name",
+            "Name of Licensee",
+            "License Number",
+            "Unit",
+            "City",
+            "ZipCode",
+            "Proposed Date",
+            "Inspection Result",
+            "Enforcement Notes",
+            "Schedule Interval",
+            "Most Recent Full Inspection",
+            "Previous Year Full Inspection",
+            "Two Year Full Inspection",
+            "Month 15",
+            "Month 18",
+            "Number Of Beds",
+            "Special Info",
+            "Licensors",
+            "Complaints",
+            "Dates Of SOD",
         };
 
         
@@ -342,7 +343,7 @@ namespace WPF_Application
                 var check = App.Facilities.Find(x => x.FacilityName.CompareTo(find) == 0);
                 if (check != null)
                 {
-                    Inspection toAdd = CreateInspection(date, check.LicensorList, code);
+                    Inspection toAdd = CreateInspection(date, check.Licensors, code);
                     check.AddInspection(toAdd);
                 }
                 OpenDetails(check);
@@ -470,13 +471,23 @@ namespace WPF_Application
                             fac.SpecialInfo = txt.Text;
                             break;
                         case 17:
-                            fac.Complaints = txt.Text;
+                            fac.Licensors = txt.Text;
                             break;
                         case 18:
-                            if (txt.Text.Any())
-                                fac.DatesOfSOD = DateTime.Parse(txt.Text);
+                            fac.Complaints = txt.Text;
+                            break;
+                        case 19:
+                            var sods = txt.Text.Split(new char[] { ',' });
+                            var dates = "";
+                            if (sods.Length >= 2) {
+                                foreach (string date in sods)
+                                    dates += string.Format("{0}, ", DateTime.Parse(date.Trim()).ToShortDateString());
+                                fac.DatesOfSOD = dates;
+                            } 
+                            else if (txt.Text.Any())
+                                fac.DatesOfSOD += DateTime.Parse(txt.Text).ToShortDateString();
                             else
-                                fac.DatesOfSOD = new DateTime();
+                                fac.DatesOfSOD = "";
                             break;
                         default:
                             break;

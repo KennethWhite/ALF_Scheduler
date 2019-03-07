@@ -46,14 +46,14 @@ namespace ALF_Scheduler
             _facility.ZipCode = ((double)(_row.Cells[1, 5] as Range).Value2).ToString();
             _facility.City = (string)(_row.Cells[1, 6] as Range).Value2;
             _facility.AddInspection(CreateInspection((string)(_row.Cells[1, 7] as Range).Text));
-            _facility.EnforcementNotes = (string)(_row.Cells[1, 15] as Range).Value2;
-            _facility.AddInspection(CreateInspection((string)(_row.Cells[1, 8] as Range).Text, null, _facility.EnforcementNotes));
-            _facility.LicensorList = (string)(_row.Cells[1, 14] as Range).Value2;
+            _facility.EnforcementNotes = (string)(_row.Cells[1, 16] as Range).Value2;
             var code = (string)(_row.Cells[1, 15] as Range).Value2;
-            _facility.SpecialInfo = (string)(_row.Cells[1, 20] as Range).Value2;
+            _facility.AddInspection(CreateInspection((string)(_row.Cells[1, 8] as Range).Text, null, code));
+            _facility.Licensors = (string)(_row.Cells[1, 14] as Range).Value2;
+            _facility.DatesOfSOD = (string)(_row.Cells[1, 17] as Range).Value2;
             string beds = ((double)(_row.Cells[1, 19] as Range).Value2).ToString();
             SetNumberOfBeds(beds);
-            _facility.Complaints = (string)(_row.Cells[1, 16] as Range).Value2;
+            _facility.Complaints = (string)(_row.Cells[1, 20] as Range).Value2;
             
             return _facility;
         }
