@@ -154,5 +154,9 @@ namespace WPF_Application
         {
             Frame.Navigate(App.CalendarYearPage);
         }
+
+        private void Menu_Export_Click(object sender, RoutedEventArgs e) {
+            //TODO export facilities in X months to excel 
+        }
     }
 }
