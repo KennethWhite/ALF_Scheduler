@@ -165,27 +165,6 @@ namespace WPF_Application
                     txt.Background = Brushes.Silver;
                 }
 
-                /*
-                    "Facility Name", // 0
-                    "Name of Licensee", // 1
-                    "License Number", // 2
-                    "Unit", // 3
-                    "City", // 4
-                    "ZipCode", // 5
-                    "Proposed Date", // 14 -> 6
-                    "Inspection Result", // 10 -> 7
-                    "Enforcement Notes", // 12 -> 8
-                    "Schedule Interval", // 15 -> 9
-                    "Most Recent Full Inspection", // 7 -> 10
-                    "Previous Year Full Inspection", // 8 -> 11
-                    "Two Year Full Inspection", // 9 -> 12
-                    "Month 15", // 16 -> 13
-                    "Month 18", // 17 -> 14
-                    "Number Of Beds", // 6 -> 15
-                    "Special Info", // 18 -> 16
-                    "Complaints", // 13 -> 17
-                    "Dates Of SOD", // 11 -> 18
-                */
                 var info = facProperties[row];
                 if (row == 12 && (info.Equals(facProperties[10]) || info.Equals(facProperties[11]))) txt.Text = "";
                 else txt.Text = info;
