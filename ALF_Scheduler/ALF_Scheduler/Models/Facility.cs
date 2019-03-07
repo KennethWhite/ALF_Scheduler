@@ -188,19 +188,19 @@ namespace ALF_Scheduler.Models
                 fac.Unit,
                 fac.City,
                 fac.ZipCode,
-                fac.NumberOfBeds.ToString(),
+                GetDateString(fac.ProposedDate),
+                fac.InspectionResult,
+                fac.EnforcementNotes,
+                fac.ScheduleInterval.ToString(),
                 GetDateString(fac.MostRecentFullInspection.InspectionDate),
                 GetDateString(fac.PreviousFullInspection.InspectionDate),
                 GetDateString(fac.TwoYearFullInspection.InspectionDate),
-                fac.InspectionResult,
-                GetDateString(fac.DatesOfSOD),
-                fac.EnforcementNotes,
-                fac.Complaints,
-                GetDateString(fac.ProposedDate),
-                fac.ScheduleInterval.ToString(),
                 GetDateString(fac.Month15),
                 GetDateString(fac.Month18),
-                fac.SpecialInfo
+                fac.NumberOfBeds.ToString(),
+                fac.SpecialInfo,
+                fac.Complaints,
+                GetDateString(fac.DatesOfSOD),
             };
 
             return f;

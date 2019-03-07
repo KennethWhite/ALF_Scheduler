@@ -31,14 +31,27 @@ namespace WPF_Application
 
         private bool isDetailTabBuilt = false; // checks if details tab has alredy been built or not.
 
-        private string[] labelContent =
-                    {
-                "Facility Name", "Name of Licensee", "License Number", "Unit", "City", "ZipCode", "Number Of Beds",
-                "Most Recent Full Inspection",
-                "Previous Year Full Inspection", "Two Year Full Inspection", "Inspection Result", "Dates Of SOD",
-                "Enforcement Notes", "Complaints",
-                "Proposed Date", "Schedule Interval", "Month 15", "Month 18",
-                "Special Info"};
+        private string[] labelContent = {
+            "Facility Name", // 0
+            "Name of Licensee", // 1
+            "License Number", // 2
+            "Unit", // 3
+            "City", // 4
+            "ZipCode", // 5
+            "Proposed Date", // 14 -> 6
+            "Inspection Result", // 10 -> 7
+            "Enforcement Notes", // 12 -> 8
+            "Schedule Interval", // 15 -> 9
+            "Most Recent Full Inspection", // 7 -> 10
+            "Previous Year Full Inspection", // 8 -> 11
+            "Two Year Full Inspection", // 9 -> 12
+            "Month 15", // 16 -> 13
+            "Month 18", // 17 -> 14
+            "Number Of Beds", // 6 -> 15
+            "Special Info", // 18 -> 16
+            "Complaints", // 13 -> 17
+            "Dates Of SOD", // 11 -> 18
+        };
 
         
         /// <summary>
@@ -133,8 +146,7 @@ namespace WPF_Application
         ///     This method gathers data from the selected facility in the ListView and displays it next to its respective property
         ///     label.
         /// </summary>
-        public void OpenDetails(Facility facToShow)
-        {
+        public void OpenDetails(Facility facToShow) {
             TabItemDetails.IsSelected = true;
             StackPanelInfo.Children.Clear();
             _currentDisplayedFacility = facToShow;
@@ -146,15 +158,36 @@ namespace WPF_Application
                 txt.Margin = new Thickness(0, 3, 0, 3);
                 txt.IsReadOnly = false;
 
-                if(row == 7 || row == 8 || row == 9 || row == 15 || row == 16 || row == 17 || row == 19)
+                if(row >= 9 && row <= 14)
                 {
                     //We don't want to be able to edit certain fields
                     txt.IsReadOnly = true;
                     txt.Background = Brushes.Silver;
                 }
 
+                /*
+                    "Facility Name", // 0
+                    "Name of Licensee", // 1
+                    "License Number", // 2
+                    "Unit", // 3
+                    "City", // 4
+                    "ZipCode", // 5
+                    "Proposed Date", // 14 -> 6
+                    "Inspection Result", // 10 -> 7
+                    "Enforcement Notes", // 12 -> 8
+                    "Schedule Interval", // 15 -> 9
+                    "Most Recent Full Inspection", // 7 -> 10
+                    "Previous Year Full Inspection", // 8 -> 11
+                    "Two Year Full Inspection", // 9 -> 12
+                    "Month 15", // 16 -> 13
+                    "Month 18", // 17 -> 14
+                    "Number Of Beds", // 6 -> 15
+                    "Special Info", // 18 -> 16
+                    "Complaints", // 13 -> 17
+                    "Dates Of SOD", // 11 -> 18
+                */
                 var info = facProperties[row];
-                if (row == 9 && (info.Equals(facProperties[row - 1]) || info.Equals(facProperties[row - 2]))) txt.Text = "";
+                if (row == 12 && (info.Equals(facProperties[10]) || info.Equals(facProperties[11]))) txt.Text = "";
                 else txt.Text = info;
 
                 StackPanelInfo.Children.Add(txt);
@@ -401,8 +434,7 @@ namespace WPF_Application
                 {
                     selText = txt;
                     //TODO Maybe error checking?
-                    switch (count)
-                    {
+                    switch (count) {
                         case 0:
                             fac.FacilityName = txt.Text;
                             break;
@@ -428,53 +460,44 @@ namespace WPF_Application
                             break;
                         case 6:
                             if (txt.Text.Any())
-                                fac.NumberOfBeds = int.Parse(txt.Text);
-                            else
-                                fac.NumberOfBeds = 0;
-                            break;
-                        case 7:
-                            //Don't want to change prev inspection dates
-                            break;
-                        case 8:
-                            //Don't want to change prev inspection dates
-                            break;
-                        case 9:
-                            //Don't want to change prev inspection dates
-                            break;
-                        case 10:
-                            break;
-                        case 11:
-                            if (txt.Text.Any())
-                                fac.DatesOfSOD = DateTime.Parse(txt.Text);
-                            else
-                                fac.DatesOfSOD = new DateTime();
-                            break;
-                        case 12:
-                            fac.EnforcementNotes = txt.Text;
-                            break;
-                        case 13:
-                            fac.Complaints = txt.Text;
-                            break;
-                        case 14:
-                            if (txt.Text.Any())
                                 fac.ProposedDate = DateTime.Parse(txt.Text);
                             else
                                 fac.ProposedDate = new DateTime();
                             break;
+                        case 7:
+                            break;
+                        case 8:
+                            fac.EnforcementNotes = txt.Text;
+                            break;
+                        case 9:
+                            break;
+                        case 10:
+                            break;
+                        case 11:
+                            break;
+                        case 12:
+                            break;
+                        case 13:
+                            break;
+                        case 14:
+                            break;
                         case 15:
-                            //Don't want to change calculated value
+                            if (txt.Text.Any())
+                                fac.NumberOfBeds = int.Parse(txt.Text);
+                            else
+                                fac.NumberOfBeds = 0;
                             break;
                         case 16:
-                            //Don't want to change calculated value
-                            break;
-                        case 17:
-                            //Don't want to change calculated value
-                            break;
-                        case 18:
                             fac.SpecialInfo = txt.Text;
                             break;
-                        case 19:
-                            //Don't want to change prev inspection dates
+                        case 17:
+                            fac.Complaints = txt.Text;
+                            break;
+                        case 18:
+                            if (txt.Text.Any())
+                                fac.DatesOfSOD = DateTime.Parse(txt.Text);
+                            else
+                                fac.DatesOfSOD = new DateTime();
                             break;
                         default:
                             break;
