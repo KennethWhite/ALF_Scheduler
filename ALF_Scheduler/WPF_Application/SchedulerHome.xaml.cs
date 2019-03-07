@@ -134,6 +134,7 @@ namespace WPF_Application
                 {
                     Label label = new Label();
                     label.Content = labelContent[x];
+                    if (x == 8 || x == 16 || x == 18) label.Height = 55;
                     StackPanelLabels.Children.Add(label);
                 }
                 _currentDisplayedFacility = App.Facilities[0];
@@ -158,6 +159,11 @@ namespace WPF_Application
                 txt.Height = 20;
                 txt.Margin = new Thickness(0, 3, 0, 3);
                 txt.IsReadOnly = false;
+
+                if (row == 8 || row == 16 || row == 18) {
+                    txt.TextWrapping = TextWrapping.Wrap;
+                    txt.Height = 50;
+                }
 
                 if(row >= 9 && row <= 14)
                 {

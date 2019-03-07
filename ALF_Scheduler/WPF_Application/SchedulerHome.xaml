@@ -55,9 +55,9 @@
                         </ListView>
                     </ScrollViewer>
                 </TabItem>
-                <TabItem Name="TabItemDetails" Header="Details" Margin="-2,-2,-2,2">
+                <TabItem Name="TabItemDetails" Header="Details">
                     <ScrollViewer VerticalScrollBarVisibility="Visible">
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Margin="10,10,0,10" Orientation="Horizontal">
                             <StackPanel Name="StackPanelLabels" Width="250">
 
                             </StackPanel>
@@ -67,8 +67,7 @@
                         </StackPanel>
                     </ScrollViewer>
                 </TabItem>
-                <TabItem Name="TabItemInspectionResult" Header="Inspection Result Form" Height="22"
-                         VerticalAlignment="Top" >
+                <TabItem Name="TabItemInspectionResult" Header="Inspection Result Form">
                     <Grid Margin="50,20,50,20">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
