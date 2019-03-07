@@ -38,7 +38,7 @@ namespace WPF_Application
                 "Previous Year Full Inspection", "Two Year Full Inspection", "Inspection Result", "Dates Of SOD",
                 "Enforcement Notes", "Complaints",
                 "Proposed Date", "Schedule Interval", "Month 15", "Month 18",
-                "Special Info", "Last Full Inspection"};
+                "Special Info"};
 
         
         /// <summary>
@@ -81,7 +81,7 @@ namespace WPF_Application
 
                     foreach (Facility fac in App.Facilities) {
                         var datastr = "";
-                        foreach (var data in fac.returnFacility()) {
+                        foreach (var data in fac.ReturnFacility()) {
                             datastr += data + ";";
                         }
                         if (datastr.ToUpper().Contains(keyword)) tempList.Add(fac);
@@ -139,7 +139,7 @@ namespace WPF_Application
             TabItemDetails.IsSelected = true;
             StackPanelInfo.Children.Clear();
             _currentDisplayedFacility = facToShow;
-            List<string> facProperties = facToShow.returnFacility();
+            List<string> facProperties = facToShow.ReturnFacility();
             for(int row = 0; row < labelContent.Length; row++)
             {
                 TextBox txt = new TextBox();
@@ -154,7 +154,10 @@ namespace WPF_Application
                     txt.Background = Brushes.Silver;
                 }
 
-                txt.Text = facProperties[row];
+                var info = facProperties[row];
+                if (row == 9 && (info.Equals(facProperties[row - 1]) || info.Equals(facProperties[row - 2]))) txt.Text = "";
+                else txt.Text = info;
+
                 StackPanelInfo.Children.Add(txt);
                 txt.TextChanged += new TextChangedEventHandler(DetailsTextChanged);
             }

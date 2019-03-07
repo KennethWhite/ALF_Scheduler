@@ -50,10 +50,14 @@ namespace ALF_Scheduler.Models
 
         /// <value>Gets the Facility's most recent full inspection information.</value>
         public Inspection MostRecentFullInspection => LastFullInspection();
+
+        /// <value>Gets the Facility's most recent full inspection information as a short string.</value>
         public string MostRecentFullInspectionString => LastFullInspection().InspectionDate.ToShortDateString();
 
+        /// <value>Gets the Facility's most recent full inspection information as a formatted string.</value>
         public string MostRecentFullInspectionFormatString => GetDateString(LastFullInspection().InspectionDate);
 
+        /// <value>Gets the Facility's proposed inspection information as a formatted string.</value>
         public string ProposedDateFormatString => GetDateString(ProposedDate);
 
         /// <summary>
@@ -77,7 +81,7 @@ namespace ALF_Scheduler.Models
         }
 
         /// <value>Gets the Facility's full inspection date from two years ago.</value>
-        public Inspection TwoYearFullInspection => NthPreviousInspection(1);
+        public Inspection TwoYearFullInspection => NthPreviousInspection(2);
 
         //TODO connect inspection results with config file (NO, NO24, ENF, YES) 
         /// <value>Gets the inspection result for the facility.</value>
@@ -86,16 +90,14 @@ namespace ALF_Scheduler.Models
         //TODO dates of SOD (Statement of Deficiencies report)
         /// <value>Gets the dates of SOD (statement of deficiencies report) for complaints done since the last inspection.</value>
         public DateTime DatesOfSOD { get; set; }
-
-        // TODO enforcement notes
+        
         /// <value>
         ///     Gets the Facility's enforcement notes (fines, stop placement, conditions, revocation, summary suspension) since
         ///     last inspection.
         /// </value>
         public string EnforcementNotes { get; set; }
 
-
-        // TODO complaints
+        
         /// <value>Gets the Facility's complaints.</value>
         public string Complaints { get; set; }
 
@@ -130,14 +132,19 @@ namespace ALF_Scheduler.Models
         /// <value>Gets any special information listed for the facility.</value>
         public string SpecialInfo { get; set; }
 
-
-        /// <value>Gets the Facility's most recent full inspection information.</value>
+        /// <summary>
+        /// Gets the Facility's most recent full inspection information.
+        /// </summary>
+        /// <returns>The most recent <see cref="Inspection"/> date.</returns>
         private Inspection LastFullInspection()
         {
             return NthPreviousInspection(0);
         }
 
-        /// <value>Gets the Facility's full inspection information from a year ago.</value>
+        /// <summary>
+        /// Gets the Facility's full inspection information from a year ago.
+        /// </summary>
+        /// <returns>The nth <see cref="Inspection"/> date.</returns>
         private Inspection NthPreviousInspection(int n)
         {
             if (!AllInspections.Any()) //throw new InvalidOperationException("Facility List is Empty");
@@ -152,6 +159,9 @@ namespace ALF_Scheduler.Models
             return sortList.ElementAt(n);
         }
 
+        /// <summary>
+        /// This method adds an inspection to <see cref="AllInspections"/>
+        /// </summary>
         public void AddInspection(Inspection toAdd)
         {
             AllInspections.Add(toAdd);
@@ -161,45 +171,46 @@ namespace ALF_Scheduler.Models
         /// returnFacility will return a List<object> of all of the passed in Facilitiy's values, except AddInspection, and NthPreviousInspection.
         /// </summary>
         /// <param name="fac"></param>
-        /// <returns></returns>
-        public static List<string> returnFacility(Facility fac)
+        /// <returns>A list of facility properties as strings.</returns>
+        public static List<string> ReturnFacility(Facility fac)
         {
-            List<string> f = new List<string>();
+            List<string> f = new List<string> {
 
-            //string allInspections = ListToString(fac.AllInspections);
-            //f.Add(allInspections);
+                //string allInspections = ListToString(fac.AllInspections);
+                //f.Add(allInspections);
 
-            f.Add(fac.FacilityName);
-            f.Add(fac.NameOfLicensee);
-            f.Add(fac.LicenseNumber.ToString());
-            f.Add(fac.Unit);
-            f.Add(fac.City);
-            f.Add(fac.ZipCode);
-            f.Add(fac.NumberOfBeds.ToString());
-            f.Add(GetDateString(fac.MostRecentFullInspection.InspectionDate));
-            f.Add(GetDateString(fac.PreviousFullInspection.InspectionDate));
-            f.Add(GetDateString(fac.TwoYearFullInspection.InspectionDate));
-            f.Add(fac.InspectionResult);
-            f.Add(GetDateString(fac.DatesOfSOD));
-            f.Add(fac.EnforcementNotes);
-            f.Add(fac.Complaints);
-            f.Add(GetDateString(fac.ProposedDate));
-            f.Add(fac.ScheduleInterval.ToString());
-            f.Add(GetDateString(fac.Month15));
-            f.Add(GetDateString(fac.Month18));
-            f.Add(fac.SpecialInfo);
-            f.Add(GetDateString(fac.LastFullInspection().InspectionDate));
+                fac.FacilityName,
+                fac.NameOfLicensee,
+                fac.LicenseNumber.ToString(),
+                fac.Unit,
+                fac.City,
+                fac.ZipCode,
+                fac.NumberOfBeds.ToString(),
+                GetDateString(fac.MostRecentFullInspection.InspectionDate),
+                GetDateString(fac.PreviousFullInspection.InspectionDate),
+                GetDateString(fac.TwoYearFullInspection.InspectionDate),
+                fac.InspectionResult,
+                GetDateString(fac.DatesOfSOD),
+                fac.EnforcementNotes,
+                fac.Complaints,
+                GetDateString(fac.ProposedDate),
+                fac.ScheduleInterval.ToString(),
+                GetDateString(fac.Month15),
+                GetDateString(fac.Month18),
+                fac.SpecialInfo
+            };
 
             return f;
 
         }
 
         /// <summary>
-        /// returnFacility will return a List<string> of all of the Facilitiy's values, except AddInspection, and NthPreviousInspection.
+        /// ReturnFacility will return a List<string> of all of the Facilitiy's values, except AddInspection, and NthPreviousInspection.
         /// </summary>
-        public List<string> returnFacility()
+        /// <returns>A list of facility properties as strings except AddInspection, and NthPreviousInspection.</returns>
+        public List<string> ReturnFacility()
         {
-            return returnFacility(this);
+            return ReturnFacility(this);
         }
 
 
