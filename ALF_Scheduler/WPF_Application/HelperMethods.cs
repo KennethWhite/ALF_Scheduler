@@ -53,5 +53,11 @@ namespace WPF_Application
             month.BlackoutDates.Add(
                 new CalendarDateRange(DateTime.Parse(facility.MostRecentFullInspectionString)));
         }
+
+        internal static void RefreshCalendars(Calendar month) {
+            App.CalendarYearPage.calendarGrid.Children.RemoveRange(1, App.CalendarYearPage.calendarGrid.Children.Count - 1);
+            App.CalendarYearPage.CreateCalendars(DateTime.Now.Year);
+            DateSelection(month);
+        }
     }
 }

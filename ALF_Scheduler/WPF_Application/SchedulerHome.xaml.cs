@@ -235,6 +235,7 @@ namespace WPF_Application
             MonthAvgVal.Visibility = Visibility.Visible;
             MonthAvgVal.Content = _globalAvg;
             FacilityList.Items.Refresh();
+            HelperMethods.RefreshCalendars(MonthlyCalendar);
         }
 
         /// <summary>

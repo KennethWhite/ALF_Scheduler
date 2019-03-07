@@ -46,7 +46,6 @@ namespace WPF_Application
                     IsTodayHighlighted = true,
                     Margin = new Thickness(10),
                     SelectionMode = CalendarSelectionMode.MultipleRange,
-                    //CalendarButtonStyle = (Style)Resources["CalendarButtonStyle"],
                     IsHitTestVisible = true
                 };
                 calendar.GotMouseCapture += Calendar_GotMouseCapture;
