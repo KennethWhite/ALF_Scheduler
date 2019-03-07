@@ -32,12 +32,8 @@
         <Grid>
             <Label Content="Assisted Living Facilities" HorizontalAlignment="Left" Margin="5,80,0,550" Height="35"
                    Width="240" FontSize="16" />
-            <TextBox x:Name="SearchText" HorizontalAlignment="Left" Height="20" Margin="570,97,0,0" TextWrapping="Wrap"
-                     VerticalAlignment="Top" Width="130" Opacity="0.5" />
-            <Button x:Name="SearchButton" Content="Search" HorizontalAlignment="Left" Margin="711,96,0,0"
-                    VerticalAlignment="Top" Width="75" Click="SearchButton_Click" IsDefault="true"/>
-            <Button x:Name="ResetSearchButton" Content="Reset" HorizontalAlignment="Left" Margin="711,121,0,0"
-                    VerticalAlignment="Top" Width="75" Click="ResetSearchButton_Click" IsDefault="true" Visibility="Hidden"/>
+            <TextBox x:Name="SearchText" Text="Search.." HorizontalAlignment="Left" Height="20" Margin="607,97,0,0" TextWrapping="Wrap" VerticalAlignment="Top" 
+                    Width="178" Opacity="0.5" TextChanged="SearchText_TextChanged" GotFocus="SearchText_GotFocus" LostFocus="SearchText_LostFocus" />
             <Button x:Name="DetailsSubmitButton" Content="Submit Changes" HorizontalAlignment="Left" Margin="607,495,0,0"
                     VerticalAlignment="Top" Width="100" Click="DetailsSubmitButton_Click" IsDefault="true" Visibility="Hidden"/>
             <Button x:Name="DetailsRevertButton" Content="Revert Changes" HorizontalAlignment="Left" Margin="607,520,0,0"

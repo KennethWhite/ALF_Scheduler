@@ -70,26 +70,35 @@ namespace WPF_Application
         /// <summary>
         ///     This method searches through the list of facilities displayed for the specific string provided by the user.
         /// </summary>
-        private void SearchButton_Click(object sender, RoutedEventArgs e)
-        {
-            ResetSearchButton.Visibility = Visibility.Visible;
+        private void SearchText_TextChanged(object sender, RoutedEventArgs e) {
 
             var keyword = SearchText.Text.ToUpper();
+            if (!keyword.Equals("SEARCH..")) {
+                FacilityList.ItemsSource = App.Facilities;
 
-            List<Facility> tempList = new List<Facility>();
+                if (!keyword.Equals("SEARCH..")) {
+                    List<Facility> tempList = new List<Facility>();
 
-            foreach (Facility fac in App.Facilities)
-            {
-                var datastr = "";
-                foreach (var data in fac.returnFacility())
-                {
-                    datastr += data + ";";
+                    foreach (Facility fac in App.Facilities) {
+                        var datastr = "";
+                        foreach (var data in fac.returnFacility()) {
+                            datastr += data + ";";
+                        }
+                        if (datastr.ToUpper().Contains(keyword)) tempList.Add(fac);
+                    }
+
+                    FacilityList.ItemsSource = tempList;
+                    TabItemFacilities.IsSelected = true;
                 }
-                if (datastr.ToUpper().Contains(keyword)) tempList.Add(fac);
             }
+        }
 
-            FacilityList.ItemsSource = tempList;
-            TabItemFacilities.IsSelected = true;
+        private void SearchText_GotFocus(object sender, RoutedEventArgs e) {
+            if (SearchText.Text.Equals("Search..")) SearchText.Text = "";
+        }
+
+        private void SearchText_LostFocus(object sender, RoutedEventArgs e) {
+            if (SearchText.Text.Equals("")) SearchText.Text = "Search..";
         }
 
         /// <summary>
@@ -98,18 +107,6 @@ namespace WPF_Application
         /// <param name="facility">The facility to be displayed in the details tab.</param>
         internal void DisplayFacility(Facility facility) {
             OpenDetails(facility);
-        }
-
-        /// <summary>
-        /// Button to show original list without search criteria.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ResetSearchButton_Click(object sender, RoutedEventArgs e)
-        {
-            ResetSearchButton.Visibility = Visibility.Hidden;
-            FacilityList.ItemsSource = App.Facilities;
-            SearchText.Text = null;
         }
 
         /// <summary>
