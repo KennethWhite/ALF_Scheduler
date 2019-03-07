@@ -82,10 +82,11 @@ namespace ALF_Scheduler.Models
 
         /// <value>Gets the Facility's full inspection date from two years ago.</value>
         public Inspection TwoYearFullInspection => NthPreviousInspection(2);
-
-        //TODO connect inspection results with config file (NO, NO24, ENF, YES) 
+ 
         /// <value>Gets the inspection result for the facility.</value>
-        public string InspectionResult { get; set; }
+        public string InspectionResult {
+            get => MostRecentFullInspection.Code.Name;
+        }
 
         //TODO dates of SOD (Statement of Deficiencies report)
         /// <value>Gets the dates of SOD (statement of deficiencies report) for complaints done since the last inspection.</value>
@@ -103,6 +104,8 @@ namespace ALF_Scheduler.Models
 
         /// <value>Gets the proposed inspection date.</value>
         public DateTime ProposedDate { get; set; }
+
+        /// <value>Gets the proposed inspection date as a short string.</value>
         public string ProposedDateString { get => ProposedDate.ToShortDateString(); }
 
         /// <value>Gets the time interval between the most recent inspection, and the proposed date.</value>
@@ -168,7 +171,7 @@ namespace ALF_Scheduler.Models
         }
 
         /// <summary>
-        /// returnFacility will return a List<object> of all of the passed in Facilitiy's values, except AddInspection, and NthPreviousInspection.
+        /// ReturnFacility will return a List<object> of all of the passed in Facilitiy's values, except AddInspection, and NthPreviousInspection.
         /// </summary>
         /// <param name="fac"></param>
         /// <returns>A list of facility properties as strings.</returns>

@@ -55,8 +55,7 @@ namespace WPF_Application
         }
 
         private void InspectionResultFormInit()
-        {
-            
+        {            
             FacilityBox.ItemsSource = App.Facilities;
             List<Code> codes = Code.getCodes();
             List<string> codeStr = new List<string>();
@@ -249,19 +248,14 @@ namespace WPF_Application
             var headerClicked = e.OriginalSource as GridViewColumnHeader;
             ListSortDirection direction;
 
-            if (headerClicked != null)
-                if (headerClicked.Role != GridViewColumnHeaderRole.Padding)
-                {
-                    if (headerClicked != _lastHeaderClicked)
-                    {
+            if (headerClicked != null) {
+                if (headerClicked.Role != GridViewColumnHeaderRole.Padding) {
+                    if (headerClicked != _lastHeaderClicked) {
                         direction = ListSortDirection.Ascending;
-                    }
-                    else
-                    {
+                    } else {
                         if (_lastDirection == ListSortDirection.Ascending)
                             direction = ListSortDirection.Descending;
-                        else
-                        {
+                        else {
                             CollectionViewSource.GetDefaultView(FacilityList.ItemsSource).SortDescriptions.Clear();
                             _lastHeaderClicked.Column.HeaderTemplate = null;
                             _lastHeaderClicked = null;
@@ -288,6 +282,7 @@ namespace WPF_Application
                     _lastHeaderClicked = headerClicked;
                     _lastDirection = direction;
                 }
+            }
         }
 
         /// <summary>
@@ -307,6 +302,9 @@ namespace WPF_Application
             dataView.Refresh();
         }
 
+        /// <summary>
+        /// When a facility is double clicked in the list of facilities displayed, this method will open that facility in the details tab.
+        /// </summary>
         private void FacilityList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if(FacilityList.HasItems)
@@ -444,7 +442,6 @@ namespace WPF_Application
                             //Don't want to change prev inspection dates
                             break;
                         case 10:
-                            fac.InspectionResult = txt.Text;
                             break;
                         case 11:
                             if (txt.Text.Any())
