@@ -57,9 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationDbContext.cs" />
-    <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="ErrorLogger.cs" />
-    <Compile Include="Migrations\ApplicationDbInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

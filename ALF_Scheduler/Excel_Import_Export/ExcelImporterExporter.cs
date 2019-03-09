@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using ALF_Scheduler.Utilities;
@@ -134,5 +135,24 @@ namespace Excel_Import_Export
             if (!File.Exists(path)) ErrorLogger.LogInfo($"Failed to delete file:  {path}");
             File.Delete(path);
         }
+
+        /// <summary>
+        /// This method will open an Excel Application and Excel Workbook pointing to the path specified
+        /// </summary>
+        /// <param name="path">The path of the Excel file to be created</param>
+        /// <param name="xlApp">The Excel Application instantiated</param>
+        /// <param name="xlWorkbook">The Excel Workbook instantiated</param>
+        public static void CreateWorkBookAtPath(string path, out Application xlApp, out Workbook xlWorkbook)
+        {
+            xlApp = new Application();
+
+            if (xlApp == null)
+                throw new NullReferenceException(
+                    $"The program failed to create the file {path} because Microsoft Excel could not be opened.");
+            xlApp.DisplayAlerts = false;
+            xlWorkbook = xlApp.Workbooks.Open($@"{path}");
+        }
+
+
     }
 }

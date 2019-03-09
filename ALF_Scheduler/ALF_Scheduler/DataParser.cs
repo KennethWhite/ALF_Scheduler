@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using ALF_Scheduler.Models;
-using Microsoft.Office.Interop.Excel;
+using Excel = Microsoft.Office.Interop.Excel;
 using System.Collections.Generic;
 using ALF_Scheduler.Utilities;
 using Excel_Import_Export;
+using Microsoft.Office.Interop.Excel;
 
 namespace ALF_Scheduler
 {
@@ -117,6 +118,32 @@ namespace ALF_Scheduler
             if (regex.IsMatch(date))
                 return DateTime.Parse(date);
             throw new FormatException("date does not match regex format");
+        }
+
+        public static void WriteFacilitiesToWorkbook(List<Facility> facilities, Application xlApp, Workbook xlWorkBook)
+        {
+            var sheet = (Worksheet)xlWorkBook.Worksheets[1];
+            int rowNumber = 2;
+
+            ((Excel.Range)sheet.Cells[rowNumber, 1]).Value = "Facility Name";
+            ((Excel.Range)sheet.Cells[rowNumber, 2]).Value = "Licensee Name";
+            ((Excel.Range)sheet.Cells[rowNumber, 3]).Value = "License Number";
+            ((Excel.Range)sheet.Cells[rowNumber, 4]).Value = "City";
+            ((Excel.Range)sheet.Cells[rowNumber, 5]).Value = "Zip";
+            ((Excel.Range)sheet.Cells[rowNumber, 6]).Value = "Next Inspection";
+            ((Excel.Range)sheet.Cells[rowNumber, 7]).Value = "Special Info";
+
+            foreach (Facility fac in facilities)
+            {
+                ((Excel.Range)sheet.Cells[rowNumber, 1]).Value = fac.FacilityName;
+                ((Excel.Range)sheet.Cells[rowNumber, 2]).Value = fac.NameOfLicensee;
+                ((Excel.Range)sheet.Cells[rowNumber, 3]).Value = fac.LicenseNumber;
+                ((Excel.Range)sheet.Cells[rowNumber, 4]).Value = fac.City;
+                ((Excel.Range)sheet.Cells[rowNumber, 5]).Value = fac.ZipCode;
+                ((Excel.Range)sheet.Cells[rowNumber, 6]).Value = fac.ProposedDate;
+                ((Excel.Range)sheet.Cells[rowNumber, 7]).Value = fac.SpecialInfo;
+                rowNumber++;
+            }  
         }
     }
 }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
-using ALF_Scheduler;
-using ALF_Scheduler.Domain.Models;
+using ALF_Scheduler.Models;
 using ALF_Scheduler.Services;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;

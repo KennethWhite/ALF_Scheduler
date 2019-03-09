@@ -1,6 +1,5 @@
 using System.Collections.Generic;
-using ALF_Scheduler;
-using ALF_Scheduler.Domain.Models;
+using ALF_Scheduler.Models;
 using ALF_Scheduler.Services;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -143,7 +142,6 @@ namespace Services.Tests
             return new Facility
             {
                 FacilityName = "Test Facility",
-                InspectionResult = "PASS",
                 NumberOfBeds = 42,
                 City = "Spokane"
                 //PreviousFullInspection = new Inspection()
@@ -161,7 +159,6 @@ namespace Services.Tests
                 facilities.Add(new Facility
                 {
                     FacilityName = $"Test Facility {i}",
-                    InspectionResult = "PASS",
                     NumberOfBeds = 42,
                     City = "Spokane"
                     //MostRecentFullInspection = new Inspection()
