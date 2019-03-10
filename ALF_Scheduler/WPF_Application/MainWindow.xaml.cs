@@ -53,7 +53,7 @@ namespace WPF_Application
                     dlg.FileName = "Document"; // Default file name
                     dlg.DefaultExt = ".xlsx"; // Default file extension
                     dlg.Filter = "Excel documents (.xlsx)|*.xlsx"; // Filter files by extension
-                    dlg.CheckFileExists = true;
+                    dlg.CheckFileExists = false;
                     dlg.CheckPathExists = true;
 
                     // Show save file dialog box
@@ -161,7 +161,7 @@ namespace WPF_Application
             dlg.FileName = "Document"; // Default file name
             dlg.DefaultExt = ".xlsx"; // Default file extension
             dlg.Filter = "Excel documents (.xlsx)|*.xlsx"; // Filter files by extension
-            dlg.CheckFileExists = true;
+            dlg.CheckFileExists = false;
             dlg.CheckPathExists = true;
 
             // Show save file dialog box
@@ -169,17 +169,7 @@ namespace WPF_Application
 
             if (result == true)
             {
-                // Save document
-                var filename = dlg.FileName;
-                if (!File.Exists(filename))
-                {
-                    File.Create(filename);
-                }
-                Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
-                Microsoft.Office.Interop.Excel.Workbook xlWorkBook = xlApp.Workbooks.Open($@"{filename}");
-                ALF_Scheduler.DataParser.WriteFacilitiesToWorkbook(App.Facilities, xlApp, xlWorkBook);
-                ExcelImporterExporter.SaveWorkbookToSpecifiedFile(filename, xlWorkBook);
-                ExcelImporterExporter.CloseExcelApp(xlApp, xlWorkBook);
+                App.SaveFacilitiesToExcel(dlg.FileName);
             }
         }
     }

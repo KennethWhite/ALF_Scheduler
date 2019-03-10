@@ -29,7 +29,7 @@ namespace WPF_Application
         private double _globalAvg = -1;
         private double _desiredAvg = 15.99;
 
-        private bool isDetailTabBuilt = false; // checks if details tab has alredy been built or not.
+        private bool isDetailTabBuilt = false; // checks if details tab has already been built or not.
 
         private string[] labelContent = {
             "Facility Name",
@@ -171,10 +171,14 @@ namespace WPF_Application
                     txt.IsReadOnly = true;
                     txt.Background = Brushes.Silver;
                 }
+                if (row < facProperties.Count)
+                {
+                    var info = facProperties[row];
+                    if (row == 12 && (info.Equals(facProperties[10]) || info.Equals(facProperties[11]))) txt.Text = "";
+                    else txt.Text = info;
+                }
+               
 
-                var info = facProperties[row];
-                if (row == 12 && (info.Equals(facProperties[10]) || info.Equals(facProperties[11]))) txt.Text = "";
-                else txt.Text = info;
 
                 StackPanelInfo.Children.Add(txt);
                 txt.TextChanged += new TextChangedEventHandler(DetailsTextChanged);
@@ -311,7 +315,6 @@ namespace WPF_Application
         /// <param name="direction">Sort direction of desired sort.</param>
         private void Sort(string sortBy, ListSortDirection direction)
         {
-            //Not too sure if this will sort, but I think it should. Can't really test it though yet because excel file not coming in.
             var dataView =
                 CollectionViewSource.GetDefaultView(FacilityList.ItemsSource);
 
@@ -482,19 +485,19 @@ namespace WPF_Application
                         case 18:
                             fac.Complaints = txt.Text;
                             break;
-                        case 19:
-                            var sods = txt.Text.Split(new char[] { ',' });
-                            var dates = "";
-                            if (sods.Length >= 2) {
-                                foreach (string date in sods)
-                                    dates += string.Format("{0}, ", DateTime.Parse(date.Trim()).ToShortDateString());
-                                fac.DatesOfSOD = dates;
-                            } 
-                            else if (txt.Text.Any())
-                                fac.DatesOfSOD += DateTime.Parse(txt.Text).ToShortDateString();
-                            else
-                                fac.DatesOfSOD = "";
-                            break;
+                        //case 19:
+                        //    var sods = txt.Text.Split(new char[] { ',' });
+                        //    var dates = "";
+                        //    if (sods.Length >= 2) {
+                        //        foreach (string date in sods)
+                        //            dates += string.Format("{0}, ", DateTime.Parse(date.Trim()).ToShortDateString());
+                        //        fac.DatesOfSOD = dates;
+                        //    } 
+                        //    else if (txt.Text.Any())
+                        //        fac.DatesOfSOD += DateTime.Parse(txt.Text).ToShortDateString();
+                        //    else
+                        //        fac.DatesOfSOD = "";
+                        //    break;
                         default:
                             break;
                     }

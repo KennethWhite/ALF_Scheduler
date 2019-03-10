@@ -339,7 +339,7 @@ namespace ScheduleGeneration
         /// <param name="facilities">The complete list of Facilities to earch through</param>
         /// <param name="months">The number of months from the current date to use as a cutoff</param>
         /// <returns></returns>
-        public static List<Facility> RetrieveFacilitiesWithInspectionsInXMonths(List<Facility> facilities, int months)
+        public static List<Facility> RetrieveFacilitiesWithInspectionsInXMonths(List<Facility> facilities, int months = 6)
         {
             List<Facility> upcomingInspections = facilities.Where(fac => fac.ProposedDate.Subtract(DateTime.Now).TotalDays < months * 31).ToList();
             return upcomingInspections;

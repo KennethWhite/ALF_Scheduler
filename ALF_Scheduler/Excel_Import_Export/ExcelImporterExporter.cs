@@ -90,7 +90,12 @@ namespace Excel_Import_Export
         {
             try
             {
-                workbook.SaveAs(path, default, default, default, true);
+                object misValue = System.Reflection.Missing.Value;
+                //workbook.SaveAs(path, default, default, default, true);
+                workbook.SaveAs(path, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookDefault, 
+                    Type.Missing, Type.Missing, Type.Missing, Type.Missing, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange, 
+                    Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                //workbook.SaveCopyAs(temp);
                 return true;
             }
             catch (Exception ex)
