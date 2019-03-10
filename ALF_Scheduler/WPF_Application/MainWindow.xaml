@@ -11,6 +11,10 @@
         <Grid>
             <Menu>
                 <MenuItem Header="_File">
+                    <MenuItem Header="_New">
+                        <MenuItem Name="Menu_New_Code" Header="_Code" Click="Menu_New_Code_Click"/>
+                        <MenuItem Name="Menu_New_Facility" Header="_Facility"/>
+                    </MenuItem>
                     <MenuItem Name="Menu_Open" Header="_Open" Click="Menu_Open_Click" />
                     <MenuItem Name="Menu_Save" Header="_Save" Click="Menu_Save_Click" />
                     <MenuItem Name="Menu_Export" Header="_Export" Click="Menu_Export_Click" />

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.IO;
+using System.Xml.Linq;
 
 namespace ALF_Scheduler.Models
 {
@@ -71,6 +74,31 @@ namespace ALF_Scheduler.Models
             return null;
             //TODO do we want to return null or exception?
             //throw new KeyNotFoundException("Could not find a code with that name");
+        }
+
+        public static void AddCodeToFile(Code code, string fileName)
+        {
+            Regex regex = new Regex(@"^.*\.(?i)xml(?-i)$"); //Match .xml
+
+            if (regex.IsMatch(fileName) && fileName.IndexOfAny(Path.GetInvalidFileNameChars()) == -1)
+            {
+                string dirToSave = XML_Utils.XML_Utils.GetImportDir();
+
+                XDocument doc = XML_Utils.XML_Utils.LoadCodeFile();
+
+                XElement root = new XElement("code");
+                root.Add(new XElement("name", code.Name));
+                root.Add(new XElement("desc", code.Description));
+                root.Add(new XElement("minMonth", code.MinMonth));
+                root.Add(new XElement("maxMonth", code.MaxMonth));
+
+                doc.Element("configuration").Element("codes").Add(root);
+
+                doc.Save(dirToSave + "/" + fileName);
+                return;
+            }
+
+            throw new FileFormatException("Given filename is not a valid xml filename.");
         }
     }
 }

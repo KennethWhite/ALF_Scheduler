@@ -172,5 +172,11 @@ namespace WPF_Application
                 App.SaveFacilitiesToExcel(dlg.FileName);
             }
         }
+
+        private void Menu_New_Code_Click(object sender, RoutedEventArgs e)
+        {
+            NewCodeWindow newCode = new NewCodeWindow() { Owner = this };
+            newCode.Show();
+        }
     }
 }
