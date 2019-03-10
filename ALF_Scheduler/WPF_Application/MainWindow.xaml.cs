@@ -158,5 +158,11 @@ namespace WPF_Application
         private void Menu_Export_Click(object sender, RoutedEventArgs e) {
             //TODO export facilities in X months to excel 
         }
+
+        private void Menu_New_Code_Click(object sender, RoutedEventArgs e)
+        {
+            NewCodeWindow newCode = new NewCodeWindow() { Owner = this };
+            newCode.Show();
+        }
     }
 }
