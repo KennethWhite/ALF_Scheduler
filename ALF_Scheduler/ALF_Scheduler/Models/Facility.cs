@@ -92,7 +92,7 @@ namespace ALF_Scheduler.Models
         public string Complaints { get; set; }
         
         /// <value>Gets the dates of SOD (statement of deficiencies report) for complaints done since the last inspection.</value>
-        public string DatesOfSOD { get; set; }
+        //public string DatesOfSOD { get; set; }
         
         /// <value>
         ///     Gets the Facility's enforcement notes (fines, stop placement, conditions, revocation, summary suspension) since

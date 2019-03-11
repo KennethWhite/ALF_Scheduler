@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using ALF_Scheduler.Models;
-using Microsoft.Office.Interop.Excel;
+using Excel = Microsoft.Office.Interop.Excel;
 using System.Collections.Generic;
 using ALF_Scheduler.Utilities;
 using Excel_Import_Export;
+using Microsoft.Office.Interop.Excel;
 
 namespace ALF_Scheduler
 {
@@ -50,7 +51,7 @@ namespace ALF_Scheduler
             var code = (string)(_row.Cells[1, 15] as Range).Value2;
             _facility.AddInspection(CreateInspection((string)(_row.Cells[1, 8] as Range).Text, null, code));
             _facility.Licensors = (string)(_row.Cells[1, 14] as Range).Value2;
-            _facility.DatesOfSOD = (string)(_row.Cells[1, 17] as Range).Value2;
+            //_facility.DatesOfSOD = (string)(_row.Cells[1, 17] as Range).Value2;
             string beds = ((double)(_row.Cells[1, 19] as Range).Value2).ToString();
             SetNumberOfBeds(beds);
             _facility.Complaints = (string)(_row.Cells[1, 20] as Range).Value2;
@@ -60,7 +61,9 @@ namespace ALF_Scheduler
 
         private static Inspection CreateInspection(string date, string licensor = "", string code = "")
         {
-            var ret = new Inspection { InspectionDate = DateTime.FromOADate(double.Parse(date)) };
+            DateTime parsedDate;
+            DateTime.TryParse(date, out parsedDate);
+            var ret = new Inspection { InspectionDate = parsedDate };
             if (!string.IsNullOrEmpty(code)) ret.Code = Code.getCodeByName(code);
             ret.Licensor = licensor;
             return ret;
@@ -117,6 +120,52 @@ namespace ALF_Scheduler
             if (regex.IsMatch(date))
                 return DateTime.Parse(date);
             throw new FormatException("date does not match regex format");
+        }
+
+        public static void WriteFacilitiesToWorkbook(List<Facility> facilities, Workbook xlWorkBook)
+        {
+            var sheet = (Worksheet)xlWorkBook.ActiveSheet;
+            sheet.Name = "Inspection Schedule";
+            sheet.Cells.Font.Size = 15;
+            sheet.Cells[1, 1] = "Inspection Schedule";
+            int rowNumber = 2;
+
+            //Record and format headers
+            ((Range)sheet.Cells[rowNumber, 1]).Value = "Facility Name";
+            ((Range)sheet.Cells[rowNumber, 1]).Interior.Color = Excel.XlRgbColor.rgbPaleTurquoise;
+            ((Range)sheet.Cells[rowNumber, 2]).Value = "Licensee Name";
+            ((Range)sheet.Cells[rowNumber, 2]).Interior.Color = Excel.XlRgbColor.rgbLawnGreen;
+            ((Range)sheet.Cells[rowNumber, 3]).Value = "License Number";
+            ((Range)sheet.Cells[rowNumber, 3]).Interior.Color = Excel.XlRgbColor.rgbDarkOrange;
+            ((Range)sheet.Cells[rowNumber, 4]).Value = "City";
+            ((Range)sheet.Cells[rowNumber, 4]).Interior.Color = Excel.XlRgbColor.rgbTan;
+            ((Range)sheet.Cells[rowNumber, 5]).Value = "Zip";
+            ((Range)sheet.Cells[rowNumber, 5]).Interior.Color = Excel.XlRgbColor.rgbDeepPink;
+            ((Range)sheet.Cells[rowNumber, 6]).Value = "Next Inspection";
+            ((Range)sheet.Cells[rowNumber, 6]).Interior.Color = Excel.XlRgbColor.rgbPaleVioletRed;
+            ((Range)sheet.Cells[rowNumber, 7]).Value = "Special Info";
+            ((Range)sheet.Cells[rowNumber, 7]).Interior.Color = Excel.XlRgbColor.rgbLightGrey;
+            rowNumber++;
+
+            if (facilities.Count == 0)
+            {
+                sheet.Range[sheet.Cells[3,1], sheet.Cells[3,7] ].Merge();
+                ((Range)sheet.Cells[3, 1]).Value = "No Facilities have inspections within this time frame!";
+                ((Range)sheet.Cells[3, 1]).Interior.Color = Excel.XlRgbColor.rgbRed;
+            }
+
+            foreach (Facility fac in facilities)
+            {
+                ((Range)sheet.Cells[rowNumber, 1]).Value = fac.FacilityName;
+                ((Range)sheet.Cells[rowNumber, 2]).Value = fac.NameOfLicensee;
+                ((Range)sheet.Cells[rowNumber, 3]).Value = fac.LicenseNumber;
+                ((Range)sheet.Cells[rowNumber, 4]).Value = fac.City;
+                ((Range)sheet.Cells[rowNumber, 5]).Value = fac.ZipCode;
+                ((Range)sheet.Cells[rowNumber, 6]).Value = fac.ProposedDate;
+                ((Range)sheet.Cells[rowNumber, 7]).Value = fac.SpecialInfo;
+                rowNumber++;
+            }
+            sheet.UsedRange.Columns.AutoFit();
         }
     }
 }

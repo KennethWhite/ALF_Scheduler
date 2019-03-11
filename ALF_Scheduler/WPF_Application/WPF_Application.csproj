@@ -91,13 +91,11 @@
     <Compile Include="CalendarYear.xaml.cs">
       <DependentUpon>CalendarYear.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="HelperMethods.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Migrations\ApplicationDbInitializer.cs" />
     <Compile Include="SchedulerHome.xaml.cs">
       <DependentUpon>SchedulerHome.xaml</DependentUpon>
     </Compile>

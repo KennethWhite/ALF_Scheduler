@@ -5,6 +5,7 @@ using System.Windows.Navigation;
 using Microsoft.Win32;
 using Excel_Import_Export;
 using System.Windows.Controls.Primitives;
+using System.IO;
 
 namespace WPF_Application
 {
@@ -52,7 +53,7 @@ namespace WPF_Application
                     dlg.FileName = "Document"; // Default file name
                     dlg.DefaultExt = ".xlsx"; // Default file extension
                     dlg.Filter = "Excel documents (.xlsx)|*.xlsx"; // Filter files by extension
-                    dlg.CheckFileExists = true;
+                    dlg.CheckFileExists = false;
                     dlg.CheckPathExists = true;
 
                     // Show save file dialog box
@@ -156,7 +157,20 @@ namespace WPF_Application
         }
 
         private void Menu_Export_Click(object sender, RoutedEventArgs e) {
-            //TODO export facilities in X months to excel 
+            var dlg = new SaveFileDialog();
+            dlg.FileName = "Document"; // Default file name
+            dlg.DefaultExt = ".xlsx"; // Default file extension
+            dlg.Filter = "Excel documents (.xlsx)|*.xlsx"; // Filter files by extension
+            dlg.CheckFileExists = false;
+            dlg.CheckPathExists = true;
+
+            // Show save file dialog box
+            var result = dlg.ShowDialog();
+
+            if (result == true)
+            {
+                App.SaveFacilitiesToExcel(dlg.FileName);
+            }
         }
 
         private void Menu_New_Code_Click(object sender, RoutedEventArgs e)

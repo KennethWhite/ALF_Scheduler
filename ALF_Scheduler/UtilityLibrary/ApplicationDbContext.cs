@@ -1,5 +1,5 @@
 ﻿using System.Data.Entity;
-using EntityFramework.CodeFirst.Migrations;
+
 
 namespace EntityFramework.CodeFirst
 {
@@ -15,7 +15,7 @@ namespace EntityFramework.CodeFirst
 
         static ApplicationDbContext()
         {
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, ApplicationDbInitializer>());
+            //Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, ApplicationDbInitializer>());
         }
 
         public static ApplicationDbContext Create()
