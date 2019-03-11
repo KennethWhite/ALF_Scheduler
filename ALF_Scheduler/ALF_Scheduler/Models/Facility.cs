@@ -148,7 +148,9 @@ namespace ALF_Scheduler.Models
         /// <returns>The nth <see cref="Inspection"/> date.</returns>
         private Inspection NthPreviousInspection(int n)
         {
-            if (!AllInspections.Any()) //throw new InvalidOperationException("Facility List is Empty");
+            if (AllInspections.Count == 0)
+                return new Inspection();
+            else if (!AllInspections.Any()) //throw new InvalidOperationException("Facility List is Empty");
                 return new Inspection();
             var sortList = AllInspections;
             sortList.Sort((i1, i2) => i2.InspectionDate.CompareTo(i1.InspectionDate));
@@ -168,6 +170,15 @@ namespace ALF_Scheduler.Models
             AllInspections.Add(toAdd);
         }
 
+        public bool hasInspection()
+        {
+            if (AllInspections.Count == 0)
+                return false;
+
+            return true;
+        }
+
+
         /// <summary>
         /// ReturnFacility will return a List<object> of all of the passed in Facilitiy's values, except AddInspection, and NthPreviousInspection.
         /// </summary>
@@ -175,11 +186,34 @@ namespace ALF_Scheduler.Models
         /// <returns>A list of facility properties as strings.</returns>
         public static List<string> ReturnFacility(Facility fac)
         {
-            List<string> f = new List<string> {
-
-                //string allInspections = ListToString(fac.AllInspections);
-                //f.Add(allInspections);
-
+            if (fac.MostRecentFullInspection.Code == null)//this will only trigger when a new facility is added, thus there are no prior inspections.
+            {
+                List<string> f1 = new List<string> {
+                fac.FacilityName,
+                fac.NameOfLicensee,
+                fac.LicenseNumber.ToString(),
+                fac.Unit,
+                fac.City,
+                fac.ZipCode,
+                GetDateString(fac.ProposedDate),
+                //fac.InspectionResult,
+                //fac.EnforcementNotes,
+                //fac.ScheduleInterval.ToString(),
+                //GetDateString(fac.MostRecentFullInspection.InspectionDate),
+                //GetDateString(fac.PreviousFullInspection.InspectionDate),
+                //GetDateString(fac.TwoYearFullInspection.InspectionDate),
+                //GetDateString(fac.Month15),
+                //GetDateString(fac.Month18),
+                fac.NumberOfBeds.ToString(),
+                fac.SpecialInfo,
+                fac.Licensors,
+                fac.Complaints,
+                //fac.DatesOfSOD,
+                fac.hasInspection().ToString()
+                };
+                return f1;
+            }
+               List<string> f = new List<string> {
                 fac.FacilityName,
                 fac.NameOfLicensee,
                 fac.LicenseNumber.ToString(),
@@ -200,6 +234,7 @@ namespace ALF_Scheduler.Models
                 fac.Licensors,
                 fac.Complaints,
                 fac.DatesOfSOD,
+                fac.hasInspection().ToString()
             };
 
             return f;

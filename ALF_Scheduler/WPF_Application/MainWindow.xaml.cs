@@ -164,5 +164,10 @@ namespace WPF_Application
             NewCodeWindow newCode = new NewCodeWindow() { Owner = this };
             newCode.Show();
         }
+
+        private void Menu_New_Facility_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO connect to new facility methods in Scheduler Home
+        }
     }
 }

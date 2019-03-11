@@ -22,14 +22,14 @@ namespace WPF_Application
     public partial class SchedulerHome : Page
     {
         private ListSortDirection _lastDirection = ListSortDirection.Ascending;
-
+        private bool _AddNewFacility = false; //When false, a New Facility is not trying to be created. When true, a new fac is trying to be created. On start false, after submiting a valid Facility, reset back to false.
         private GridViewColumnHeader _lastHeaderClicked;
         private bool _detailsChanged;
-        private Facility _currentDisplayedFacility;
+        private Facility _currentDisplayedFacility = App.Facilities[0];
         private double _globalAvg = -1;
         private double _desiredAvg = 15.99;
 
-        private bool isDetailTabBuilt = false; // checks if details tab has alredy been built or not.
+        private bool _isDetailTabBuilt = false; // checks if details tab has alredy been built or not.
 
         private string[] labelContent = {
             "Facility Name",
@@ -51,10 +51,9 @@ namespace WPF_Application
             "Special Info",
             "Licensors",
             "Complaints",
-            "Dates Of SOD",
         };
 
-        
+
         /// <summary>
         ///     This constructor initializes the Scheduler Home page.
         /// </summary>
@@ -69,7 +68,7 @@ namespace WPF_Application
         }
 
         private void InspectionResultFormInit()
-        {            
+        {
             FacilityBox.ItemsSource = App.Facilities;
             List<Code> codes = Code.getCodes();
             List<string> codeStr = new List<string>();
@@ -77,24 +76,29 @@ namespace WPF_Application
             {
                 codeStr.Add(item.Name);
             }
-            ResultCodeCombo.ItemsSource = codeStr;  
+            ResultCodeCombo.ItemsSource = codeStr;
         }
 
         /// <summary>
         ///     This method searches through the list of facilities displayed for the specific string provided by the user.
         /// </summary>
-        private void SearchText_TextChanged(object sender, RoutedEventArgs e) {
+        private void SearchText_TextChanged(object sender, RoutedEventArgs e)
+        {
 
             var keyword = SearchText.Text.ToUpper();
-            if (!keyword.Equals("SEARCH..")) {
+            if (!keyword.Equals("SEARCH.."))
+            {
                 FacilityList.ItemsSource = App.Facilities;
 
-                if (!keyword.Equals("SEARCH..")) {
+                if (!keyword.Equals("SEARCH.."))
+                {
                     List<Facility> tempList = new List<Facility>();
 
-                    foreach (Facility fac in App.Facilities) {
+                    foreach (Facility fac in App.Facilities)
+                    {
                         var datastr = "";
-                        foreach (var data in fac.ReturnFacility()) {
+                        foreach (var data in fac.ReturnFacility())
+                        {
                             datastr += data + ";";
                         }
                         if (datastr.ToUpper().Contains(keyword)) tempList.Add(fac);
@@ -106,11 +110,13 @@ namespace WPF_Application
             }
         }
 
-        private void SearchText_GotFocus(object sender, RoutedEventArgs e) {
+        private void SearchText_GotFocus(object sender, RoutedEventArgs e)
+        {
             if (SearchText.Text.Equals("Search..")) SearchText.Text = "";
         }
 
-        private void SearchText_LostFocus(object sender, RoutedEventArgs e) {
+        private void SearchText_LostFocus(object sender, RoutedEventArgs e)
+        {
             if (SearchText.Text.Equals("")) SearchText.Text = "Search..";
         }
 
@@ -118,7 +124,8 @@ namespace WPF_Application
         ///     This method opens the specified facility in the details tab.
         /// </summary>
         /// <param name="facility">The facility to be displayed in the details tab.</param>
-        internal void DisplayFacility(Facility facility) {
+        internal void DisplayFacility(Facility facility)
+        {
             OpenDetails(facility);
         }
 
@@ -127,7 +134,7 @@ namespace WPF_Application
         /// </summary>
         private TabItem DetailsInit()
         {
-            if(isDetailTabBuilt != true)
+            if (_isDetailTabBuilt != true)
             {
                 if (StackPanelInfo.Children.Count != 0) StackPanelInfo.Children.Clear();
                 for (var x = 0; x < labelContent.Length; x++)
@@ -138,7 +145,7 @@ namespace WPF_Application
                     StackPanelLabels.Children.Add(label);
                 }
                 _currentDisplayedFacility = App.Facilities[0];
-                isDetailTabBuilt = true;
+                _isDetailTabBuilt = true;
                 return TabItemDetails;
             }
             return TabItemDetails;
@@ -148,35 +155,37 @@ namespace WPF_Application
         ///     This method gathers data from the selected facility in the ListView and displays it next to its respective property
         ///     label.
         /// </summary>
-        public void OpenDetails(Facility facToShow) {
+        public void OpenDetails(Facility facToShow)
+        {
             TabItemDetails.IsSelected = true;
             StackPanelInfo.Children.Clear();
-            _currentDisplayedFacility = facToShow;
+            _currentDisplayedFacility = facToShow;           
             List<string> facProperties = facToShow.ReturnFacility();
-            for(int row = 0; row < labelContent.Length; row++)
+            for (int row = 0; row < labelContent.Length; row++)
             {
                 TextBox txt = new TextBox();
                 txt.Height = 20;
                 txt.Margin = new Thickness(0, 3, 0, 3);
                 txt.IsReadOnly = false;
 
-                if (row == 8 || row == 16 || row == 18) {
+                if (row == 8 || row == 16 || row == 18)
+                {
                     txt.TextWrapping = TextWrapping.Wrap;
                     txt.Height = 50;
                 }
 
-                if(row >= 9 && row <= 14)
+                if (row >= 9 && row <= 14 )
                 {
                     //We don't want to be able to edit certain fields
                     txt.IsReadOnly = true;
                     txt.Background = Brushes.Silver;
                 }
 
-                var info = facProperties[row];
-                if (row == 12 && (info.Equals(facProperties[10]) || info.Equals(facProperties[11]))) txt.Text = "";
-                else txt.Text = info;
+                    var info = facProperties[row];
+                    if (row == 12 && (info.Equals(facProperties[10]) || info.Equals(facProperties[11]))) txt.Text = "";
+                    else txt.Text = info;
 
-                StackPanelInfo.Children.Add(txt);
+                StackPanelInfo.Children.Add(txt);            
                 txt.TextChanged += new TextChangedEventHandler(DetailsTextChanged);
             }
         }
@@ -186,7 +195,8 @@ namespace WPF_Application
         /// </summary>
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (TabItemFacilities.IsSelected || TabItemInspectionResult.IsSelected){
+            if (TabItemFacilities.IsSelected || TabItemInspectionResult.IsSelected)
+            {
                 if (StackPanelInfo != null) StackPanelInfo.Children.Clear();
                 if (_detailsChanged)
                 {
@@ -195,11 +205,16 @@ namespace WPF_Application
                     _detailsChanged = false;
                 }
             }
-            else if(TabItemDetails.IsSelected)
+            else if (TabItemDetails.IsSelected)
             {
-                if (isDetailTabBuilt != false)
+                if (_AddNewFacility == true)
+                    OpenBlankDetails();
+                if (_isDetailTabBuilt != false)
                     OpenDetails(_currentDisplayedFacility);
-                    
+                if (_currentDisplayedFacility.hasInspection())
+                    OpenDetails(_currentDisplayedFacility);
+                else
+                    NewFacilityDisplay(_currentDisplayedFacility);
             }
         }
 
@@ -216,7 +231,7 @@ namespace WPF_Application
         /// </summary>
         private void GenerateSchedule_Click(object sender, RoutedEventArgs e)
         {
-            if(TabItemFacilities.IsSelected)
+            if (TabItemFacilities.IsSelected)
             {
                 MessageBoxResult msg = MessageBox.Show("This will overwrite ALL proposed dates, are you sure you want to continue?\nIf you want to generate just one date, go into the facility's detail tab and then click Generate Schedule.", "Data Overwrite Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
@@ -267,14 +282,20 @@ namespace WPF_Application
             var headerClicked = e.OriginalSource as GridViewColumnHeader;
             ListSortDirection direction;
 
-            if (headerClicked != null) {
-                if (headerClicked.Role != GridViewColumnHeaderRole.Padding) {
-                    if (headerClicked != _lastHeaderClicked) {
+            if (headerClicked != null)
+            {
+                if (headerClicked.Role != GridViewColumnHeaderRole.Padding)
+                {
+                    if (headerClicked != _lastHeaderClicked)
+                    {
                         direction = ListSortDirection.Ascending;
-                    } else {
+                    }
+                    else
+                    {
                         if (_lastDirection == ListSortDirection.Ascending)
                             direction = ListSortDirection.Descending;
-                        else {
+                        else
+                        {
                             CollectionViewSource.GetDefaultView(FacilityList.ItemsSource).SortDescriptions.Clear();
                             _lastHeaderClicked.Column.HeaderTemplate = null;
                             _lastHeaderClicked = null;
@@ -326,41 +347,58 @@ namespace WPF_Application
         /// </summary>
         private void FacilityList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if(FacilityList.HasItems)
-            { 
+            _AddNewFacility = false;
+            if (FacilityList.HasItems)
+            {
                 var selected = FacilityList.SelectedItem;
-                if(selected != null)
+                if (selected != null)
                 {
                     StackPanelInfo.Children.Clear();
                     _currentDisplayedFacility = (Facility)selected;
-                    OpenDetails(_currentDisplayedFacility);
+
+                    if(_currentDisplayedFacility.hasInspection())
+                    {
+                        TabItemDetails = DetailsInit();
+                        OpenDetails(_currentDisplayedFacility);
+                    }
+                    else
+                    {
+                        TabItemDetails.IsSelected = true;
+                        NewFacilityDisplay(_currentDisplayedFacility);
+                    }
                 }
             }
         }
 
         private void SubmitForm_Click(object sender, RoutedEventArgs e)//Need to connect with Colton on how to build  Code, then Inspection, then add Inspection to corresponding Facility in App.Facilities.
         {
-            string find = FacilityBox.Text;
-            string code = ResultCodeCombo.SelectedItem.ToString();
-            string date = dateBox.SelectedDate.Value.ToShortDateString();
-
-            if (find != null && code != null && date != null)
+            try
             {
-                var check = App.Facilities.Find(x => x.FacilityName.CompareTo(find) == 0);
-                if (check != null)
-                {
-                    Inspection toAdd = CreateInspection(date, check.Licensors, code);
-                    check.AddInspection(toAdd);
-                }
-                OpenDetails(check);
+                    string find = FacilityBox.Text;
+                    string code = ResultCodeCombo.SelectedItem.ToString();
+                    string date = dateBox.SelectedDate.Value.ToShortDateString();
 
-                FacilityBox.Text = null;
+                    var check = App.Facilities.Find(x => x.FacilityName.CompareTo(find) == 0);
+                    if (check != null)
+                    {
+                        Inspection toAdd = CreateInspection(date, check.Licensors, code);
+                        check.AddInspection(toAdd);
+                    }
+                FacilityBox.Text = "";
                 ResultCodeCombo.SelectedItem = null;
                 dateBox.Text = null;
+                EnforcementBox.Text = "";
+                clearDetails();
+                _currentDisplayedFacility = (Facility)check;
+                clearDetails();
+                DetailsInit();
+                TabItemFacilities.IsSelected = true;
+
+
             }
-            else
+            catch(Exception e1)
             {
-                TabItemInspectionResult.IsSelected = true;
+                MessageBox.Show("Must enter all fields before submitting.");
             }
 
         }
@@ -413,14 +451,15 @@ namespace WPF_Application
             int count = 0;
             var fac = _currentDisplayedFacility;
             TextBox selText = null;
-
+            
             try
             {
                 foreach (TextBox txt in info)
                 {
                     selText = txt;
                     //TODO Maybe error checking?
-                    switch (count) {
+                    switch (count)
+                    {
                         case 0:
                             fac.FacilityName = txt.Text;
                             break;
@@ -485,11 +524,12 @@ namespace WPF_Application
                         case 19:
                             var sods = txt.Text.Split(new char[] { ',' });
                             var dates = "";
-                            if (sods.Length >= 2) {
+                            if (sods.Length >= 2)
+                            {
                                 foreach (string date in sods)
                                     dates += string.Format("{0}, ", DateTime.Parse(date.Trim()).ToShortDateString());
                                 fac.DatesOfSOD = dates;
-                            } 
+                            }
                             else if (txt.Text.Any())
                                 fac.DatesOfSOD += DateTime.Parse(txt.Text).ToShortDateString();
                             else
@@ -517,7 +557,193 @@ namespace WPF_Application
                 Brush red = new SolidColorBrush(Color.FromArgb(90, 255, 0, 0));
                 selText.Background = red;
                 MessageBoxResult msg = MessageBox.Show("The data: '" + selText.Text + "' is invalid for the data type.", "Data entry error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }    
+            }
         }
+
+        private void NewFacilityBtn_Click(object sender, RoutedEventArgs e)
+        {
+            _AddNewFacility = true;
+            if (TabItemDetails.IsSelected != true)
+            {
+                TabItemDetails.IsSelected = true;//if not already selected, then open details tab
+            }
+            else
+            {
+                //then details tab is already open.
+                OpenBlankDetails();
+            }
+        }
+
+        public void NewFacilityBtnClick_FromMenu()
+        {
+            _AddNewFacility = true;
+            if (TabItemDetails.IsSelected != true)
+            {
+                TabItemDetails.IsSelected = true;//if not already selected, then open details tab
+            }
+            else
+            {
+                //then details tab is already open.
+                OpenBlankDetails();
+            }
+        }
+
+        //Helper method to clear the details tab to be rebuilt for either display purposes, or New Facility purposes.
+        private void clearDetails()
+        {
+            StackPanelInfo.Children.Clear();
+            StackPanelLabels.Children.Clear();
+            _isDetailTabBuilt = false;
+        }
+        //this method will just build the skeleton in the details tab for a new facility.
+        private void OpenBlankDetails()
+        {
+            clearDetails();
+            Button CreateNewFaciltyBtn = new Button();
+            CreateNewFaciltyBtn.Content = "Create Facility";
+            CreateNewFaciltyBtn.HorizontalAlignment = HorizontalAlignment.Left;
+            CreateNewFaciltyBtn.VerticalAlignment = VerticalAlignment.Center;
+            CreateNewFaciltyBtn.Click += CreateNewFacilityBtn_Click;
+            _AddNewFacility = true;//attempting to create a new facility
+            clearDetails();
+            string[] newFacilityLabelContent = {
+            "Facility Name",
+            "Licensee First Name",
+            "License Last Name",
+            "License Number",
+            "Unit",
+            "City",
+            "ZipCode",
+            "Number Of Beds",
+            "Special Info",
+            };
+            if (StackPanelInfo.Children.Count != 0) StackPanelInfo.Children.Clear();
+            for (var x = 0; x < newFacilityLabelContent.Length; x++)
+            {
+                Label label = new Label();
+                label.Content = newFacilityLabelContent[x];
+                StackPanelLabels.Children.Add(label);
+            }
+            StackPanelLabels.Children.Add(CreateNewFaciltyBtn);
+
+            for (int row = 0; row < newFacilityLabelContent.Length; row++)
+            {
+                TextBox txt = new TextBox();
+                txt.Height = 20;
+                txt.Margin = new Thickness(0, 3, 0, 3);
+                txt.IsReadOnly = false;
+                StackPanelInfo.Children.Add(txt);
+            }
+        }
+
+        private void CreateNewFacilityBtn_Click(object sender, RoutedEventArgs e)
+        {
+            bool boxesEmpty = true;
+            var info = StackPanelInfo.Children;
+            foreach (TextBox txt in info)//first loop through, and check which boxes were left empty.
+            {
+                if (string.IsNullOrEmpty(txt.Text))
+                {
+                    txt.BorderBrush = Brushes.Red;
+                    boxesEmpty = false;
+                }
+            }
+            int count = 0;
+            if (boxesEmpty)
+            {
+                Facility newFac = new Facility();
+                if (_AddNewFacility)
+                {
+                    foreach (TextBox txt in info)//now loop through, assigning the inputs to the new facility
+                    {
+                        switch (count)
+                        {
+                            case 0:
+                                newFac.FacilityName = txt.Text;
+                                break;
+                            case 1:
+                                newFac.LicenseeFirstName = txt.Text;
+                                break;
+                            case 2:
+                                newFac.LicenseeLastName = txt.Text;
+                                break;
+                            case 3:
+                                newFac.LicenseNumber = txt.Text;
+                                break;
+                            case 4:
+                                newFac.Unit = txt.Text;
+                                break;
+                            case 5:
+                                newFac.City = txt.Text;
+                                break;
+                            case 6:
+                                newFac.ZipCode = txt.Text;
+                                break;
+                            case 7:
+                                newFac.NumberOfBeds = int.Parse(txt.Text);
+                                break;
+                            case 8:
+                                newFac.SpecialInfo = txt.Text;
+                                break;
+                            default:
+                                break;
+
+                        }
+                        count++;
+                    }
+                    //TODO always returns null and crashes the program
+                    DateTime newProposed = DateTime.Now.AddDays(60);//setting the next proposed visit for new facility is 2 months out
+                    //if (newFac.MostRecentFullInspection.Code == null)
+                    //    newFac.MostRecentFullInspection.Code.Name = "";
+                    //Inspection empty = new Inspection();
+                    //newFac.AddInspection(empty);
+                    newFac.ProposedDate = newProposed;
+                    _AddNewFacility = false;//set global bool back to false
+                    App.Facilities.Add(newFac);
+                    FacilityList.Items.Refresh();
+                    clearDetails();
+                    _currentDisplayedFacility = newFac;
+                    NewFacilityDisplay(_currentDisplayedFacility);
+                }
+            }
+        }
+        //only way to get to this method is by checking if the passed in facility has any inspections logged. If no, then a minimal display of the Facility will be showen.
+        private void NewFacilityDisplay(Facility newFac)
+        {
+            clearDetails();
+            List<string> FacilityPropertyList = newFac.ReturnFacility();
+            string[] newFacilityLabelContent = {
+            "Facility Name",
+            "Licensee Name",
+            "License Number",
+            "Unit",
+            "City",
+            "ZipCode",
+            "2 Month Proposed Date",
+            "Number Of Beds",
+            "Special Info",
+            };
+
+            if (StackPanelInfo.Children.Count != 0) StackPanelInfo.Children.Clear();
+            for (var x = 0; x < newFacilityLabelContent.Length; x++)
+            {
+                Label label = new Label();
+                label.Content = newFacilityLabelContent[x];
+                StackPanelLabels.Children.Add(label);
+            }
+
+            for (int row = 0; row < newFacilityLabelContent.Length; row++)
+            {
+                TextBox txt = new TextBox();
+                txt.Height = 20;
+                txt.Margin = new Thickness(0, 3, 0, 3);
+                txt.IsReadOnly = false;
+                txt.Text = FacilityPropertyList[row];
+                StackPanelInfo.Children.Add(txt);
+
+                txt.TextChanged += new TextChangedEventHandler(DetailsTextChanged);
+            }
+        }
+
     }
 }
