@@ -216,18 +216,8 @@ namespace WPF_Application
                     _detailsChanged = false;
                 }
             }
-            else if (TabItemDetails.IsSelected)
+            else // not the other two, so this check is to display DetailsTab.
             {
-                /*
-                if (_AddNewFacility == true)
-                    OpenBlankDetails();
-                if (_isDetailTabBuilt != false)
-                    OpenDetails(_currentDisplayedFacility);
-                if (_currentDisplayedFacility.hasInspection())
-                    OpenDetails(_currentDisplayedFacility);
-                else
-                    NewFacilityDisplay(_currentDisplayedFacility);
-                */
                 OpenDetails(_currentDisplayedFacility);
             }
         }
@@ -588,149 +578,6 @@ namespace WPF_Application
             }
         }
 
-        /*
-        private void NewFacilityBtn_Click(object sender, RoutedEventArgs e)
-        {
-            _AddNewFacility = true;
-            if (TabItemDetails.IsSelected != true)
-            {
-                TabItemDetails.IsSelected = true;//if not already selected, then open details tab
-            }
-            else
-            {
-                //then details tab is already open.
-                OpenBlankDetails();
-            }
-        }
-
-        public void NewFacilityBtnClick_FromMenu()
-        {
-            _AddNewFacility = true;
-            if (TabItemDetails.IsSelected != true)
-            {
-                TabItemDetails.IsSelected = true;//if not already selected, then open details tab
-            }
-            else
-            {
-                //then details tab is already open.
-                OpenBlankDetails();
-            }
-        }
-
-        //this method will just build the skeleton in the details tab for a new facility.
-        private void OpenBlankDetails()
-        {
-            clearDetails();
-            Button CreateNewFaciltyBtn = new Button();
-            CreateNewFaciltyBtn.Content = "Create Facility";
-            CreateNewFaciltyBtn.HorizontalAlignment = HorizontalAlignment.Left;
-            CreateNewFaciltyBtn.VerticalAlignment = VerticalAlignment.Center;
-            CreateNewFaciltyBtn.Click += CreateNewFacilityBtn_Click;
-            _AddNewFacility = true;//attempting to create a new facility
-            clearDetails();
-            string[] newFacilityLabelContent = {
-            "Facility Name",
-            "Licensee First Name",
-            "License Last Name",
-            "License Number",
-            "Unit",
-            "City",
-            "ZipCode",
-            "Number Of Beds",
-            "Special Info",
-            };
-            if (StackPanelInfo.Children.Count != 0) StackPanelInfo.Children.Clear();
-            for (var x = 0; x < newFacilityLabelContent.Length; x++)
-            {
-                Label label = new Label();
-                label.Content = newFacilityLabelContent[x];
-                StackPanelLabels.Children.Add(label);
-            }
-            StackPanelLabels.Children.Add(CreateNewFaciltyBtn);
-
-            for (int row = 0; row < newFacilityLabelContent.Length; row++)
-            {
-                TextBox txt = new TextBox();
-                txt.Height = 20;
-                txt.Margin = new Thickness(0, 3, 0, 3);
-                txt.IsReadOnly = false;
-                StackPanelInfo.Children.Add(txt);
-            }
-        }
-
-        private void CreateNewFacilityBtn_Click(object sender, RoutedEventArgs e)
-        {
-            bool boxesEmpty = true;
-            var info = StackPanelInfo.Children;
-            foreach (TextBox txt in info)//first loop through, and check which boxes were left empty.
-            {
-                if (string.IsNullOrEmpty(txt.Text))
-                {
-                    txt.BorderBrush = Brushes.Red;
-                    boxesEmpty = false;
-                }
-            }
-            int count = 0;
-            if (boxesEmpty)
-            {
-                Facility newFac = new Facility();
-                if (_AddNewFacility)
-                {
-                    foreach (TextBox txt in info)//now loop through, assigning the inputs to the new facility
-                    {
-                        switch (count)
-                        {
-                            case 0:
-                                newFac.FacilityName = txt.Text;
-                                break;
-                            case 1:
-                                newFac.LicenseeFirstName = txt.Text;
-                                break;
-                            case 2:
-                                newFac.LicenseeLastName = txt.Text;
-                                break;
-                            case 3:
-                                newFac.LicenseNumber = txt.Text;
-                                break;
-                            case 4:
-                                newFac.Unit = txt.Text;
-                                break;
-                            case 5:
-                                newFac.City = txt.Text;
-                                break;
-                            case 6:
-                                newFac.ZipCode = txt.Text;
-                                break;
-                            case 7:
-                                newFac.NumberOfBeds = int.Parse(txt.Text);
-                                break;
-                            case 8:
-                                newFac.SpecialInfo = txt.Text;
-                                break;
-                            default:
-                                break;
-
-                        }
-                        count++;
-                    }
-                    //TODO always returns null and crashes the program
-                    DateTime newProposed = DateTime.Now.AddDays(60);//setting the next proposed visit for new facility is 2 months out
-                    //if (newFac.MostRecentFullInspection.Code == null)
-                    //    newFac.MostRecentFullInspection.Code.Name = "";
-                    //Inspection empty = new Inspection();
-                    //newFac.AddInspection(empty);
-                    newFac.ProposedDate = newProposed;
-                    _AddNewFacility = false;//set global bool back to false
-                    App.Facilities.Add(newFac);
-                    RefreshFacilityList();
-                    clearDetails();
-                    _currentDisplayedFacility = newFac;
-                    NewFacilityDisplay(_currentDisplayedFacility);
-                }
-            }
-        }
-        */
-
         //Helper method to clear the details tab to be rebuilt for either display purposes, or New Facility purposes.
         private void clearDetails()
         {
@@ -776,6 +623,11 @@ namespace WPF_Application
                 txt.TextChanged += new TextChangedEventHandler(DetailsTextChanged);
             }
         }
-        
+
+        private void NewFacility_Btn(object sender, RoutedEventArgs e)
+        {
+            NewFacilityWindow newFacility = new NewFacilityWindow();
+            newFacility.Show();
+        }
     }
 }
