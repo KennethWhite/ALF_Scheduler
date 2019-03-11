@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Shapes;
 using System.Windows.Controls.Primitives;
 using ALF_Scheduler.Models;
+using System.Linq;
 
 namespace WPF_Application
 {
@@ -78,7 +79,7 @@ namespace WPF_Application
             var source = e.OriginalSource as CalendarDayButton;
             if (source != null) {
                 DateTime date = DateTime.Parse(source.DataContext.ToString());
-                Facility facility = App.Facilities.Find(x => x.ProposedDate.Equals(date));
+                Facility facility = App.Facilities.FirstOrDefault(x => x.ProposedDate.Equals(date));
                 if (facility != null) {
                     NavigationService.Navigate(App.HomePage);
                     App.HomePage.DisplayFacility(facility);

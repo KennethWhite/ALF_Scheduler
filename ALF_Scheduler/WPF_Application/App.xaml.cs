@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 using ALF_Scheduler;
 using ALF_Scheduler.Utilities;
@@ -28,7 +29,7 @@ namespace WPF_Application
         public static Microsoft.Office.Interop.Excel.Application XlApp { get; set; }
 
         public static ApplicationDbContext DbContext { get; set; }
-        public static List<Facility> Facilities { get; set; }
+        public static ObservableCollection<Facility> Facilities { get; set; }
         public static CalendarYear CalendarYearPage { get; set; }
         public static SchedulerHome HomePage { get; set; }
 
@@ -88,7 +89,7 @@ namespace WPF_Application
             XlWorkbook = xBook;
             XlApp = xApp;
             XlWorksheet = (Worksheet)XlWorkbook.Worksheets[1];
-            Facilities = new List<Facility>();
+            Facilities = new ObservableCollection<Facility>();
 
             //This will cause Excel to clear formats in empty cells so the count is correct
             var WorksheetLastRow = XlWorksheet.Cells.Find(
@@ -115,13 +116,13 @@ namespace WPF_Application
             }
         }
 
-        public static void SaveFacilitiesToExcel(string filePath)
+        public static void SaveFacilitiesToExcel(string filePath, int months = 6)
         {
             Microsoft.Office.Interop.Excel.Workbook xlWorkBook = XlApp.Workbooks.Add(Type.Missing);
             xlWorkBook.Worksheets.Add();
 
             //Need to retrieve desired number of months from user, default is 6
-            var facList = ScheduleGeneration.ScheduleGeneration.RetrieveFacilitiesWithInspectionsInXMonths(App.Facilities);
+            var facList = ScheduleGeneration.ScheduleGeneration.RetrieveFacilitiesWithInspectionsInXMonths(App.Facilities, months);
             ALF_Scheduler.DataParser.WriteFacilitiesToWorkbook(facList, xlWorkBook);
             ExcelImporterExporter.SaveWorkbookToSpecifiedFile(filePath, xlWorkBook);
             xlWorkBook.Close();

@@ -22,7 +22,7 @@ namespace WPF_Application
     public partial class SchedulerHome : Page
     {
         private ListSortDirection _lastDirection = ListSortDirection.Ascending;
-        private bool _AddNewFacility = false; //When false, a New Facility is not trying to be created. When true, a new fac is trying to be created. On start false, after submiting a valid Facility, reset back to false.
+        //private bool _AddNewFacility = false; //When false, a New Facility is not trying to be created. When true, a new fac is trying to be created. On start false, after submiting a valid Facility, reset back to false.
         private GridViewColumnHeader _lastHeaderClicked;
         private bool _detailsChanged;
         private Facility _currentDisplayedFacility = App.Facilities[0];
@@ -77,6 +77,17 @@ namespace WPF_Application
                 codeStr.Add(item.Name);
             }
             ResultCodeCombo.ItemsSource = codeStr;
+        }
+
+        public void RefreshFacilityList()
+        {
+            FacilityList.Items.Refresh();
+        }
+
+        public void AddItemToFacilityList(Facility fac)
+        {
+            App.Facilities.Add(fac);
+            RefreshFacilityList();
         }
 
         /// <summary>
@@ -207,6 +218,7 @@ namespace WPF_Application
             }
             else if (TabItemDetails.IsSelected)
             {
+                /*
                 if (_AddNewFacility == true)
                     OpenBlankDetails();
                 if (_isDetailTabBuilt != false)
@@ -215,6 +227,8 @@ namespace WPF_Application
                     OpenDetails(_currentDisplayedFacility);
                 else
                     NewFacilityDisplay(_currentDisplayedFacility);
+                */
+                OpenDetails(_currentDisplayedFacility);
             }
         }
 
@@ -226,6 +240,17 @@ namespace WPF_Application
             NavigationService.Navigate(App.CalendarYearPage);
         }
 
+        private bool IsAnyProposedDate()
+        {
+            bool propDate = false;
+            foreach (Facility facility in App.Facilities)
+            {
+                if (!facility.ProposedDate.Equals(new DateTime()))
+                    propDate = true;
+            }
+            return propDate;
+        }
+
         /// <summary>
         /// Triggers schedule generation for the facility list then loads them into the facility objects.
         /// </summary>
@@ -233,17 +258,20 @@ namespace WPF_Application
         {
             if (TabItemFacilities.IsSelected)
             {
-                MessageBoxResult msg = MessageBox.Show("This will overwrite ALL proposed dates, are you sure you want to continue?\nIf you want to generate just one date, go into the facility's detail tab and then click Generate Schedule.", "Data Overwrite Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (IsAnyProposedDate())
+                {
+                    MessageBoxResult msg = MessageBox.Show("This will overwrite ALL proposed dates, are you sure you want to continue?\nIf you want to generate just one date, go into the facility's detail tab and then click Generate Schedule.", "Data Overwrite Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    if (msg != MessageBoxResult.Yes)
+                        return;
+                }
 
-                if (msg != MessageBoxResult.Yes)
-                    return;
                 ScheduleReturn schedule = ScheduleGeneration.ScheduleGeneration.GenerateSchedule(App.Facilities, _desiredAvg);
 
                 foreach (KeyValuePair<Facility, DateTime> keyValue in schedule.FacilitySchedule)
                 {
                     try
                     {
-                        App.Facilities.Find(fac => fac.Equals(keyValue.Key)).ProposedDate = keyValue.Value;
+                        App.Facilities.FirstOrDefault(fac => fac.Equals(keyValue.Key)).ProposedDate = keyValue.Value;
                     }
                     catch (Exception notFound)
                     {
@@ -270,7 +298,7 @@ namespace WPF_Application
             MonthAvgLabel.Visibility = Visibility.Visible;
             MonthAvgVal.Visibility = Visibility.Visible;
             MonthAvgVal.Content = _globalAvg;
-            FacilityList.Items.Refresh();
+            RefreshFacilityList();
             HelperMethods.RefreshCalendars(MonthlyCalendar);
         }
 
@@ -347,7 +375,7 @@ namespace WPF_Application
         /// </summary>
         private void FacilityList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            _AddNewFacility = false;
+            //_AddNewFacility = false;
             if (FacilityList.HasItems)
             {
                 var selected = FacilityList.SelectedItem;
@@ -378,7 +406,7 @@ namespace WPF_Application
                     string code = ResultCodeCombo.SelectedItem.ToString();
                     string date = dateBox.SelectedDate.Value.ToShortDateString();
 
-                    var check = App.Facilities.Find(x => x.FacilityName.CompareTo(find) == 0);
+                    var check = App.Facilities.FirstOrDefault(x => x.FacilityName.CompareTo(find) == 0);
                     if (check != null)
                     {
                         Inspection toAdd = CreateInspection(date, check.Licensors, code);
@@ -396,7 +424,7 @@ namespace WPF_Application
 
 
             }
-            catch(Exception e1)
+            catch(Exception)
             {
                 MessageBox.Show("Must enter all fields before submitting.");
             }
@@ -522,7 +550,7 @@ namespace WPF_Application
                             fac.Complaints = txt.Text;
                             break;
                         case 19:
-                            var sods = txt.Text.Split(new char[] { ',' });
+                            /*var sods = txt.Text.Split(new char[] { ',' });
                             var dates = "";
                             if (sods.Length >= 2)
                             {
@@ -533,7 +561,7 @@ namespace WPF_Application
                             else if (txt.Text.Any())
                                 fac.DatesOfSOD += DateTime.Parse(txt.Text).ToShortDateString();
                             else
-                                fac.DatesOfSOD = "";
+                                fac.DatesOfSOD = "";*/
                             break;
                         default:
                             break;
@@ -548,7 +576,7 @@ namespace WPF_Application
                 DetailsSubmitButton.Visibility = Visibility.Hidden;
                 DetailsRevertButton.Visibility = Visibility.Hidden;
 
-                FacilityList.Items.Refresh();
+                RefreshFacilityList();
                 StackPanelInfo.Children.Clear();
                 OpenDetails(_currentDisplayedFacility);
             }
@@ -560,6 +588,7 @@ namespace WPF_Application
             }
         }
 
+        /*
         private void NewFacilityBtn_Click(object sender, RoutedEventArgs e)
         {
             _AddNewFacility = true;
@@ -588,13 +617,6 @@ namespace WPF_Application
             }
         }
 
-        //Helper method to clear the details tab to be rebuilt for either display purposes, or New Facility purposes.
-        private void clearDetails()
-        {
-            StackPanelInfo.Children.Clear();
-            StackPanelLabels.Children.Clear();
-            _isDetailTabBuilt = false;
-        }
         //this method will just build the skeleton in the details tab for a new facility.
         private void OpenBlankDetails()
         {
@@ -700,13 +722,23 @@ namespace WPF_Application
                     newFac.ProposedDate = newProposed;
                     _AddNewFacility = false;//set global bool back to false
                     App.Facilities.Add(newFac);
-                    FacilityList.Items.Refresh();
+                    RefreshFacilityList();
                     clearDetails();
                     _currentDisplayedFacility = newFac;
                     NewFacilityDisplay(_currentDisplayedFacility);
                 }
             }
         }
+        */
+
+        //Helper method to clear the details tab to be rebuilt for either display purposes, or New Facility purposes.
+        private void clearDetails()
+        {
+            StackPanelInfo.Children.Clear();
+            StackPanelLabels.Children.Clear();
+            _isDetailTabBuilt = false;
+        }
+
         //only way to get to this method is by checking if the passed in facility has any inspections logged. If no, then a minimal display of the Facility will be showen.
         private void NewFacilityDisplay(Facility newFac)
         {
@@ -744,6 +776,6 @@ namespace WPF_Application
                 txt.TextChanged += new TextChangedEventHandler(DetailsTextChanged);
             }
         }
-
+        
     }
 }

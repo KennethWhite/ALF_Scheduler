@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using ALF_Scheduler;
 using ALF_Scheduler.Models;
@@ -28,7 +29,7 @@ namespace ScheduleGeneration
         /// </summary>
         /// <param name="facilityList">List of facilities to get average from.</param>
         /// <returns>Double representing the average of all the schedule intervals.</returns>
-        public static double GetGlobalAverage(List<Facility> facilityList)
+        public static double GetGlobalAverage(ObservableCollection<Facility> facilityList)
         {
             double total = 0;
             double count = 0;
@@ -52,7 +53,7 @@ namespace ScheduleGeneration
         /// <param name="facilityList">List of Facility Objects.</param>
         /// <param name="desiredAvg">Desired average schedule interval.</param>
         /// <returns>ScheduleReturn object, which contains the average of the schedule intervals, and a Key Value dictionary of facilities and their proprosed inspection dates.</returns>
-        public static ScheduleReturn GenerateSchedule(List<Facility> facilityList, double desiredAvg)
+        public static ScheduleReturn GenerateSchedule(ObservableCollection<Facility> facilityList, double desiredAvg)
         {
             double offsetMonths = 0;
             var months = new List<double>();
@@ -121,7 +122,7 @@ namespace ScheduleGeneration
         /// <param name="facility">The facility to generate a proposed date for.</param>
         /// <param name="facList"></param>
         /// <returns></returns>
-        public static DateTime GenerateSingleDate(Facility facility, List<Facility> facList)
+        public static DateTime GenerateSingleDate(Facility facility, ObservableCollection<Facility> facList)
         {
             var lastInspec = facility.MostRecentFullInspection;
             var date_lastInspection = lastInspec.InspectionDate;
@@ -339,7 +340,7 @@ namespace ScheduleGeneration
         /// <param name="facilities">The complete list of Facilities to earch through</param>
         /// <param name="months">The number of months from the current date to use as a cutoff</param>
         /// <returns></returns>
-        public static List<Facility> RetrieveFacilitiesWithInspectionsInXMonths(List<Facility> facilities, int months = 6)
+        public static List<Facility> RetrieveFacilitiesWithInspectionsInXMonths(ObservableCollection<Facility> facilities, int months = 6)
         {
             List<Facility> upcomingInspections = facilities.Where(fac => fac.ProposedDate.Subtract(DateTime.Now).TotalDays < months * 31).ToList();
             return upcomingInspections;

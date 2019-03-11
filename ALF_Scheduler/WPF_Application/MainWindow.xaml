@@ -17,7 +17,11 @@
                     </MenuItem>
                     <MenuItem Name="Menu_Open" Header="_Open" Click="Menu_Open_Click" />
                     <MenuItem Name="Menu_Save" Header="_Save" Click="Menu_Save_Click" />
-                    <MenuItem Name="Menu_Export" Header="_Export" Click="Menu_Export_Click" />
+                    <MenuItem Header="_Export">
+                        <Label Content="Enter months to export"/>
+                        <TextBox Name="ExportMonths" Width="100" TextChanged="ExportMonths_TextChanged"/>
+                        <Button Content="Export" Click="Menu_Export_Click"/>
+                    </MenuItem>
                     <Separator />
                     <MenuItem Name="Menu_Exit" Header="_Exit" Click="Menu_Exit_Click" />
                 </MenuItem>

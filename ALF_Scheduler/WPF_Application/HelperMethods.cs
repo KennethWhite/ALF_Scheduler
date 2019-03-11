@@ -50,8 +50,11 @@ namespace WPF_Application
         /// <param name="month">The Calendar object the date should be added to.</param>
         public static void AddBlackoutDates(Facility facility, Calendar month)
         {
-            month.BlackoutDates.Add(
+            if (facility.MostRecentFullInspection != null)
+            {
+                month.BlackoutDates.Add(
                 new CalendarDateRange(DateTime.Parse(facility.MostRecentFullInspectionString)));
+            }            
         }
 
         internal static void RefreshCalendars(Calendar month) {

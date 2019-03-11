@@ -15,13 +15,13 @@ namespace WPF_Application
         private Brush red { get; set; }
         public NewCodeWindow()
         {
-            InitializeComponent();
             red = new SolidColorBrush(Color.FromArgb(90, 255, 0, 0));
+            InitializeComponent();
         }
 
         public void onCancel(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         public void onSubmit(object sender, RoutedEventArgs e)
@@ -69,6 +69,8 @@ namespace WPF_Application
             try
             {
                 Code.AddCodeToFile(code, fileName);
+                Close();
+                return;
             }
             catch (FileFormatException)
             {
@@ -80,6 +82,7 @@ namespace WPF_Application
                 ShowWarn("Something unexpected happened.");
             }
 
+            ShowWarn("An unknown error occured.");
         }
 
         private MessageBoxResult ShowWarn(string msg)

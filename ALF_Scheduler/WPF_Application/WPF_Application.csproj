@@ -87,6 +87,9 @@
     <Compile Include="NewCode.xaml.cs">
       <DependentUpon>NewCode.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NewFacility.xaml.cs">
+      <DependentUpon>NewFacility.xaml</DependentUpon>
+    </Compile>
     <None Include="ApplicationDbContext.cs.bak" />
     <Compile Include="CalendarYear.xaml.cs">
       <DependentUpon>CalendarYear.xaml</DependentUpon>
@@ -118,6 +121,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="NewCode.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewFacility.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

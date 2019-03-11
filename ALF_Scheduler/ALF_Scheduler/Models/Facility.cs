@@ -82,7 +82,19 @@ namespace ALF_Scheduler.Models
  
         /// <value>Gets the inspection result for the facility.</value>
         public string InspectionResult {
-            get => MostRecentFullInspection.Code.Name;
+            get
+            {
+                if (MostRecentFullInspection != null) {
+                    if (MostRecentFullInspection.Code != null)
+                    {
+                        if (!string.IsNullOrWhiteSpace(MostRecentFullInspection.Code.Name))
+                        {
+                            return MostRecentFullInspection.Code.Name;
+                        }
+                    }
+                }
+                return "";
+            }
         }
 
         /// <value>Gets the number of beds in the facility.</value>
@@ -186,7 +198,7 @@ namespace ALF_Scheduler.Models
         /// <returns>A list of facility properties as strings.</returns>
         public static List<string> ReturnFacility(Facility fac)
         {
-            if (fac.MostRecentFullInspection.Code == null)//this will only trigger when a new facility is added, thus there are no prior inspections.
+            if (fac.MostRecentFullInspection == null)//this will only trigger when a new facility is added, thus there are no prior inspections.
             {
                 List<string> f1 = new List<string> {
                 fac.FacilityName,
@@ -196,14 +208,14 @@ namespace ALF_Scheduler.Models
                 fac.City,
                 fac.ZipCode,
                 GetDateString(fac.ProposedDate),
-                //fac.InspectionResult,
-                //fac.EnforcementNotes,
-                //fac.ScheduleInterval.ToString(),
-                //GetDateString(fac.MostRecentFullInspection.InspectionDate),
-                //GetDateString(fac.PreviousFullInspection.InspectionDate),
-                //GetDateString(fac.TwoYearFullInspection.InspectionDate),
-                //GetDateString(fac.Month15),
-                //GetDateString(fac.Month18),
+                "",//fac.InspectionResult,
+                "",//fac.EnforcementNotes,
+                "",//fac.ScheduleInterval.ToString(),
+                "",//GetDateString(fac.MostRecentFullInspection.InspectionDate),
+                "",//GetDateString(fac.PreviousFullInspection.InspectionDate),
+                "",//GetDateString(fac.TwoYearFullInspection.InspectionDate),
+                "",//GetDateString(fac.Month15),
+                "",//GetDateString(fac.Month18),
                 fac.NumberOfBeds.ToString(),
                 fac.SpecialInfo,
                 fac.Licensors,
@@ -233,7 +245,7 @@ namespace ALF_Scheduler.Models
                 fac.SpecialInfo,
                 fac.Licensors,
                 fac.Complaints,
-                fac.DatesOfSOD,
+                //fac.DatesOfSOD,
                 fac.hasInspection().ToString()
             };
 

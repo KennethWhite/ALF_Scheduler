@@ -156,7 +156,28 @@ namespace WPF_Application
             Frame.Navigate(App.CalendarYearPage);
         }
 
+        private void ExportMonths_TextChanged(object sender, RoutedEventArgs e)
+        {
+            ExportMonths.Background = null;
+        }
+
         private void Menu_Export_Click(object sender, RoutedEventArgs e) {
+
+            string monthStr = ExportMonths.Text;
+            int months;
+
+            try
+            {
+                months = int.Parse(monthStr);
+            }
+            catch
+            {
+                MessageBox.Show("Months to export is not a number!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                ExportMonths.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(90, 255, 0, 0));
+                return;
+            }
+
+
             var dlg = new SaveFileDialog();
             dlg.FileName = "Document"; // Default file name
             dlg.DefaultExt = ".xlsx"; // Default file extension
@@ -169,7 +190,7 @@ namespace WPF_Application
 
             if (result == true)
             {
-                App.SaveFacilitiesToExcel(dlg.FileName);
+                App.SaveFacilitiesToExcel(dlg.FileName, months);
             }
         }
 
@@ -181,7 +202,8 @@ namespace WPF_Application
 
         private void Menu_New_Facility_Click(object sender, RoutedEventArgs e)
         {
-            //TODO connect to new facility methods in Scheduler Home
+            NewFacilityWindow newFacility = new NewFacilityWindow() { Owner = this };
+            newFacility.Show();
         }
     }
 }
