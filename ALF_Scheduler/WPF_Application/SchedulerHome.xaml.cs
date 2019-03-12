@@ -67,7 +67,12 @@ namespace WPF_Application
             FacilityList.LostFocus += (s, e) => FacilityList.SelectedItem = null;
         }
 
-        private void InspectionResultFormInit()
+        //This method will assign the global variable _currentDisplayedFacility to the facility that is trying to be shown. Setting it inside it's own method will make appropriate use of encapsulation.
+        private Facility SetGlobal_currentDisplayedFacility(Facility facToShow)
+        {
+            return this._currentDisplayedFacility = facToShow;
+        }
+        public void InspectionResultFormInit()
         {
             FacilityBox.ItemsSource = App.Facilities;
             List<Code> codes = Code.getCodes();
@@ -145,6 +150,7 @@ namespace WPF_Application
         /// </summary>
         private TabItem DetailsInit()
         {
+            clearDetails();
             if (_isDetailTabBuilt != true)
             {
                 if (StackPanelInfo.Children.Count != 0) StackPanelInfo.Children.Clear();
@@ -155,7 +161,6 @@ namespace WPF_Application
                     if (x == 8 || x == 16 || x == 18) label.Height = 55;
                     StackPanelLabels.Children.Add(label);
                 }
-                _currentDisplayedFacility = App.Facilities[0];
                 _isDetailTabBuilt = true;
                 return TabItemDetails;
             }
@@ -168,9 +173,8 @@ namespace WPF_Application
         /// </summary>
         public void OpenDetails(Facility facToShow)
         {
-            TabItemDetails.IsSelected = true;
             StackPanelInfo.Children.Clear();
-            _currentDisplayedFacility = facToShow;           
+            _currentDisplayedFacility = SetGlobal_currentDisplayedFacility(facToShow);        
             List<string> facProperties = facToShow.ReturnFacility();
             for (int row = 0; row < labelContent.Length; row++)
             {
@@ -208,7 +212,7 @@ namespace WPF_Application
         {
             if (TabItemFacilities.IsSelected || TabItemInspectionResult.IsSelected)
             {
-                if (StackPanelInfo != null) StackPanelInfo.Children.Clear();
+                //if (StackPanelInfo != null) StackPanelInfo.Children.Clear();
                 if (_detailsChanged)
                 {
                     DetailsSubmitButton.Visibility = Visibility.Hidden;
@@ -218,7 +222,15 @@ namespace WPF_Application
             }
             else // not the other two, so this check is to display DetailsTab.
             {
-                OpenDetails(_currentDisplayedFacility);
+                //clearDetails();
+                if (_currentDisplayedFacility.hasInspection())
+                {
+                    DetailsInit();
+                    OpenDetails(_currentDisplayedFacility);
+                }
+                    
+                else
+                    NewFacilityDisplay(_currentDisplayedFacility);
             }
         }
 
@@ -365,30 +377,18 @@ namespace WPF_Application
         /// </summary>
         private void FacilityList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            //_AddNewFacility = false;
             if (FacilityList.HasItems)
             {
                 var selected = FacilityList.SelectedItem;
                 if (selected != null)
                 {
-                    StackPanelInfo.Children.Clear();
-                    _currentDisplayedFacility = (Facility)selected;
-
-                    if(_currentDisplayedFacility.hasInspection())
-                    {
-                        TabItemDetails = DetailsInit();
-                        OpenDetails(_currentDisplayedFacility);
-                    }
-                    else
-                    {
-                        TabItemDetails.IsSelected = true;
-                        NewFacilityDisplay(_currentDisplayedFacility);
-                    }
+                    _currentDisplayedFacility = SetGlobal_currentDisplayedFacility((Facility)selected);
+                    TabItemDetails.IsSelected = true;
                 }
             }
         }
 
-        private void SubmitForm_Click(object sender, RoutedEventArgs e)//Need to connect with Colton on how to build  Code, then Inspection, then add Inspection to corresponding Facility in App.Facilities.
+        private void SubmitForm_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -406,8 +406,7 @@ namespace WPF_Application
                 ResultCodeCombo.SelectedItem = null;
                 dateBox.Text = null;
                 EnforcementBox.Text = "";
-                clearDetails();
-                _currentDisplayedFacility = (Facility)check;
+                _currentDisplayedFacility = SetGlobal_currentDisplayedFacility((Facility)check);
                 clearDetails();
                 DetailsInit();
                 TabItemFacilities.IsSelected = true;
@@ -441,6 +440,7 @@ namespace WPF_Application
             txt.Background = green;
             DetailsSubmitButton.Visibility = Visibility.Visible;
             DetailsRevertButton.Visibility = Visibility.Visible;
+
         }
 
         /// <summary>
@@ -589,6 +589,7 @@ namespace WPF_Application
         //only way to get to this method is by checking if the passed in facility has any inspections logged. If no, then a minimal display of the Facility will be showen.
         private void NewFacilityDisplay(Facility newFac)
         {
+            _currentDisplayedFacility = SetGlobal_currentDisplayedFacility(newFac);
             clearDetails();
             List<string> FacilityPropertyList = newFac.ReturnFacility();
             string[] newFacilityLabelContent = {
