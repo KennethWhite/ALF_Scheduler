@@ -113,6 +113,7 @@ namespace WPF_Application
                     LicenseNumber = licNum, Unit = unit, City = city, ZipCode = zip, NumberOfBeds = bedCount, SpecialInfo = info };
                 newFac.ProposedDate = ScheduleGeneration.ScheduleGeneration.GenerateSingleDate(newFac, App.Facilities);
                 App.HomePage.AddItemToFacilityList(newFac);
+
                 Close();
                 return;
             }

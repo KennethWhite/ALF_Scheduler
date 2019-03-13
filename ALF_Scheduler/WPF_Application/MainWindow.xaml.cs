@@ -146,6 +146,7 @@ namespace WPF_Application
         private void Menu_HomeView_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(App.HomePage);
+            HelperMethods.RefreshCalendars(App.HomePage.MonthlyCalendar);
         }
 
         /// <summary>
