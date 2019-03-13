@@ -140,7 +140,7 @@ namespace WPF_Application
             specInfo.Text = fac.SpecialInfo;
             propNext.Text = fac.ProposedDateString;
             
-            if (fac.hasInspection())
+            if (fac.HasInspection())
             {
                 InspectionInfo_Expand();
                 inspecResult.Text = fac.InspectionResult;
@@ -216,7 +216,7 @@ namespace WPF_Application
                 return;
             }
 
-            if (fac.hasInspection())
+            if (fac.HasInspection())
             {
                 fac.Licensors = licensors.Text;
                 fac.Complaints = complaints.Text;

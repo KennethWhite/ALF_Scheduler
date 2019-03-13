@@ -61,10 +61,9 @@ namespace ALF_Scheduler
 
         private static Inspection CreateInspection(string date, string licensor = "", string code = "")
         {
-            DateTime parsedDate;
-            DateTime.TryParse(date, out parsedDate);
+            DateTime.TryParse(date, out DateTime parsedDate);
             var ret = new Inspection { InspectionDate = parsedDate };
-            if (!string.IsNullOrEmpty(code)) ret.Code = Code.getCodeByName(code);
+            if (!string.IsNullOrEmpty(code)) ret.Code = Code.GetCodeByName(code);
             ret.Licensor = licensor;
             return ret;
         }

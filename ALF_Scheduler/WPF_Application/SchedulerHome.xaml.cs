@@ -52,7 +52,7 @@ namespace WPF_Application
         public void InspectionResultFormInit()
         {
             FacilityBox.ItemsSource = App.Facilities;
-            ObservableCollection<Code> codes = Code.getCodes();
+            ObservableCollection<Code> codes = Code.GetCodes();
             ResultCodeCombo.ItemsSource = codes;
         }
 

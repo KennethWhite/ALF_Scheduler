@@ -44,12 +44,13 @@ namespace WPF_Application
         public static void OpenFile(Window sender, bool onStartup = false)
         {
             // Configure open file dialog box
-            var dlg = new OpenFileDialog();
-            dlg.FileName = "Document"; // Default file name
-            dlg.DefaultExt = ".xlsx"; // Default file extension
-            dlg.Filter = "Excel documents (.xlsx)|*.xlsx"; // Filter files by extension
-            dlg.CheckFileExists = true;
-            dlg.CheckPathExists = true;
+            var dlg = new OpenFileDialog {
+                FileName = "Document", // Default file name
+                DefaultExt = ".xlsx", // Default file extension
+                Filter = "Excel documents (.xlsx)|*.xlsx", // Filter files by extension
+                CheckFileExists = true,
+                CheckPathExists = true
+            };
 
 
             // Process open file dialog box results
@@ -81,10 +82,7 @@ namespace WPF_Application
         /// <param name="path">The full path of the specified file to import.</param>
         public static void Init(string path)
         {
-            Workbook xBook;
-            Microsoft.Office.Interop.Excel.Application xApp;
-            if (!ExcelImporterExporter.LoadExcelFromFile(path, out xApp, out xBook))
-            {
+            if (!ExcelImporterExporter.LoadExcelFromFile(path, out Excel.Application xApp, out Workbook xBook)) {
                 ErrorLogger.LogInfo($"Failed to load the file at {path}.");
             }
 
