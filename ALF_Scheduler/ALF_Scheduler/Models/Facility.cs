@@ -175,7 +175,7 @@ namespace ALF_Scheduler.Models
 
             //Check index out of bounds, if true, get first
             if (n > AllInspections.Count - 1)
-                n = 0;
+                return Inspection.Inspection_Default;
 
             return sortList.ElementAt(n);
         }

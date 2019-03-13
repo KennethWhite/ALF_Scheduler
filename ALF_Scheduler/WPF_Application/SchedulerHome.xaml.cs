@@ -308,7 +308,7 @@ namespace WPF_Application
                 _currentDisplayedFacility = SetGlobal_currentDisplayedFacility((Facility)check);
                 _details.DisplayFacility(_currentDisplayedFacility);
                 RefreshFacilityList();
-                TabItemFacilities.IsSelected = true;
+                TabItemDetails.IsSelected = true;
             }
             catch(Exception)
             {
