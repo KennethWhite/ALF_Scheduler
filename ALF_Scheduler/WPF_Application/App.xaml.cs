@@ -26,7 +26,7 @@ namespace WPF_Application
 
         public static Workbook XlWorkbook { get; set; }
         public static Worksheet XlWorksheet { get; set; }
-        public static Microsoft.Office.Interop.Excel.Application XlApp { get; set; }
+        public static Excel.Application XlApp { get; set; }
 
         public static ApplicationDbContext DbContext { get; set; }
         public static ObservableCollection<Facility> Facilities { get; set; }
@@ -122,7 +122,7 @@ namespace WPF_Application
             xlWorkBook.Worksheets.Add();
 
             //Need to retrieve desired number of months from user, default is 6
-            var facList = ScheduleGeneration.ScheduleGeneration.RetrieveFacilitiesWithInspectionsInXMonths(App.Facilities, months);
+            var facList = ScheduleGeneration.ScheduleGeneration.RetrieveFacilitiesWithInspectionsInXMonths(Facilities, months);
             ALF_Scheduler.DataParser.WriteFacilitiesToWorkbook(facList, xlWorkBook);
             ExcelImporterExporter.SaveWorkbookToSpecifiedFile(filePath, xlWorkBook);
             xlWorkBook.Close();
