@@ -66,14 +66,19 @@ namespace ScheduleGeneration
 
             foreach (var facility in facilityList)
             {
-                var lastInspec = facility.MostRecentFullInspection;
-                var date_lastInspection = lastInspec.InspectionDate;
-                var code_lastInspection = lastInspec.Code;
+                Inspection lastInspec = facility.MostRecentFullInspection;
+                DateTime date_lastInspection;
+                Code code_lastInspection;
 
 
-                if (lastInspec == null || date_lastInspection == null || code_lastInspection == null || date_lastInspection.Equals(new DateTime()) || code_lastInspection.Equals(new Code()))
+                if (lastInspec.Equals(Inspection.Inspection_Default))
                 {
                     goto EndOfLoop;
+                }
+                else
+                {
+                    date_lastInspection = lastInspec.InspectionDate;
+                    code_lastInspection = lastInspec.Code;
                 }
 
                 NextInspectionDate newNextInspection;
@@ -124,12 +129,12 @@ namespace ScheduleGeneration
         /// <returns></returns>
         public static DateTime GenerateSingleDate(Facility facility, ObservableCollection<Facility> facList)
         {
-            var lastInspec = facility.MostRecentFullInspection;
-            var date_lastInspection = lastInspec.InspectionDate;
-            var code_lastInspection = lastInspec.Code;
+            Inspection lastInspec = facility.MostRecentFullInspection;
+            DateTime date_lastInspection;
+            Code code_lastInspection;
             bool lastInspecNull = false;
 
-            if (lastInspec == null || date_lastInspection == null || code_lastInspection == null || date_lastInspection.Equals(new DateTime()) || code_lastInspection.Equals(new Code()))
+            if (lastInspec.Equals(Inspection.Inspection_Default))
             {
                 //No prev inspection. Generate random 6-9 months out.
                 code_lastInspection = new Code();
@@ -138,6 +143,11 @@ namespace ScheduleGeneration
                 date_lastInspection = DateTime.Now;
                 lastInspecNull = true;
                 //return PreferRandom(date_lastInspection, code_lastInspection).Date;
+            }
+            else
+            {
+                date_lastInspection = lastInspec.InspectionDate;
+                code_lastInspection = lastInspec.Code;
             }
 
             /* This is if we want to grab a date to perfectly align with average

@@ -110,7 +110,7 @@ namespace WPF_Application
             try
             {
                 newFac = new Facility() { FacilityName = facName, LicenseeFirstName = fname, LicenseeLastName = lname,
-                    LicenseNumber = licNum, Unit = unit, City = city, ZipCode = zip, NumberOfBeds = bedCount };
+                    LicenseNumber = licNum, Unit = unit, City = city, ZipCode = zip, NumberOfBeds = bedCount, SpecialInfo = info };
                 newFac.ProposedDate = ScheduleGeneration.ScheduleGeneration.GenerateSingleDate(newFac, App.Facilities);
                 App.HomePage.AddItemToFacilityList(newFac);
                 Close();

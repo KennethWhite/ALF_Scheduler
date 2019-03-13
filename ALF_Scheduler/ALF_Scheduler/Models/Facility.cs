@@ -160,10 +160,12 @@ namespace ALF_Scheduler.Models
         /// <returns>The nth <see cref="Inspection"/> date.</returns>
         private Inspection NthPreviousInspection(int n)
         {
-            if (AllInspections.Count == 0)
+            /*if (AllInspections.Count == 0)
                 return new Inspection();
-            else if (!AllInspections.Any()) //throw new InvalidOperationException("Facility List is Empty");
-                return new Inspection();
+            else*/
+            if (!AllInspections.Any())
+                //return new Inspection();
+                return Inspection.Inspection_Default;
             var sortList = AllInspections;
             sortList.Sort((i1, i2) => i2.InspectionDate.CompareTo(i1.InspectionDate));
 
@@ -184,7 +186,11 @@ namespace ALF_Scheduler.Models
 
         public bool hasInspection()
         {
-            if (AllInspections.Count == 0)
+            if (AllInspections.Count == 1)
+                if (AllInspections.ElementAt(0).Equals(Inspection.Inspection_Default))
+                    return false;
+
+            if (!AllInspections.Any())
                 return false;
 
             return true;
@@ -198,7 +204,7 @@ namespace ALF_Scheduler.Models
         /// <returns>A list of facility properties as strings.</returns>
         public static List<string> ReturnFacility(Facility fac)
         {
-            if (fac.MostRecentFullInspection == null)//this will only trigger when a new facility is added, thus there are no prior inspections.
+            if (fac.MostRecentFullInspection.Equals(Inspection.Inspection_Default))//this will only trigger when a new facility is added, thus there are no prior inspections.
             {
                 List<string> f1 = new List<string> {
                 fac.FacilityName,
@@ -208,14 +214,14 @@ namespace ALF_Scheduler.Models
                 fac.City,
                 fac.ZipCode,
                 GetDateString(fac.ProposedDate),
-                "",//fac.InspectionResult,
-                "",//fac.EnforcementNotes,
-                "",//fac.ScheduleInterval.ToString(),
-                "",//GetDateString(fac.MostRecentFullInspection.InspectionDate),
-                "",//GetDateString(fac.PreviousFullInspection.InspectionDate),
-                "",//GetDateString(fac.TwoYearFullInspection.InspectionDate),
-                "",//GetDateString(fac.Month15),
-                "",//GetDateString(fac.Month18),
+                //fac.InspectionResult,
+                //fac.EnforcementNotes,
+                //fac.ScheduleInterval.ToString(),
+                //GetDateString(fac.MostRecentFullInspection.InspectionDate),
+                //GetDateString(fac.PreviousFullInspection.InspectionDate),
+                //GetDateString(fac.TwoYearFullInspection.InspectionDate),
+                //GetDateString(fac.Month15),
+                //GetDateString(fac.Month18),
                 fac.NumberOfBeds.ToString(),
                 fac.SpecialInfo,
                 fac.Licensors,

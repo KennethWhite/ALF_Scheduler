@@ -170,7 +170,14 @@ namespace WPF_Application
         {
             TabItemDetails.IsSelected = true;
             StackPanelInfo.Children.Clear();
-            _currentDisplayedFacility = facToShow;           
+            _currentDisplayedFacility = facToShow;
+
+            if (!facToShow.hasInspection())
+            {
+                NewFacilityDisplay(_currentDisplayedFacility);
+                return;
+            }
+
             List<string> facProperties = facToShow.ReturnFacility();
             for (int row = 0; row < labelContent.Length; row++)
             {
@@ -598,7 +605,7 @@ namespace WPF_Application
             "Unit",
             "City",
             "ZipCode",
-            "2 Month Proposed Date",
+            "Proposed Date",
             "Number Of Beds",
             "Special Info",
             };
@@ -615,6 +622,12 @@ namespace WPF_Application
             {
                 TextBox txt = new TextBox();
                 txt.Height = 20;
+                if (row == newFacilityLabelContent.Length - 1)
+                {
+                    txt.Height = 60;
+                    txt.TextWrapping = TextWrapping.Wrap;
+                }
+                    
                 txt.Margin = new Thickness(0, 3, 0, 3);
                 txt.IsReadOnly = false;
                 txt.Text = FacilityPropertyList[row];
@@ -626,7 +639,7 @@ namespace WPF_Application
 
         private void NewFacility_Btn(object sender, RoutedEventArgs e)
         {
-            NewFacilityWindow newFacility = new NewFacilityWindow();
+            NewFacilityWindow newFacility = new NewFacilityWindow() { Owner = App.HomePage_Main};
             newFacility.Show();
         }
     }

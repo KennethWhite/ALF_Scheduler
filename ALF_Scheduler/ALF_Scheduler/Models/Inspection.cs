@@ -10,5 +10,6 @@ namespace ALF_Scheduler.Models
         public string Licensor { get; set; }
         public string Comments { get; set; }
         public Code Code { get; set; }
+        public static Inspection Inspection_Default { get; } = new Inspection();
     }
 }

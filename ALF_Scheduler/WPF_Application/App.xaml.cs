@@ -32,11 +32,13 @@ namespace WPF_Application
         public static ObservableCollection<Facility> Facilities { get; set; }
         public static CalendarYear CalendarYearPage { get; set; }
         public static SchedulerHome HomePage { get; set; }
+        public static MainWindow HomePage_Main { get; set; }
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             XML_Utils.XML_Utils.Init(); //This needs to be run to set up initial code file and folders
-            OpenFile(new MainWindow());
+            HomePage_Main = new MainWindow();
+            OpenFile(HomePage_Main);
         }
 
         public static void OpenFile(Window sender, bool onStartup = false)
