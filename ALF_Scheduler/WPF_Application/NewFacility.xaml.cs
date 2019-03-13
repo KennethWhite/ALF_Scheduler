@@ -11,14 +11,14 @@ namespace WPF_Application
     /// </summary>
     public partial class NewFacilityWindow : Window
     {
-        private Brush red { get; set; }
+        private Brush Red { get; set; }
         public NewFacilityWindow()
         {
-            red = new SolidColorBrush(Color.FromArgb(90, 255, 0, 0));
+            Red = new SolidColorBrush(Color.FromArgb(90, 255, 0, 0));
             InitializeComponent();
         }
 
-        public void onCancel(object sender, RoutedEventArgs e)
+        public void OnCancel(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
@@ -34,7 +34,7 @@ namespace WPF_Application
             t.Background = null;
         }
 
-        public void onSubmit(object sender, RoutedEventArgs e)
+        public void OnSubmit(object sender, RoutedEventArgs e)
         {
             string facName = this.facName.Text;
             string fname = lic_fname.Text;
@@ -51,43 +51,43 @@ namespace WPF_Application
             if (string.IsNullOrWhiteSpace(facName))
             {
                 ShowWarn("Facility Name can't be empty.");
-                this.facName.Background = red;
+                this.facName.Background = Red;
                 return;
             }
             else if (string.IsNullOrWhiteSpace(fname))
             {
                 ShowWarn("Licensee First Name can't be empty.");
-                lic_fname.Background = red;
+                lic_fname.Background = Red;
                 return;
             }
             else if (string.IsNullOrWhiteSpace(lname))
             {
                 ShowWarn("Licensee Last Name can't be empty.");
-                lic_lname.Background = red;
+                lic_lname.Background = Red;
                 return;
             }
             else if (string.IsNullOrWhiteSpace(licNum))
             {
                 ShowWarn("License Number can't be empty.");
-                this.licNum.Background = red;
+                this.licNum.Background = Red;
                 return;
             }
             else if (string.IsNullOrWhiteSpace(unit))
             {
                 ShowWarn("Unit can't be empty.");
-                this.unit.Background = red;
+                this.unit.Background = Red;
                 return;
             }
             else if (string.IsNullOrWhiteSpace(city))
             {
                 ShowWarn("City can't be empty.");
-                this.city.Background = red;
+                this.city.Background = Red;
                 return;
             }
             else if (string.IsNullOrWhiteSpace(zip))
             {
                 ShowWarn("Zip Code can't be empty.");
-                this.zip.Background = red;
+                this.zip.Background = Red;
                 return;
             }
             else if (string.IsNullOrWhiteSpace(bedCountStr))
@@ -103,7 +103,7 @@ namespace WPF_Application
             catch
             {
                 ShowWarn("Cannot convert data in 'Bed Count' field to number.");
-                this.bedCount.Background = red;
+                this.bedCount.Background = Red;
                 return;
             }
 
