@@ -40,7 +40,11 @@ namespace WPF_Application
         /// <param name="month">The Calendar object the date should be added to.</param>
         public static void AddSelectedDates(Facility facility, Calendar month)
         {
-            month.SelectedDates.Add(DateTime.Parse(facility.ProposedDateString));
+            if (facility.ProposedDate.Equals(new DateTime()))
+            {
+                return;
+            }
+            month.SelectedDates.Add(facility.ProposedDate);
         }
 
         /// <summary>

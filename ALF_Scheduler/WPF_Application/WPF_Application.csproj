@@ -84,6 +84,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Details.cs" />
     <Compile Include="NewCode.xaml.cs">
       <DependentUpon>NewCode.xaml</DependentUpon>
     </Compile>

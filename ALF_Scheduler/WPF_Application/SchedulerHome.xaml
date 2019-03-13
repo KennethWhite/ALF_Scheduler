@@ -34,10 +34,6 @@
                    Width="240" FontSize="16" />
             <TextBox x:Name="SearchText" Text="Search.." HorizontalAlignment="Left" Height="20" Margin="607,97,0,0" TextWrapping="Wrap" VerticalAlignment="Top" 
                     Width="178" Opacity="0.5" TextChanged="SearchText_TextChanged" GotFocus="SearchText_GotFocus" LostFocus="SearchText_LostFocus" />
-            <Button x:Name="DetailsSubmitButton" Content="Submit Changes" HorizontalAlignment="Left" Margin="607,495,0,0"
-                    VerticalAlignment="Top" Width="100" Click="DetailsSubmitButton_Click" IsDefault="true" Visibility="Hidden"/>
-            <Button x:Name="DetailsRevertButton" Content="Revert Changes" HorizontalAlignment="Left" Margin="607,520,0,0"
-                    VerticalAlignment="Top" Width="100" Click="DetailsRevertButton_Click" IsDefault="true" Visibility="Hidden"/>
             <TabControl HorizontalAlignment="Left" Height="400" Margin="5,140,0,0" VerticalAlignment="Top" Width="585"
                         SelectionChanged="TabControl_SelectionChanged">
                 <TabItem Name="TabItemFacilities" Header="Facilities" IsSelected="True">
@@ -57,13 +53,87 @@
                 </TabItem>
                 <TabItem Name="TabItemDetails" Header="Details">
                     <ScrollViewer VerticalScrollBarVisibility="Visible">
-                        <StackPanel Margin="10,10,0,10" Orientation="Horizontal">
-                            <StackPanel Name="StackPanelLabels" Width="250">
-
+                        <StackPanel Margin="10,10,0,10" Orientation="Vertical" Width="552">
+                            <StackPanel Name="sp_NoFacSel" Visibility="Collapsed">
+                                <Label Content="No Facility Selected"/>
                             </StackPanel>
-                            <StackPanel Name="StackPanelInfo" Width="250">
+                            <StackPanel Name="sp_DetailsViewer">
+                                <StackPanel Height="28" Orientation="Horizontal" VerticalAlignment="Top">
+                                    <Label Content="Facility Name" Width="250"/>
+                                    <TextBox Name="tb_FacName" Width="250" Height="23" TextChanged="DetailsTextChanged"/>
+                                </StackPanel>
+                                <StackPanel Height="28" Orientation="Horizontal" VerticalAlignment="Top">
+                                    <Label Content="Name of Licensee" Width="250"/>
+                                    <TextBox Name="tb_NameLicensee" Width="250" Height="23" TextChanged="DetailsTextChanged"/>
+                                </StackPanel>
+                                <StackPanel Height="28" Orientation="Horizontal" VerticalAlignment="Top">
+                                    <Label Content="License Number" Width="250"/>
+                                    <TextBox Name="tb_LicNum" Width="250" Height="23" TextChanged="DetailsTextChanged"/>
+                                </StackPanel>
+                                <StackPanel Height="28" Orientation="Horizontal" VerticalAlignment="Top">
+                                    <Label Content="Unit" Width="250"/>
+                                    <TextBox Name="tb_Unit" Width="250" Height="23" TextChanged="DetailsTextChanged"/>
+                                </StackPanel>
+                                <StackPanel Height="28" Orientation="Horizontal" VerticalAlignment="Top">
+                                    <Label Content="City" Width="250"/>
+                                    <TextBox Name="tb_City" Width="250" Height="23" TextChanged="DetailsTextChanged"/>
+                                </StackPanel>
+                                <StackPanel Height="28" Orientation="Horizontal" VerticalAlignment="Top">
+                                    <Label Content="Zip Code" Width="250"/>
+                                    <TextBox Name="tb_Zip" Width="250" Height="23" TextChanged="DetailsTextChanged"/>
+                                </StackPanel>
+                                <StackPanel Height="28" Orientation="Horizontal" VerticalAlignment="Top">
+                                    <Label Content="Number of Beds" Width="250"/>
+                                    <TextBox Name="tb_BedCount" Width="250" Height="23" TextChanged="DetailsTextChanged"/>
+                                </StackPanel>
+                                <StackPanel Height="65" Orientation="Horizontal" VerticalAlignment="Top">
+                                    <Label Content="Special Info" Width="250"/>
+                                    <TextBox Name="tb_SpecInfo" Width="250" Height="60" TextChanged="DetailsTextChanged"/>
+                                </StackPanel>
 
-                            </StackPanel>
+                                <Separator Width="535" Margin="0 5 0 5"/>
+
+                                <StackPanel Height="28" Orientation="Horizontal" VerticalAlignment="Top">
+                                    <Label Content="Proposed Next Inspection" Width="250"/>
+                                    <TextBox Name="tb_ProposedNext" Width="250" Height="23" TextChanged="DetailsTextChanged"/>
+                                </StackPanel>
+
+                                <StackPanel Name="sp_InspecInfo" Orientation="Vertical" VerticalAlignment="Top">
+                                    <StackPanel Height="28" Orientation="Horizontal" VerticalAlignment="Top">
+                                        <Label Content="Most Recent Inspection" Width="250"/>
+                                        <TextBox Name="tb_MostRecentInspec" Width="250" Height="23" IsReadOnly="True" Background="LightGray"/>
+                                    </StackPanel>
+                                    <StackPanel Height="28" Orientation="Horizontal" VerticalAlignment="Top">
+                                        <Label Content="Inspection Result" Width="250"/>
+                                        <TextBox Name="tb_InspecResult" Width="250" Height="23" IsReadOnly="True" Background="LightGray"/>
+                                    </StackPanel>
+                                    <StackPanel Height="28" Orientation="Horizontal" VerticalAlignment="Top">
+                                        <Label Content="Previous Inspection (1 year)" Width="250"/>
+                                        <TextBox Name="tb_PrevInspecOne" Width="250" Height="23" IsReadOnly="True" Background="LightGray"/>
+                                    </StackPanel>
+                                    <StackPanel Height="28" Orientation="Horizontal" VerticalAlignment="Top">
+                                        <Label Content="Previous Inspection (2 year)" Width="250"/>
+                                        <TextBox Name="tb_PrevInspecTwo" Width="250" Height="23" IsReadOnly="True" Background="LightGray"/>
+                                    </StackPanel>
+
+                                    <Separator Width="535" Margin="0 5 0 5"/>
+
+                                    <StackPanel Height="28" Orientation="Horizontal" VerticalAlignment="Top">
+                                        <Label Content="Licensors" Width="250"/>
+                                        <TextBox Name="tb_Licensors" Width="250" Height="23" TextChanged="DetailsTextChanged"/>
+                                    </StackPanel>
+                                    <StackPanel Height="65" Orientation="Horizontal" VerticalAlignment="Top">
+                                        <Label Content="Complaints" Width="250"/>
+                                        <TextBox Name="tb_Complaints" Width="250" Height="60" TextChanged="DetailsTextChanged"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                <!-- Special info end -->
+
+                                <StackPanel Name="sp_ButtonArea" Height="28" Orientation="Horizontal" VerticalAlignment="Top" Visibility="Collapsed">
+                                    <Button Name="Detail_Revert" Content="Revert Changes" Width="100" Height="23" Margin="290 0 0 0" Click="DetailsRevertButton_Click"/>
+                                    <Button Name="Detail_Submit" Content="Submit Changes" Width="100" Height="23" Margin="10 0 0 0" Click="DetailsSubmitButton_Click"/>
+                                </StackPanel>
+                            </StackPanel>                            
                         </StackPanel>
                     </ScrollViewer>
                 </TabItem>

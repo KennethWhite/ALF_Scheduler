@@ -25,34 +25,10 @@ namespace WPF_Application
         private ListSortDirection _lastDirection = ListSortDirection.Ascending;
         //private bool _AddNewFacility = false; //When false, a New Facility is not trying to be created. When true, a new fac is trying to be created. On start false, after submiting a valid Facility, reset back to false.
         private GridViewColumnHeader _lastHeaderClicked;
-        private bool _detailsChanged;
-        private Facility _currentDisplayedFacility = App.Facilities[0];
+        private Facility _currentDisplayedFacility;
         private double _globalAvg = -1;
         private double _desiredAvg = 15.99;
-
-        private bool _isDetailTabBuilt = false; // checks if details tab has alredy been built or not.
-
-        private string[] labelContent = {
-            "Facility Name",
-            "Name of Licensee",
-            "License Number",
-            "Unit",
-            "City",
-            "ZipCode",
-            "Proposed Date",
-            "Inspection Result",
-            "Enforcement Notes",
-            "Schedule Interval",
-            "Most Recent Full Inspection",
-            "Previous Year Full Inspection",
-            "Two Year Full Inspection",
-            "Month 15",
-            "Month 18",
-            "Number Of Beds",
-            "Special Info",
-            "Licensors",
-            "Complaints",
-        };
+        private Details _details;
 
 
         /// <summary>
@@ -61,9 +37,9 @@ namespace WPF_Application
         public SchedulerHome()
         {
             InitializeComponent();
+            _details = new Details(this);
             FacilityList.ItemsSource = App.Facilities;
             HelperMethods.DateSelection(MonthlyCalendar);
-            TabItemDetails = DetailsInit();
             InspectionResultFormInit();
             FacilityList.LostFocus += (s, e) => FacilityList.SelectedItem = null;
         }
@@ -138,76 +114,10 @@ namespace WPF_Application
         /// <param name="facility">The facility to be displayed in the details tab.</param>
         internal void DisplayFacility(Facility facility)
         {
-            OpenDetails(facility);
+            _details.DisplayFacility(facility);
+            TabItemDetails.IsSelected = true;
         }
-
-        /// <summary>
-        ///     This method initializes the Details tab with Facility object property names.
-        /// </summary>
-        private TabItem DetailsInit()
-        {
-            clearDetails();
-            if (_isDetailTabBuilt != true)
-            {
-                if (StackPanelInfo.Children.Count != 0) StackPanelInfo.Children.Clear();
-                for (var x = 0; x < labelContent.Length; x++)
-                {
-                    Label label = new Label();
-                    label.Content = labelContent[x];
-                    if (x == 8 || x == 16 || x == 18) label.Height = 55;
-                    StackPanelLabels.Children.Add(label);
-                }
-                _isDetailTabBuilt = true;
-                return TabItemDetails;
-            }
-            return TabItemDetails;
-        }
-
-        /// <summary>
-        ///     This method gathers data from the selected facility in the ListView and displays it next to its respective property
-        ///     label.
-        /// </summary>
-        public void OpenDetails(Facility facToShow)
-        {
-            StackPanelInfo.Children.Clear();
-            _currentDisplayedFacility = SetGlobal_currentDisplayedFacility(facToShow);
-
-            if (!facToShow.hasInspection())
-            {
-                NewFacilityDisplay(_currentDisplayedFacility);
-                return;
-            }
-
-            List<string> facProperties = facToShow.ReturnFacility();
-            for (int row = 0; row < labelContent.Length; row++)
-            {
-                TextBox txt = new TextBox();
-                txt.Height = 20;
-                txt.Margin = new Thickness(0, 3, 0, 3);
-                txt.IsReadOnly = false;
-
-                if (row == 8 || row == 16 || row == 18)
-                {
-                    txt.TextWrapping = TextWrapping.Wrap;
-                    txt.Height = 50;
-                }
-
-                if (row >= 9 && row <= 14 )
-                {
-                    //We don't want to be able to edit certain fields
-                    txt.IsReadOnly = true;
-                    txt.Background = Brushes.Silver;
-                }
-
-                    var info = facProperties[row];
-                    if (row == 12 && (info.Equals(facProperties[10]) || info.Equals(facProperties[11]))) txt.Text = "";
-                    else txt.Text = info;
-
-                StackPanelInfo.Children.Add(txt);            
-                txt.TextChanged += new TextChangedEventHandler(DetailsTextChanged);
-            }
-        }
-
+        
         /// <summary>
         ///     This event is triggered when you switch tabs in the TabControl.
         /// </summary>
@@ -215,25 +125,11 @@ namespace WPF_Application
         {
             if (TabItemFacilities.IsSelected || TabItemInspectionResult.IsSelected)
             {
-                //if (StackPanelInfo != null) StackPanelInfo.Children.Clear();
-                if (_detailsChanged)
-                {
-                    DetailsSubmitButton.Visibility = Visibility.Hidden;
-                    DetailsRevertButton.Visibility = Visibility.Hidden;
-                    _detailsChanged = false;
-                }
+                
             }
-            else // not the other two, so this check is to display DetailsTab.
+            else if (TabItemDetails.IsSelected)
             {
-                //clearDetails();
-                if (_currentDisplayedFacility.hasInspection())
-                {
-                    DetailsInit();
-                    OpenDetails(_currentDisplayedFacility);
-                }
-                    
-                else
-                    NewFacilityDisplay(_currentDisplayedFacility);
+                _details.DisplayFacility(_currentDisplayedFacility);
             }
         }
 
@@ -298,7 +194,7 @@ namespace WPF_Application
                 _currentDisplayedFacility.ProposedDate = newDate;
 
                 _globalAvg = ScheduleGeneration.ScheduleGeneration.GetGlobalAverage(App.Facilities);
-                OpenDetails(_currentDisplayedFacility);
+                _details.DisplayFacility(_currentDisplayedFacility);
             }
             MonthAvgLabel.Visibility = Visibility.Visible;
             MonthAvgVal.Visibility = Visibility.Visible;
@@ -396,7 +292,7 @@ namespace WPF_Application
             try
             {
                     string find = FacilityBox.Text;
-                    string code = ResultCodeCombo.SelectedItem.ToString();
+                    Code code = (Code) ResultCodeCombo.SelectedItem;
                     string date = dateBox.SelectedDate.Value.ToShortDateString();
 
                     var check = App.Facilities.FirstOrDefault(x => x.FacilityName.CompareTo(find) == 0);
@@ -410,11 +306,9 @@ namespace WPF_Application
                 dateBox.Text = null;
                 EnforcementBox.Text = "";
                 _currentDisplayedFacility = SetGlobal_currentDisplayedFacility((Facility)check);
-                clearDetails();
-                DetailsInit();
+                _details.DisplayFacility(_currentDisplayedFacility);
+                RefreshFacilityList();
                 TabItemFacilities.IsSelected = true;
-
-
             }
             catch(Exception)
             {
@@ -422,10 +316,10 @@ namespace WPF_Application
             }
 
         }
-        private static Inspection CreateInspection(string date, string licensor = "", string code = "")
+        private static Inspection CreateInspection(string date, string licensor = "", Code code = null)
         {
             var ret = new Inspection { InspectionDate = DateTime.Parse(date) };
-            if (!string.IsNullOrEmpty(code)) ret.Code = Code.getCodeByName(code);
+            if (code != null) ret.Code = code;
             ret.Licensor = licensor;
             return ret;
         }
@@ -437,13 +331,8 @@ namespace WPF_Application
         /// <param name="e"></param>
         private void DetailsTextChanged(object sender, EventArgs e)
         {
-            _detailsChanged = true;
             TextBox txt = (TextBox)sender;
-            Brush green = new SolidColorBrush(Color.FromArgb(90, 0, 255, 0));
-            txt.Background = green;
-            DetailsSubmitButton.Visibility = Visibility.Visible;
-            DetailsRevertButton.Visibility = Visibility.Visible;
-
+            _details.TextChanged(txt);
         }
 
         /// <summary>
@@ -453,12 +342,8 @@ namespace WPF_Application
         /// <param name="e"></param>
         private void DetailsRevertButton_Click(object sender, RoutedEventArgs e)
         {
-            _detailsChanged = false;
-            DetailsSubmitButton.Visibility = Visibility.Hidden;
-            DetailsRevertButton.Visibility = Visibility.Hidden;
-
-            StackPanelInfo.Children.Clear();
-            OpenDetails(_currentDisplayedFacility);
+            _details.HideButtons();
+            _details.RevertChanges(_currentDisplayedFacility);
         }
 
         /// <summary>
@@ -468,171 +353,9 @@ namespace WPF_Application
         /// <param name="e"></param>
         private void DetailsSubmitButton_Click(object sender, RoutedEventArgs e)
         {
-            var info = StackPanelInfo.Children;
-            int count = 0;
-            var fac = _currentDisplayedFacility;
-            TextBox selText = null;
-            
-            try
-            {
-                foreach (TextBox txt in info)
-                {
-                    selText = txt;
-                    //TODO Maybe error checking?
-                    switch (count)
-                    {
-                        case 0:
-                            fac.FacilityName = txt.Text;
-                            break;
-                        case 1:
-                            var ara = txt.Text.Split(new char[] { ',' });
-                            if (ara.Length >= 2)
-                            {
-                                fac.LicenseeLastName = ara[0].Trim();
-                                fac.LicenseeFirstName = ara[1].Trim();
-                            }
-                            break;
-                        case 2:
-                            fac.LicenseNumber = txt.Text;
-                            break;
-                        case 3:
-                            fac.Unit = txt.Text;
-                            break;
-                        case 4:
-                            fac.City = txt.Text;
-                            break;
-                        case 5:
-                            fac.ZipCode = txt.Text;
-                            break;
-                        case 6:
-                            if (txt.Text.Any())
-                                fac.ProposedDate = DateTime.Parse(txt.Text);
-                            else
-                                fac.ProposedDate = new DateTime();
-                            break;
-                        case 7:
-                            break;
-                        case 8:
-                            fac.EnforcementNotes = txt.Text;
-                            break;
-                        case 9:
-                            break;
-                        case 10:
-                            break;
-                        case 11:
-                            break;
-                        case 12:
-                            break;
-                        case 13:
-                            break;
-                        case 14:
-                            break;
-                        case 15:
-                            if (txt.Text.Any())
-                                fac.NumberOfBeds = int.Parse(txt.Text);
-                            else
-                                fac.NumberOfBeds = 0;
-                            break;
-                        case 16:
-                            fac.SpecialInfo = txt.Text;
-                            break;
-                        case 17:
-                            fac.Licensors = txt.Text;
-                            break;
-                        case 18:
-                            fac.Complaints = txt.Text;
-                            break;
-                        case 19:
-                            /*var sods = txt.Text.Split(new char[] { ',' });
-                            var dates = "";
-                            if (sods.Length >= 2)
-                            {
-                                foreach (string date in sods)
-                                    dates += string.Format("{0}, ", DateTime.Parse(date.Trim()).ToShortDateString());
-                                fac.DatesOfSOD = dates;
-                            }
-                            else if (txt.Text.Any())
-                                fac.DatesOfSOD += DateTime.Parse(txt.Text).ToShortDateString();
-                            else
-                                fac.DatesOfSOD = "";*/
-                            break;
-                        default:
-                            break;
-                    }
-                    count++;
-                }
-                foreach (TextBox txt in info)
-                {
-                    txt.Background = Brushes.White;
-                }
-                _detailsChanged = true;
-                DetailsSubmitButton.Visibility = Visibility.Hidden;
-                DetailsRevertButton.Visibility = Visibility.Hidden;
-
-                RefreshFacilityList();
-                StackPanelInfo.Children.Clear();
-                OpenDetails(_currentDisplayedFacility);
-            }
-            catch (Exception)
-            {
-                Brush red = new SolidColorBrush(Color.FromArgb(90, 255, 0, 0));
-                selText.Background = red;
-                MessageBoxResult msg = MessageBox.Show("The data: '" + selText.Text + "' is invalid for the data type.", "Data entry error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        //Helper method to clear the details tab to be rebuilt for either display purposes, or New Facility purposes.
-        private void clearDetails()
-        {
-            StackPanelInfo.Children.Clear();
-            StackPanelLabels.Children.Clear();
-            _isDetailTabBuilt = false;
-        }
-
-        //only way to get to this method is by checking if the passed in facility has any inspections logged. If no, then a minimal display of the Facility will be showen.
-        private void NewFacilityDisplay(Facility newFac)
-        {
-            _currentDisplayedFacility = SetGlobal_currentDisplayedFacility(newFac);
-            clearDetails();
-            List<string> FacilityPropertyList = newFac.ReturnFacility();
-            string[] newFacilityLabelContent = {
-            "Facility Name",
-            "Licensee Name",
-            "License Number",
-            "Unit",
-            "City",
-            "ZipCode",
-            "Proposed Date",
-            "Number Of Beds",
-            "Special Info",
-            };
-
-            if (StackPanelInfo.Children.Count != 0) StackPanelInfo.Children.Clear();
-            for (var x = 0; x < newFacilityLabelContent.Length; x++)
-            {
-                Label label = new Label();
-                label.Content = newFacilityLabelContent[x];
-                StackPanelLabels.Children.Add(label);
-            }
-
-            for (int row = 0; row < newFacilityLabelContent.Length; row++)
-            {
-                TextBox txt = new TextBox();
-                txt.Height = 20;
-                if (row == newFacilityLabelContent.Length - 1)
-                {
-                    txt.Height = 60;
-                    txt.TextWrapping = TextWrapping.Wrap;
-                }
-                    
-                txt.Margin = new Thickness(0, 3, 0, 3);
-                txt.IsReadOnly = false;
-                txt.Text = FacilityPropertyList[row];
-                StackPanelInfo.Children.Add(txt);
-
-                txt.TextChanged += new TextChangedEventHandler(DetailsTextChanged);
-            }
-        }
+            _details.SubmitChanges(_currentDisplayedFacility);
+            RefreshFacilityList();
+        }       
 
         private void NewFacility_Btn(object sender, RoutedEventArgs e)
         {

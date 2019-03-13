@@ -62,7 +62,7 @@ namespace ALF_Scheduler.Models
         /// </summary>
         /// <param name="date">Date to return</param>
         /// <returns>Returns empty string if date is empty (01/01/0001)</returns>
-        private static string GetDateString(DateTime date)
+        public static string GetDateString(DateTime date)
         {
             var outStr = date.ToString("yyyy/MM/dd");
             if (date.Equals(new DateTime()))
@@ -116,7 +116,7 @@ namespace ALF_Scheduler.Models
         public DateTime ProposedDate { get; set; }
 
         /// <value>Gets the proposed inspection date as a short string.</value>
-        public string ProposedDateString { get => ProposedDate.ToShortDateString(); }
+        public string ProposedDateString { get => GetDateString(ProposedDate); }
 
         /// <value>Gets the time interval between the most recent inspection, and the proposed date.</value>
         /// <remarks>The difference in time is calculated by multiplying the difference in days by the average months in a year.</remarks>
