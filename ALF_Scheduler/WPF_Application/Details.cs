@@ -82,15 +82,23 @@ namespace WPF_Application
             allText.Add(inspecResult);
         }
 
-
+        /// <summary>
+        /// Collapses information relating to inspections
+        /// </summary>
         public void InspectionInfo_Collapse()
         {
             inspecInfo.Visibility = Visibility.Collapsed;
         }
+        /// <summary>
+        /// Expands information relating to inspections
+        /// </summary>
         public void InspectionInfo_Expand()
         {
             inspecInfo.Visibility = Visibility.Visible;
         }
+        /// <summary>
+        /// Toggles collapse/expand for inspection information
+        /// </summary>
         public void InspectionInfo_Toggle()
         {
             if (!InspectionInfoVisible)
@@ -99,17 +107,26 @@ namespace WPF_Application
                 inspecInfo.Visibility = Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// Collapses detail labels and text boxes, and expands "No facility selected" label
+        /// </summary>
         public void DetailsViewer_Collapse()
         {
             detailsViewer.Visibility = Visibility.Collapsed;
             noFacSel.Visibility = Visibility.Visible;
         }
+        /// <summary>
+        /// Expands detail labels and text boxes, and collapses "No facility selected" label
+        /// </summary>
         public void DetailsViewer_Expand()
         {
             detailsViewer.Visibility = Visibility.Visible;
             noFacSel.Visibility = Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// Sets Details TextBoxes to empty.
+        /// </summary>
         public void ClearDetails()
         {
             foreach (var tb in allText)
@@ -118,6 +135,10 @@ namespace WPF_Application
             }
         }
 
+        /// <summary>
+        /// Updates Details textboxes and layout for given Facility. If Facility has no inspections, no inspection data will be shown.
+        /// </summary>
+        /// <param name="fac">Facility to load data from</param>
         public void DisplayFacility(Facility fac)
         {
             ClearDetails();
@@ -156,15 +177,25 @@ namespace WPF_Application
             }
         }
 
+        /// <summary>
+        /// Shows submit and revert buttons.
+        /// </summary>
         public void ShowButtons()
         {
             buttonArea.Visibility = Visibility.Visible;
         }
+        /// <summary>
+        /// Hides submit and revert buttons.
+        /// </summary>
         public void HideButtons()
         {
             buttonArea.Visibility = Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// Saves changes made to given Facility from Details information.
+        /// </summary>
+        /// <param name="fac">Facility to update.</param>
         public void SubmitChanges(Facility fac)
         {
             fac.FacilityName = facName.Text;
@@ -228,6 +259,10 @@ namespace WPF_Application
                 txt.Background = null;
             }
         }
+        /// <summary>
+        /// Replaces data in Details tab with given Facility. Clears TextBox background colors.
+        /// </summary>
+        /// <param name="fac">Facility to load in.</param>
         public void RevertChanges(Facility fac)
         {
             HideButtons();
@@ -238,10 +273,20 @@ namespace WPF_Application
             }
         }
 
+        /// <summary>
+        /// Displays simple warning dialog.
+        /// </summary>
+        /// <param name="msg">Message to present in dialog.</param>
+        /// <returns>MessageBoxResult</returns>
         private MessageBoxResult ShowWarn(string msg)
         {
             return MessageBox.Show(msg, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
+
+        /// <summary>
+        /// When TextBox Text is changes, sets background color to an opaque green, and enables Submit and Revert buttons.
+        /// </summary>
+        /// <param name="sender">TextBox that triggered event.</param>
         public void TextChanged(TextBox sender)
         {
             if (!sender.IsFocused)
