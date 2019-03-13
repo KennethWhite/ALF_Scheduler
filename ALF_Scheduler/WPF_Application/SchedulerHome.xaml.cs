@@ -374,5 +374,20 @@ namespace WPF_Application
             NewFacilityWindow newFacility = new NewFacilityWindow() { Owner = App.HomePage_Main};
             newFacility.Show();
         }
+
+        private void MonthlyCalendar_GotMouseCapture(object sender, MouseEventArgs e)
+        {
+            var source = e.OriginalSource as CalendarDayButton;
+            if (source != null)
+            {
+                DateTime date = DateTime.Parse(source.DataContext.ToString());
+                Facility facility = App.Facilities.FirstOrDefault(x => x.ProposedDate.Date.Equals(date.Date));
+                if (facility != null)
+                {
+                    NavigationService.Navigate(App.HomePage);
+                    App.HomePage.DisplayFacility(facility);
+                }
+            }
+        }
     }
 }
