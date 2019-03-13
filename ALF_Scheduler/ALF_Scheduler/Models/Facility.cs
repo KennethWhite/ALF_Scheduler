@@ -124,13 +124,13 @@ namespace ALF_Scheduler.Models
         {
             get
             {                
-                if(!ProposedDate.Equals(new DateTime()) && hasInspection())
+                if(!ProposedDate.Equals(new DateTime()) && HasInspection())
                 {
                     var difference = ProposedDate.Subtract(MostRecentFullInspection.InspectionDate);
                     return (float)(difference.TotalDays / 30.42);
                 }
 
-                if (!ProposedDate.Equals(new DateTime()) && !hasInspection())
+                if (!ProposedDate.Equals(new DateTime()) && !HasInspection())
                     return (float)(ProposedDate.Subtract(DateTime.Today).TotalDays / 30.42);
 
                 return 0;
@@ -188,7 +188,7 @@ namespace ALF_Scheduler.Models
             AllInspections.Add(toAdd);
         }
 
-        public bool hasInspection()
+        public bool HasInspection()
         {
             if (AllInspections.Count == 1)
                 if (AllInspections.ElementAt(0).Equals(Inspection.Inspection_Default))
@@ -231,7 +231,7 @@ namespace ALF_Scheduler.Models
                 fac.Licensors,
                 fac.Complaints,
                 //fac.DatesOfSOD,
-                fac.hasInspection().ToString()
+                fac.HasInspection().ToString()
                 };
                 return f1;
             }
@@ -256,7 +256,7 @@ namespace ALF_Scheduler.Models
                 fac.Licensors,
                 fac.Complaints,
                 //fac.DatesOfSOD,
-                fac.hasInspection().ToString()
+                fac.HasInspection().ToString()
             };
 
             return f;

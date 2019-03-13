@@ -21,7 +21,7 @@ namespace ALF_Scheduler.Models
         /// Returns a list of Codes objects. Codes are coming from the code configuration xml file.
         /// </summary>
         /// <returns>Returns list of code objects</returns>
-        public static ObservableCollection<Code> getCodes()
+        public static ObservableCollection<Code> GetCodes()
         {
             var doc = XML_Utils.XML_Utils.LoadCodeFile();
 
@@ -40,12 +40,12 @@ namespace ALF_Scheduler.Models
 
             foreach (var code in codes)
             {
-                var newCode = new Code();
-
-                newCode.Name = code.name;
-                newCode.Description = code.desc;
-                newCode.MinMonth = int.Parse(code.minMonth);
-                newCode.MaxMonth = int.Parse(code.maxMonth);
+                var newCode = new Code {
+                    Name = code.name,
+                    Description = code.desc,
+                    MinMonth = int.Parse(code.minMonth),
+                    MaxMonth = int.Parse(code.maxMonth)
+                };
 
                 outList.Add(newCode);
             }
@@ -59,11 +59,11 @@ namespace ALF_Scheduler.Models
         /// </summary>
         /// <param name="name">String containing the code's name</param>
         /// <returns>Returns a code object matching code name, or null if no code was found.</returns>
-        public static Code getCodeByName(string name)
+        public static Code GetCodeByName(string name)
         {
             if (CodesList == null || !CodesList.Any())
             {
-                getCodes();
+                GetCodes();
             }
             var codes =
                 (from code in CodesList

@@ -25,8 +25,8 @@
         <Label x:Name="lbl_zip" Content="Zip Code" HorizontalAlignment="Left" Margin="10,175,0,0" VerticalAlignment="Top"/>
         <Label x:Name="lbl_bedCount" Content="Number Of Beds" HorizontalAlignment="Left" Margin="10,203,0,0" VerticalAlignment="Top"/>
         <Label x:Name="lbl_info" Content="Special Info" HorizontalAlignment="Left" Margin="10,231,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="btn_submit" Content="Submit" HorizontalAlignment="Left" Margin="175,289,0,0" VerticalAlignment="Top" Width="75" Click="onSubmit"/>
-        <Button x:Name="btn_cancel" Content="Cancel" HorizontalAlignment="Left" Margin="255,289,0,0" VerticalAlignment="Top" Width="75" Click="onCancel"/>
+        <Button x:Name="btn_submit" Content="Submit" HorizontalAlignment="Left" Margin="175,289,0,0" VerticalAlignment="Top" Width="75" Click="OnSubmit"/>
+        <Button x:Name="btn_cancel" Content="Cancel" HorizontalAlignment="Left" Margin="255,289,0,0" VerticalAlignment="Top" Width="75" Click="OnCancel"/>
 
     </Grid>
 </Window>

@@ -49,12 +49,13 @@ namespace WPF_Application
                 case MessageBoxResult.Yes:
 
                     // Configure save file dialog box
-                    var dlg = new SaveFileDialog();
-                    dlg.FileName = "Document"; // Default file name
-                    dlg.DefaultExt = ".xlsx"; // Default file extension
-                    dlg.Filter = "Excel documents (.xlsx)|*.xlsx"; // Filter files by extension
-                    dlg.CheckFileExists = false;
-                    dlg.CheckPathExists = true;
+                    var dlg = new SaveFileDialog {
+                        FileName = "Document", // Default file name
+                        DefaultExt = ".xlsx", // Default file extension
+                        Filter = "Excel documents (.xlsx)|*.xlsx", // Filter files by extension
+                        CheckFileExists = false,
+                        CheckPathExists = true
+                    };
 
                     // Show save file dialog box
                     var result = dlg.ShowDialog();
@@ -179,12 +180,13 @@ namespace WPF_Application
             }
 
 
-            var dlg = new SaveFileDialog();
-            dlg.FileName = "Document"; // Default file name
-            dlg.DefaultExt = ".xlsx"; // Default file extension
-            dlg.Filter = "Excel documents (.xlsx)|*.xlsx"; // Filter files by extension
-            dlg.CheckFileExists = false;
-            dlg.CheckPathExists = true;
+            var dlg = new SaveFileDialog {
+                FileName = "Document", // Default file name
+                DefaultExt = ".xlsx", // Default file extension
+                Filter = "Excel documents (.xlsx)|*.xlsx", // Filter files by extension
+                CheckFileExists = false,
+                CheckPathExists = true
+            };
 
             // Show save file dialog box
             var result = dlg.ShowDialog();
