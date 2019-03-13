@@ -114,7 +114,8 @@ namespace WPF_Application
         /// <param name="facility">The facility to be displayed in the details tab.</param>
         internal void DisplayFacility(Facility facility)
         {
-            _details.DisplayFacility(facility);
+            SetGlobal_currentDisplayedFacility(facility);
+            _details.DisplayFacility(_currentDisplayedFacility);
             TabItemDetails.IsSelected = true;
         }
         
