@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using ALF_Scheduler.Utilities;
 using Excel_Import_Export;
 using Microsoft.Office.Interop.Excel;
+using System.Collections.ObjectModel;
 
 namespace ALF_Scheduler
 {
@@ -43,21 +44,69 @@ namespace ALF_Scheduler
             _facility.FacilityName = (string) (_row.Cells[1,1] as Range).Value2;
             SetLicensee((string)(_row.Cells[1, 2] as Range).Value2);
             _facility.Unit = (string)(_row.Cells[1, 3] as Range).Value2;
-            _facility.LicenseNumber = ((double)(_row.Cells[1, 4] as Range).Value2).ToString();
-            _facility.ZipCode = ((double)(_row.Cells[1, 5] as Range).Value2).ToString();
+            _facility.LicenseNumber = ((_row.Cells[1, 4] as Range).Value2).ToString();
+            _facility.ZipCode = ((_row.Cells[1, 5] as Range).Value2).ToString();
             _facility.City = (string)(_row.Cells[1, 6] as Range).Value2;
             _facility.AddInspection(CreateInspection((string)(_row.Cells[1, 7] as Range).Text));
+            DateTime.TryParse((string)(_row.Cells[1, 11] as Range).Text, out DateTime date);
+            _facility.ProposedDate = date;
             _facility.EnforcementNotes = (string)(_row.Cells[1, 16] as Range).Value2;
             var code = (string)(_row.Cells[1, 15] as Range).Value2;
             _facility.AddInspection(CreateInspection((string)(_row.Cells[1, 8] as Range).Text, null, code));
             _facility.Licensors = (string)(_row.Cells[1, 14] as Range).Value2;
-            //_facility.DatesOfSOD = (string)(_row.Cells[1, 17] as Range).Value2;
-            string beds = ((double)(_row.Cells[1, 19] as Range).Value2).ToString();
+            string beds = (_row.Cells[1, 19] as Range).Value2.ToString();
             SetNumberOfBeds(beds);
             _facility.Complaints = (string)(_row.Cells[1, 20] as Range).Value2;
             
             return _facility;
         }
+
+
+       public static void SaveAllFacilitiesToWorkbook(ObservableCollection<Facility> facilities, Workbook xlWorkbook)
+        {
+            int rowNumber = 2;
+            var sheet = (Worksheet)xlWorkbook.ActiveSheet;
+            ((Range)sheet.Cells[rowNumber, 23]).Value = "Special Info";
+            ((Range)sheet.Cells[rowNumber, 23]).Interior.Color = Excel.XlRgbColor.rgbLightGrey;
+            foreach (Facility fac in facilities)
+            {
+                SaveFacility(fac, (Range)sheet.Cells[rowNumber, 1]);
+                rowNumber++;
+            }
+            sheet.UsedRange.Columns.AutoFit();
+        }
+
+        public static void SaveFacility(Facility fac, Range excelRow)
+        {
+            try
+            {
+                _facility = fac;
+               _row = excelRow;
+                (_row.Cells[1, 1] as Range).Value2 = _facility.FacilityName;
+                (_row.Cells[1, 2] as Range).Value2 = $"{_facility.LicenseeLastName}, {_facility.LicenseeFirstName}";
+                (_row.Cells[1, 3] as Range).Value2 = _facility.Unit;
+                (_row.Cells[1, 4] as Range).Value2 = _facility.LicenseNumber;
+                (_row.Cells[1, 5] as Range).Value2 = _facility.ZipCode;
+                (_row.Cells[1, 6] as Range).Value2 = _facility.City;
+                (_row.Cells[1, 7] as Range).Value2 = _facility.TwoYearFullInspection.InspectionDate;
+                (_row.Cells[1, 8] as Range).Value2 = _facility.MostRecentFullInspection.InspectionDate;
+                (_row.Cells[1, 9] as Range).Value2 = _facility.ScheduleInterval;
+                (_row.Cells[1, 10] as Range).Value2 = _facility.ScheduleInterval * 30.4;
+                (_row.Cells[1, 11] as Range).Value2 = _facility.ProposedDate.ToString("MM/dd/yyyy");
+                (_row.Cells[1, 12] as Range).Value2 = _facility.Month18.AddMonths(-1).ToString("MM/dd/yyyy");
+                (_row.Cells[1, 13] as Range).Value2 = _facility.Month18;
+                (_row.Cells[1, 14] as Range).Value2 = _facility.Licensors;
+                (_row.Cells[1, 16] as Range).Value2 = _facility.EnforcementNotes;
+                (_row.Cells[1, 19] as Range).Value2 = _facility.NumberOfBeds;
+                (_row.Cells[1, 20] as Range).Value2 = _facility.Complaints;
+                (_row.Cells[1, 23] as Range).Value2 = _facility.SpecialInfo;
+            }
+            catch (Exception ex)
+            {
+                ErrorLogger.LogInfo("Failed to save Facility into Excel Row.", ex);
+            }
+        }
+
 
         private static Inspection CreateInspection(string date, string licensor = "", string code = "")
         {
@@ -121,7 +170,7 @@ namespace ALF_Scheduler
             throw new FormatException("date does not match regex format");
         }
 
-        public static void WriteFacilitiesToWorkbook(List<Facility> facilities, Workbook xlWorkBook)
+        public static void WriteFacilitiesToWorkbookForInspectionSchedule(List<Facility> facilities, Workbook xlWorkBook)
         {
             var sheet = (Worksheet)xlWorkBook.ActiveSheet;
             sheet.Name = "Inspection Schedule";

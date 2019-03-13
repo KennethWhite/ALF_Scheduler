@@ -116,14 +116,15 @@ namespace WPF_Application
             }
         }
 
-        public static void SaveFacilitiesToExcel(string filePath, int months = 6)
+
+        public static void SaveUpcomingInspectionsToExcel(string filePath, int months = 6)
         {
             Microsoft.Office.Interop.Excel.Workbook xlWorkBook = XlApp.Workbooks.Add(Type.Missing);
             xlWorkBook.Worksheets.Add();
 
             //Need to retrieve desired number of months from user, default is 6
             var facList = ScheduleGeneration.ScheduleGeneration.RetrieveFacilitiesWithInspectionsInXMonths(App.Facilities, months);
-            ALF_Scheduler.DataParser.WriteFacilitiesToWorkbook(facList, xlWorkBook);
+            ALF_Scheduler.DataParser.WriteFacilitiesToWorkbookForInspectionSchedule(facList, xlWorkBook);
             ExcelImporterExporter.SaveWorkbookToSpecifiedFile(filePath, xlWorkBook);
             xlWorkBook.Close();
             Marshal.ReleaseComObject(xlWorkBook);
