@@ -123,12 +123,16 @@ namespace ALF_Scheduler.Models
         public float ScheduleInterval
         {
             get
-            {
-                if(!ProposedDate.Equals(new DateTime()))
+            {                
+                if(!ProposedDate.Equals(new DateTime()) && hasInspection())
                 {
                     var difference = ProposedDate.Subtract(MostRecentFullInspection.InspectionDate);
                     return (float)(difference.TotalDays / 30.42);
                 }
+
+                if (!ProposedDate.Equals(new DateTime()) && !hasInspection())
+                    return (float)(ProposedDate.Subtract(DateTime.Today).TotalDays / 30.42);
+
                 return 0;
             }
         }
