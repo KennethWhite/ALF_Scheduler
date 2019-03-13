@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.IO;
@@ -14,13 +15,13 @@ namespace ALF_Scheduler.Models
         public int MinMonth { get; set; }
         public int MaxMonth { get; set; }
 
-        public static List<Code> CodesList { get; private set; }
+        public static ObservableCollection<Code> CodesList { get; private set; }
 
         /// <summary>
         /// Returns a list of Codes objects. Codes are coming from the code configuration xml file.
         /// </summary>
         /// <returns>Returns list of code objects</returns>
-        public static List<Code> getCodes()
+        public static ObservableCollection<Code> getCodes()
         {
             var doc = XML_Utils.XML_Utils.LoadCodeFile();
 
@@ -35,7 +36,7 @@ namespace ALF_Scheduler.Models
 
             var size = codes.ToArray().Length;
 
-            var outList = new List<Code>();
+            var outList = new ObservableCollection<Code>();
 
             foreach (var code in codes)
             {

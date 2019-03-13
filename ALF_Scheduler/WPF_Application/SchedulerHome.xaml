@@ -86,7 +86,7 @@
                         <Label Content="Inspection Date" Grid.Column="0" Grid.Row="1" />
                         <DatePicker Name ="dateBox" Grid.Column="1" Grid.Row="1"/>
                         <Label Content="Result Code" Margin="0,10,0,10" Grid.Column="0" Grid.Row="2" />
-                        <ComboBox Name="ResultCodeCombo" Height="20" Width="250" Grid.Column="1" Grid.Row="2"/>
+                        <ComboBox Name="ResultCodeCombo" Height="20" Width="250" Grid.Column="1" Grid.Row="2" DisplayMemberPath="Name"/>
                         <Label Content="Enforcement Notes" Grid.Column="0" Grid.Row="3" />
                         <TextBox Name ="EnforcementBox" Height="Auto" MaxHeight="160" Width="250" Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" />
                         <Button Name="SubmitForm" Content="Submit" Margin="0,10,0,10" Grid.Column="1" Grid.Row="4"

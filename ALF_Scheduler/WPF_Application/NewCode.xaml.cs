@@ -64,11 +64,19 @@ namespace WPF_Application
                 return;
             }
 
+            if (minMonth > maxMonth || maxMonth < minMonth)
+            {
+                var temp = minMonth;
+                minMonth = maxMonth;
+                maxMonth = temp;
+            }
+
             Code code = new Code() { Name = name, Description = desc, MinMonth = minMonth, MaxMonth = maxMonth };
 
             try
             {
                 Code.AddCodeToFile(code, fileName);
+                Code.CodesList.Add(code);
                 Close();
                 return;
             }

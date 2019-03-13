@@ -1,6 +1,7 @@
 ﻿using ALF_Scheduler;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -75,13 +76,8 @@ namespace WPF_Application
         public void InspectionResultFormInit()
         {
             FacilityBox.ItemsSource = App.Facilities;
-            List<Code> codes = Code.getCodes();
-            List<string> codeStr = new List<string>();
-            foreach (var item in codes)
-            {
-                codeStr.Add(item.Name);
-            }
-            ResultCodeCombo.ItemsSource = codeStr;
+            ObservableCollection<Code> codes = Code.getCodes();
+            ResultCodeCombo.ItemsSource = codes;
         }
 
         public void RefreshFacilityList()
