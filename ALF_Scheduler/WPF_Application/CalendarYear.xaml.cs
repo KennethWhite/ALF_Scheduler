@@ -21,7 +21,7 @@ namespace WPF_Application
         public CalendarYear()
         {
             InitializeComponent();
-            CreateCalendars(DateTime.Now.Year);
+            CreateCalendars(DateTime.Today.Year);
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace WPF_Application
             var source = e.OriginalSource as CalendarDayButton;
             if (source != null) {
                 DateTime date = DateTime.Parse(source.DataContext.ToString());
-                Facility facility = App.Facilities.FirstOrDefault(x => x.ProposedDate.Equals(date));
+                Facility facility = App.Facilities.FirstOrDefault(x => x.ProposedDate.Date.Equals(date.Date));
                 if (facility != null) {
                     NavigationService.Navigate(App.HomePage);
                     App.HomePage.DisplayFacility(facility);
@@ -91,7 +91,7 @@ namespace WPF_Application
             calendarGrid.Children.RemoveRange(1, calendarGrid.Children.Count - 1);
             CreateCalendars(--curYear);
             EnableButton(nextYearButton);
-            if (curYear == DateTime.Now.Year - 1) {
+            if (curYear == DateTime.Today.Year - 1) {
                 DisableButton(previousYearButton);
             }
         }
@@ -100,7 +100,7 @@ namespace WPF_Application
             calendarGrid.Children.RemoveRange(1, calendarGrid.Children.Count - 1);
             CreateCalendars(++curYear);
             EnableButton(previousYearButton);
-            if (curYear == DateTime.Now.Year + 1) {
+            if (curYear == DateTime.Today.Year + 1) {
                 DisableButton(nextYearButton);
             }
         }

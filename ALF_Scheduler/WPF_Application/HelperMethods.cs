@@ -64,7 +64,7 @@ namespace WPF_Application
 
         internal static void RefreshCalendars(Calendar month) {
             App.CalendarYearPage.calendarGrid.Children.RemoveRange(1, App.CalendarYearPage.calendarGrid.Children.Count - 1);
-            App.CalendarYearPage.CreateCalendars(DateTime.Now.Year);
+            App.CalendarYearPage.CreateCalendars(DateTime.Today.Year);
             DateSelection(month);
         }
     }

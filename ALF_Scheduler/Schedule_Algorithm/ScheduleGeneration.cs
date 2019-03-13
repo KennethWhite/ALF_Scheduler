@@ -140,7 +140,7 @@ namespace ScheduleGeneration
                 code_lastInspection = new Code();
                 code_lastInspection.MinMonth = 6;
                 code_lastInspection.MaxMonth = 9;
-                date_lastInspection = DateTime.Now;
+                date_lastInspection = DateTime.Today;
                 lastInspecNull = true;
                 //return PreferRandom(date_lastInspection, code_lastInspection).Date;
             }
@@ -352,7 +352,7 @@ namespace ScheduleGeneration
         /// <returns></returns>
         public static List<Facility> RetrieveFacilitiesWithInspectionsInXMonths(ObservableCollection<Facility> facilities, int months = 6)
         {
-            List<Facility> upcomingInspections = facilities.Where(fac => fac.ProposedDate.Subtract(DateTime.Now).TotalDays < months * 31).ToList();
+            List<Facility> upcomingInspections = facilities.Where(fac => fac.ProposedDate.Subtract(DateTime.Today).TotalDays < months * 31).ToList();
             return upcomingInspections;
         }
 
