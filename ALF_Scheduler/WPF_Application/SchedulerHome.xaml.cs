@@ -65,18 +65,6 @@ namespace WPF_Application
         public void RefreshFacilityList()
         {
             FacilityList.Items.Refresh();
-            ColorInspectionDates();
-        }
-
-        private void ColorInspectionDates() {
-            Facility f;
-            for (int pos = 0; pos < FacilityList.Items.Count; pos++) {
-                f = FacilityList.Items.GetItemAt(pos) as Facility;
-                if (f.ProposedDate.CompareTo(DateTime.Now) <= 0) {
-                    var lvitem = FacilityList.ItemContainerGenerator.ContainerFromIndex(pos) as ListViewItem;
-                    if (lvitem != null) lvitem.Foreground = Brushes.Red;
-                }
-            }
         }
 
         /// <summary>
