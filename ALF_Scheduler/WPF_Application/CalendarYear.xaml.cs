@@ -87,7 +87,7 @@ namespace WPF_Application
             }
         }
 
-        private void previousYearButton_Click(object sender, RoutedEventArgs e) {
+        private void PreviousYearButton_Click(object sender, RoutedEventArgs e) {
             calendarGrid.Children.RemoveRange(1, calendarGrid.Children.Count - 1);
             CreateCalendars(--curYear);
             EnableButton(nextYearButton);
@@ -96,7 +96,7 @@ namespace WPF_Application
             }
         }
 
-        private void nextYearButton_Click(object sender, RoutedEventArgs e) {
+        private void NextYearButton_Click(object sender, RoutedEventArgs e) {
             calendarGrid.Children.RemoveRange(1, calendarGrid.Children.Count - 1);
             CreateCalendars(++curYear);
             EnableButton(previousYearButton);

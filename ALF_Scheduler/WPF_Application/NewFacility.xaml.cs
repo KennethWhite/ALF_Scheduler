@@ -113,8 +113,8 @@ namespace WPF_Application
                     LicenseNumber = licNum, Unit = unit, City = city, ZipCode = zip, NumberOfBeds = bedCount, SpecialInfo = info };
                 newFac.ProposedDate = ScheduleGeneration.ScheduleGeneration.GenerateSingleDate(newFac, App.Facilities);
                 App.HomePage.AddItemToFacilityList(newFac);
-                App.CalendarYearPage = new CalendarYear();
                 Close();
+                HelperMethods.RefreshCalendars(App.HomePage.MonthlyCalendar); //this updates the calendars but doesn't display until after you switch between pages
                 return;
             }
             catch

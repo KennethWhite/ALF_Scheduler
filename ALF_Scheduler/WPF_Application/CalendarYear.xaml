@@ -31,11 +31,11 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <StackPanel Orientation="Horizontal" Margin="0,20,0,10" HorizontalAlignment="Center" Grid.Row="0" Grid.RowSpan="1" Grid.ColumnSpan="4">
-                <Button Name="previousYearButton" Background="Transparent" BorderThickness="0" Padding="15" Click="previousYearButton_Click">
+                <Button Name="previousYearButton" Background="Transparent" BorderThickness="0" Padding="15" Click="PreviousYearButton_Click">
                     <Path Stroke="Black" StrokeEndLineCap="Round" Data="M 0 8 L 6 4 M 0 8 L 6 12" />
                 </Button>
                 <Label Name="calendarYearLabel" Padding="10" FontSize="20" />
-                <Button Name="nextYearButton" Background="Transparent" BorderThickness="0" Padding="15" Click="nextYearButton_Click">
+                <Button Name="nextYearButton" Background="Transparent" BorderThickness="0" Padding="15" Click="NextYearButton_Click">
                     <Path Stroke="Black" StrokeEndLineCap="Round" Data="M 8 8 L 2 4 M 8 8 L 2 12" />
                 </Button>
             </StackPanel>
