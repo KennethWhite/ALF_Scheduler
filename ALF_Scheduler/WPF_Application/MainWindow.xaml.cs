@@ -65,11 +65,13 @@ namespace WPF_Application
                     {
                         // Save document
                         var filename = dlg.FileName;
+                        ALF_Scheduler.DataParser.SaveAllFacilitiesToWorkbook(App.Facilities, App.XlWorkbook);
                         ExcelImporterExporter.SaveWorkbookToSpecifiedFile(filename, App.XlWorkbook);
                     }
 
                     break;
                 case MessageBoxResult.No:
+                    ALF_Scheduler.DataParser.SaveAllFacilitiesToWorkbook(App.Facilities, App.XlWorkbook);
                     ExcelImporterExporter.SaveWorkbookToOriginalFile(App.XlWorkbook);
                     break;
             }
@@ -193,7 +195,7 @@ namespace WPF_Application
 
             if (result == true)
             {
-                App.SaveFacilitiesToExcel(dlg.FileName, months);
+                App.SaveUpcomingInspectionsToExcel(dlg.FileName, months);
             }
         }
 
