@@ -88,7 +88,7 @@ namespace ALF_Scheduler
                 (_row.Cells[1, 4] as Range).Value2 = _facility.LicenseNumber;
                 (_row.Cells[1, 5] as Range).Value2 = _facility.ZipCode;
                 (_row.Cells[1, 6] as Range).Value2 = _facility.City;
-                (_row.Cells[1, 7] as Range).Value2 = _facility.TwoYearFullInspection.InspectionDate;
+                (_row.Cells[1, 7] as Range).Value2 = _facility.PreviousFullInspection.InspectionDate;
                 (_row.Cells[1, 8] as Range).Value2 = _facility.MostRecentFullInspection.InspectionDate;
                 (_row.Cells[1, 9] as Range).Value2 = _facility.ScheduleInterval;
                 (_row.Cells[1, 10] as Range).Value2 = _facility.ScheduleInterval * 30.4;
