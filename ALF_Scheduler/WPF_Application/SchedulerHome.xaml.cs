@@ -59,6 +59,7 @@ namespace WPF_Application
         {
             App.Facilities.Add(fac);
             RefreshFacilityList();
+            HelperMethods.RefreshCalendars(MonthlyCalendar);
         }
 
         public void RefreshFacilityList()

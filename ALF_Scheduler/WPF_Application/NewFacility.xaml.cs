@@ -114,7 +114,6 @@ namespace WPF_Application
                 newFac.ProposedDate = ScheduleGeneration.ScheduleGeneration.GenerateSingleDate(newFac, App.Facilities);
                 App.HomePage.AddItemToFacilityList(newFac);
                 Close();
-                HelperMethods.RefreshCalendars(App.HomePage.MonthlyCalendar); //this updates the calendars but doesn't display until after you switch between pages
                 return;
             }
             catch
