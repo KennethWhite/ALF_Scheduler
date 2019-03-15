@@ -43,11 +43,19 @@ namespace WPF_Application
             FacilityList.LostFocus += (s, e) => FacilityList.SelectedItem = null;
         }
 
-        //This method will assign the global variable _currentDisplayedFacility to the facility that is trying to be shown. Setting it inside it's own method will make appropriate use of encapsulation.
+        /// <summary>
+        ///     This method will assign the global variable _currentDisplayedFacility to the facility that is 
+        ///     trying to be shown. Setting it inside it's own method will make appropriate use of encapsulation.
+        /// </summary>
+        /// <param name="facToShow">The facility to be displayed.</param>
         private Facility SetGlobal_currentDisplayedFacility(Facility facToShow)
         {
             return this._currentDisplayedFacility = facToShow;
         }
+
+        /// <summary>
+        ///     This method initializes the inspection result form.
+        /// </summary>
         public void InspectionResultFormInit()
         {
             FacilityBox.ItemsSource = App.Facilities;
@@ -55,6 +63,10 @@ namespace WPF_Application
             ResultCodeCombo.ItemsSource = codes;
         }
 
+        /// <summary>
+        ///     This method adds an item to the facility list.
+        /// </summary>
+        /// <param name="fac">The Facility to add.</param>
         public void AddItemToFacilityList(Facility fac)
         {
             App.Facilities.Add(fac);
@@ -62,6 +74,9 @@ namespace WPF_Application
             HelperMethods.RefreshCalendars(MonthlyCalendar);
         }
 
+        /// <summary>
+        ///     This method refreshes the list of facilities.
+        /// </summary>
         public void RefreshFacilityList()
         {
             FacilityList.Items.Refresh();
@@ -70,6 +85,8 @@ namespace WPF_Application
         /// <summary>
         ///     This method searches through the list of facilities displayed for the specific string provided by the user.
         /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SearchText_TextChanged(object sender, RoutedEventArgs e)
         {
 
@@ -98,11 +115,21 @@ namespace WPF_Application
             }
         }
 
+        /// <summary>
+        ///     Event handler for when the search box has focus.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SearchText_GotFocus(object sender, RoutedEventArgs e)
         {
             if (SearchText.Text.Equals("Search..")) SearchText.Text = "";
         }
 
+        /// <summary>
+        ///     Event handler for when the search box loses focus.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SearchText_LostFocus(object sender, RoutedEventArgs e)
         {
             if (SearchText.Text.Equals("")) SearchText.Text = "Search..";
@@ -288,6 +315,11 @@ namespace WPF_Application
             }
         }
 
+        /// <summary>
+        ///     Submits the Inspection form creating a new inspection object.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SubmitForm_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -318,6 +350,13 @@ namespace WPF_Application
             }
 
         }
+
+        /// <summary>
+        ///     This method creates an inspection object with the specified date, optional licensor, and optional code.
+        /// </summary>
+        /// <param name="date">The inspection date.</param>
+        /// <param name="licensor">The inspection licensor(s)</param>
+        /// <param name="code">The inspection code.</param>
         private static Inspection CreateInspection(string date, string licensor = "", Code code = null)
         {
             var ret = new Inspection { InspectionDate = DateTime.Parse(date) };
@@ -357,14 +396,24 @@ namespace WPF_Application
         {
             _details.SubmitChanges(_currentDisplayedFacility);
             RefreshFacilityList();
-        }       
+        }
 
+        /// <summary>
+        ///     Opens up the New Facility window.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void NewFacility_Btn(object sender, RoutedEventArgs e)
         {
             NewFacilityWindow newFacility = new NewFacilityWindow() { Owner = App.HomePage_Main};
             newFacility.Show();
         }
 
+        /// <summary>
+        ///     Opens up the detail tab for the facility with the date clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MonthlyCalendar_GotMouseCapture(object sender, MouseEventArgs e)
         {
             var source = e.OriginalSource as CalendarDayButton;

@@ -62,6 +62,10 @@ namespace WPF_Application
             }            
         }
 
+        /// <summary>
+        ///     This is a helper method that clears and refreshes all calendar objects selected dates to make sure it has accurate data.
+        /// </summary>
+        /// <param name="month">The month Calendar object so it can be refreshed as well.</param>
         internal static void RefreshCalendars(Calendar month) {
             month.SelectedDates.Clear();
             App.CalendarYearPage.calendarGrid.Children.RemoveRange(1, App.CalendarYearPage.calendarGrid.Children.Count - 1);

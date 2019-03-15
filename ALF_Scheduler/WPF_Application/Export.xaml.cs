@@ -28,6 +28,10 @@ namespace WPF_Application
             InitializeComponent();
         }
 
+        /// <summary>
+        ///     This event handler exports all facilities with inspection dates into a new excel file 
+        ///     if the date is within the specified number of months.
+        /// </summary>
         private void Export_Click(object sender, RoutedEventArgs e) {
             string monthStr = ExportMonths.Text;
             int months;

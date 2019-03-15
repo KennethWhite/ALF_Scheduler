@@ -160,17 +160,26 @@ namespace WPF_Application
             Frame.Navigate(App.CalendarYearPage);
         }
 
+        /// <summary>
+        ///     This method handles the user clicking the export button in the menu.
+        /// </summary>
         private void Menu_Export_Click(object sender, RoutedEventArgs e) {
             Export export = new Export() { Owner = this };
             export.Show();
         }
 
+        /// <summary>
+        ///     This method handles the user clicking the New Code button in the menu.
+        /// </summary>
         private void Menu_New_Code_Click(object sender, RoutedEventArgs e)
         {
             NewCodeWindow newCode = new NewCodeWindow() { Owner = this };
             newCode.Show();
         }
 
+        /// <summary>
+        ///     This method handles the user clicking the New Facility button in the menu.
+        /// </summary>
         private void Menu_New_Facility_Click(object sender, RoutedEventArgs e)
         {
             NewFacilityWindow newFacility = new NewFacilityWindow() { Owner = this };
