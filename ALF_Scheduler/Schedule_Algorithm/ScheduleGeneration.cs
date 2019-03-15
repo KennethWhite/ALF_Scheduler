@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using ALF_Scheduler;
+using System.Windows;
 using ALF_Scheduler.Models;
 
 namespace ScheduleGeneration
 {
-    public class ScheduleGeneration
+    public static class ScheduleGeneration
     {
         /// <summary>
         /// Used to hold a date of a proposed inspection, as well as the months the algorithm selected base off the previous Inspection
@@ -71,7 +71,7 @@ namespace ScheduleGeneration
                 Code code_lastInspection;
 
 
-                if (lastInspec.Equals(Inspection.Inspection_Default))
+                if (lastInspec.Equals(Inspection.Inspection_Default) || !DateRangeAbleToSchedule(lastInspec))
                 {
                     goto EndOfLoop;
                 }
@@ -95,6 +95,13 @@ namespace ScheduleGeneration
                 {
                     newNextInspection = PreferRandom(date_lastInspection, code_lastInspection);
                     goto CheckBlackout;
+                }
+
+                CheckDateFuture:
+                if (!(newNextInspection.Date > DateTime.Today))
+                {
+                    newNextInspection = PreferRandom(date_lastInspection, code_lastInspection);
+                    goto CheckDateFuture;
                 }
 
                 daysScheduled.Add(newNextInspection.Date.DayOfYear);
@@ -157,6 +164,14 @@ namespace ScheduleGeneration
             return date_lastInspection.AddDays(days);
             */
 
+            if (!lastInspecNull && !DateRangeAbleToSchedule(lastInspec))
+            {
+                MessageBox.Show("The last inspection was on: " + date_lastInspection + ". With code: " + code_lastInspection.Name + ". The maximum date to schedule is: " +
+                    date_lastInspection.AddMonths(code_lastInspection.MaxMonth) + ", which is in the past. New date scheduled needs to be manually entered. Scheduling today.",
+                    "No future date warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return DateTime.Today;
+            }
+
             GenNew:
 
             DateTime newDate = PreferRandom(date_lastInspection, code_lastInspection).Date;
@@ -175,7 +190,7 @@ namespace ScheduleGeneration
                     scheduledDays.Add(propDate.DayOfYear);
             }
 
-            if (!IsUnscheduledDate(scheduledDays, newDate.DayOfYear))
+            if (!IsUnscheduledDate(scheduledDays, newDate.DayOfYear) || !(newDate > DateTime.Today))
                 goto GenNew;
 
             return newDate;
@@ -354,6 +369,21 @@ namespace ScheduleGeneration
         {
             List<Facility> upcomingInspections = facilities.Where(fac => fac.ProposedDate.Subtract(DateTime.Today).TotalDays < months * 31).ToList();
             return upcomingInspections;
+        }
+
+        private static bool DateRangeAbleToSchedule(Inspection inspection)
+        {
+            try
+            {
+                DateTime lastInspec = inspection.InspectionDate;
+                int maxMonth = inspection.Code.MaxMonth;
+
+                return lastInspec.AddMonths(maxMonth) > DateTime.Today;
+            }
+            catch
+            {
+                return false;
+            }            
         }
 
         
