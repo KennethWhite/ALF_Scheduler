@@ -35,6 +35,7 @@ namespace WPF_Application
         private TextBox licensors;
         private TextBox complaints;
         private TextBox inspecResult;
+        private TextBox enfNotes;
 
         private List<TextBox> allText;
 
@@ -63,6 +64,7 @@ namespace WPF_Application
             licensors = sh.tb_Licensors;
             complaints = sh.tb_Complaints;
             inspecResult = sh.tb_InspecResult;
+            enfNotes = sh.tb_EnfNotes;
 
             allText = new List<TextBox>();
             allText.Add(facName);
@@ -80,6 +82,7 @@ namespace WPF_Application
             allText.Add(licensors);
             allText.Add(complaints);
             allText.Add(inspecResult);
+            allText.Add(enfNotes);
         }
 
         /// <summary>
@@ -170,6 +173,7 @@ namespace WPF_Application
                 prevInspecTwo.Text = Facility.GetDateString(fac.TwoYearFullInspection.InspectionDate);
                 licensors.Text = fac.Licensors;
                 complaints.Text = fac.Complaints;
+                enfNotes.Text = fac.EnforcementNotes;
             }
             else
             {
@@ -251,6 +255,7 @@ namespace WPF_Application
             {
                 fac.Licensors = licensors.Text;
                 fac.Complaints = complaints.Text;
+                fac.EnforcementNotes = enfNotes.Text;
             }
 
             HideButtons();

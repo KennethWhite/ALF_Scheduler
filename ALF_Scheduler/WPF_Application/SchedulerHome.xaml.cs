@@ -301,6 +301,7 @@ namespace WPF_Application
                     {
                         Inspection toAdd = CreateInspection(date, check.Licensors, code);
                         check.AddInspection(toAdd);
+                        check.EnforcementNotes = EnforcementBox.Text;
                     }
                 FacilityBox.Text = "";
                 ResultCodeCombo.SelectedItem = null;

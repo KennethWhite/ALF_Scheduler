@@ -126,6 +126,10 @@
                                         <Label Content="Complaints" Width="250"/>
                                         <TextBox Name="tb_Complaints" Width="250" Height="60" TextChanged="DetailsTextChanged"/>
                                     </StackPanel>
+                                    <StackPanel Height="65" Orientation="Horizontal" VerticalAlignment="Top">
+                                        <Label Content="Inspection Notes" Width="250"/>
+                                        <TextBox Name="tb_EnfNotes" Width="250" Height="60" TextChanged="DetailsTextChanged"/>
+                                    </StackPanel>
                                 </StackPanel>
                                 <!-- Special info end -->
 
