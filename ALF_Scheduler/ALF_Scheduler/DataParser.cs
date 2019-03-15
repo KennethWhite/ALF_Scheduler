@@ -39,28 +39,35 @@ namespace ALF_Scheduler
         /// <param name="excelRow">The Excel.Range object representing the row from the Excel Workbook to parse.</param>
         public static Facility UpdateFacility(Facility fac, Range excelRow)
         {
-            _facility = fac;
-            _row = excelRow;
-            _facility.FacilityName = (string) (_row.Cells[1,1] as Range).Value2;
-            SetLicensee((string)(_row.Cells[1, 2] as Range).Value2);
-            _facility.Unit = (string)(_row.Cells[1, 3] as Range).Value2;
-            _facility.LicenseNumber = ((_row.Cells[1, 4] as Range).Value2).ToString();
-            _facility.ZipCode = ((_row.Cells[1, 5] as Range).Value2).ToString();
-            _facility.City = (string)(_row.Cells[1, 6] as Range).Value2;
-            _facility.AddInspection(CreateInspection((string)(_row.Cells[1, 7] as Range).Text));
-            DateTime.TryParse((string)(_row.Cells[1, 11] as Range).Text, out DateTime date);
-            _facility.ProposedDate = date;
-            _facility.EnforcementNotes = (string)(_row.Cells[1, 16] as Range).Value2;
-            var code = (string)(_row.Cells[1, 15] as Range).Value2;
-            _facility.AddInspection(CreateInspection((string)(_row.Cells[1, 8] as Range).Text, null, code));
-            _facility.Licensors = (string)(_row.Cells[1, 14] as Range).Value2;
-            string beds = (_row.Cells[1, 19] as Range).Value2.ToString();
-            SetNumberOfBeds(beds);
-            _facility.Complaints = (string)(_row.Cells[1, 20] as Range).Value2;
-            
-            return _facility;
-        }
+            try
+            {
+                _facility = fac;
+                _row = excelRow;
+                _facility.FacilityName = (string)(_row.Cells[1, 1] as Range).Value2;
+                SetLicensee((string)(_row.Cells[1, 2] as Range).Value2);
+                _facility.Unit = (string)(_row.Cells[1, 3] as Range).Value2;
+                _facility.LicenseNumber = ((_row.Cells[1, 4] as Range).Value2).ToString();
+                _facility.ZipCode = ((_row.Cells[1, 5] as Range).Value2).ToString();
+                _facility.City = (string)(_row.Cells[1, 6] as Range).Value2;
+                _facility.AddInspection(CreateInspection((string)(_row.Cells[1, 7] as Range).Text));
+                DateTime.TryParse((string)(_row.Cells[1, 11] as Range).Text, out DateTime date);
+                _facility.ProposedDate = date;
+                _facility.EnforcementNotes = (string)(_row.Cells[1, 16] as Range).Value2;
+                var code = (string)(_row.Cells[1, 15] as Range).Value2;
+                _facility.AddInspection(CreateInspection((string)(_row.Cells[1, 8] as Range).Text, null, code));
+                _facility.Licensors = (string)(_row.Cells[1, 14] as Range).Value2;
+                string beds = (_row.Cells[1, 19] as Range).Value2.ToString();
+                SetNumberOfBeds(beds);
+                _facility.Complaints = (string)(_row.Cells[1, 20] as Range).Value2;
 
+                return _facility;
+            }
+            catch(Exception e)
+            {
+                ErrorLogger.LogInfo("Problem reading cell", e);
+                return _facility;
+            }
+        }
 
        public static void SaveAllFacilitiesToWorkbook(ObservableCollection<Facility> facilities, Workbook xlWorkbook)
         {

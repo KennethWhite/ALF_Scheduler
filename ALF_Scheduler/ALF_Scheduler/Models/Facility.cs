@@ -202,7 +202,7 @@ namespace ALF_Scheduler.Models
 
 
         /// <summary>
-        /// ReturnFacility will return a List<object> of all of the passed in Facilitiy's values, except AddInspection, and NthPreviousInspection.
+        /// ReturnFacility will return a List<string> of all of the passed in Facilitiy's values, except AddInspection, and NthPreviousInspection.
         /// </summary>
         /// <param name="fac"></param>
         /// <returns>A list of facility properties as strings.</returns>
