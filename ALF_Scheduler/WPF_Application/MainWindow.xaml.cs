@@ -160,43 +160,9 @@ namespace WPF_Application
             Frame.Navigate(App.CalendarYearPage);
         }
 
-        private void ExportMonths_TextChanged(object sender, RoutedEventArgs e)
-        {
-            ExportMonths.Background = null;
-        }
-
         private void Menu_Export_Click(object sender, RoutedEventArgs e) {
-
-            string monthStr = ExportMonths.Text;
-            int months;
-
-            try
-            {
-                months = int.Parse(monthStr);
-            }
-            catch
-            {
-                MessageBox.Show("Months to export is not a number!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-                ExportMonths.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(90, 255, 0, 0));
-                return;
-            }
-
-
-            var dlg = new SaveFileDialog {
-                FileName = "Document", // Default file name
-                DefaultExt = ".xlsx", // Default file extension
-                Filter = "Excel documents (.xlsx)|*.xlsx", // Filter files by extension
-                CheckFileExists = false,
-                CheckPathExists = true
-            };
-
-            // Show save file dialog box
-            var result = dlg.ShowDialog();
-
-            if (result == true)
-            {
-                App.SaveUpcomingInspectionsToExcel(dlg.FileName, months);
-            }
+            Export export = new Export() { Owner = this };
+            export.Show();
         }
 
         private void Menu_New_Code_Click(object sender, RoutedEventArgs e)
