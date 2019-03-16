@@ -39,11 +39,17 @@ namespace WPF_Application
             XML_Utils.XML_Utils.Init();
             Code.CodesList = Code.GetCodes();
             HomePage_Main = new MainWindow();
+
             OpenFile(HomePage_Main);
+            //TODO: uncomment this section and delete the line above once the opening works correctly
+            //Facilities = new ObservableCollection<Facility>();
+            //HomePage = new SchedulerHome();
+            //HomePage_Main.Frame.Source = new Uri("pack://application:,,,/SchedulerHome.xaml");
+            //CalendarYearPage = new CalendarYear();
+            //HomePage_Main.Show();
         }
 
-        public static void OpenFile(Window sender, bool onStartup = false)
-        {
+        public static void OpenFile(Window sender, bool onStartup = false) {
             // Configure open file dialog box
             var dlg = new OpenFileDialog {
                 FileName = "Document", // Default file name
@@ -55,29 +61,27 @@ namespace WPF_Application
 
 
             // Process open file dialog box results
-            if (dlg.ShowDialog() == true)
-            {
+            if (dlg.ShowDialog() == true) {
                 // Open document
                 var filename = dlg.FileName;
                 Init(filename);
 
+                //TODO: Delete this chunk once opening file works properly
                 HomePage = new SchedulerHome();
                 var mainWindow = (MainWindow)sender;
                 mainWindow.Frame.Source = new Uri("pack://application:,,,/SchedulerHome.xaml");
                 CalendarYearPage = new CalendarYear();
 
                 if (onStartup) sender.Close();
-                mainWindow.Show();
-            }
-            else if (!onStartup)
-            {
+                HomePage_Main.Show();
+            } else if (!onStartup) {
                 ExcelImporterExporter.CloseExcelApp(XlApp, XlWorkbook);
                 Environment.Exit(0);
             }
         }
 
         /// <summary>
-        ///     This method initializes the overall application and data/database with the specified excel file path
+        ///     This method initializes the overall application and data with the specified excel file path
         ///     grabbed from the Open File Dialog Window in <see cref="App.OpenFile(Window, bool)" />
         /// </summary>
         /// <param name="path">The full path of the specified file to import.</param>
