@@ -34,15 +34,17 @@ namespace WPF_Application
         public static SchedulerHome HomePage { get; set; }
         public static MainWindow HomePage_Main { get; set; }
 
-        private void Application_Startup(object sender, StartupEventArgs e)
-        {
+        private void Application_Startup(object sender, StartupEventArgs e) {
             XML_Utils.XML_Utils.Init(); //This needs to be run to set up initial code file and folders
             HomePage_Main = new MainWindow();
-            OpenFile(HomePage_Main);
+            Facilities = new ObservableCollection<Facility>();
+            HomePage = new SchedulerHome();
+            HomePage_Main.Frame.Source = new Uri("pack://application:,,,/SchedulerHome.xaml");
+            CalendarYearPage = new CalendarYear();
+            HomePage_Main.Show();
         }
 
-        public static void OpenFile(Window sender, bool onStartup = false)
-        {
+        public static void OpenFile(Window sender, bool onStartup = false) {
             // Configure open file dialog box
             var dlg = new OpenFileDialog {
                 FileName = "Document", // Default file name
@@ -54,22 +56,19 @@ namespace WPF_Application
 
 
             // Process open file dialog box results
-            if (dlg.ShowDialog() == true)
-            {
+            if (dlg.ShowDialog() == true) {
                 // Open document
                 var filename = dlg.FileName;
                 Init(filename);
 
-                HomePage = new SchedulerHome();
-                var mainWindow = (MainWindow)sender;
-                mainWindow.Frame.Source = new Uri("pack://application:,,,/SchedulerHome.xaml");
-                CalendarYearPage = new CalendarYear();
+                //HomePage = new SchedulerHome();
+                //var mainWindow = (MainWindow)sender;
+                //mainWindow.Frame.Source = new Uri("pack://application:,,,/SchedulerHome.xaml");
+                //CalendarYearPage = new CalendarYear();
 
                 if (onStartup) sender.Close();
-                mainWindow.Show();
-            }
-            else if (!onStartup)
-            {
+                HomePage_Main.Show();
+            } else if (!onStartup) {
                 ExcelImporterExporter.CloseExcelApp(XlApp, XlWorkbook);
                 Environment.Exit(0);
             }
