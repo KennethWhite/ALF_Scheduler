@@ -76,7 +76,7 @@ namespace WPF_Application
         }
 
         /// <summary>
-        ///     This method initializes the overall application and data/database with the specified excel file path
+        ///     This method initializes the overall application and data with the specified excel file path
         ///     grabbed from the Open File Dialog Window in <see cref="App.OpenFile(Window, bool)" />
         /// </summary>
         /// <param name="path">The full path of the specified file to import.</param>

@@ -14,9 +14,12 @@ namespace WPF_Application
     /// </summary>
     public partial class MainWindow : NavigationWindow
     {
+        public bool IsClosing { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
+            IsClosing = false;
         }
 
         /// <summary>
@@ -40,53 +43,8 @@ namespace WPF_Application
         /// </summary>
         private void SaveFile()
         {
-            var save = CreateSaveDialog();
-            var app = (App) Application.Current;
-
-            // Process message box results
-            switch (save)
-            {
-                case MessageBoxResult.Yes:
-
-                    // Configure save file dialog box
-                    var dlg = new SaveFileDialog {
-                        FileName = "Document", // Default file name
-                        DefaultExt = ".xlsx", // Default file extension
-                        Filter = "Excel documents (.xlsx)|*.xlsx", // Filter files by extension
-                        CheckFileExists = false,
-                        CheckPathExists = true
-                    };
-
-                    // Show save file dialog box
-                    var result = dlg.ShowDialog();
-
-                    // Process save file dialog box results
-                    if (result == true)
-                    {
-                        // Save document
-                        var filename = dlg.FileName;
-                        ALF_Scheduler.DataParser.SaveAllFacilitiesToWorkbook(App.Facilities, App.XlWorkbook);
-                        ExcelImporterExporter.SaveWorkbookToSpecifiedFile(filename, App.XlWorkbook);
-                    }
-
-                    break;
-                case MessageBoxResult.No:
-                    ALF_Scheduler.DataParser.SaveAllFacilitiesToWorkbook(App.Facilities, App.XlWorkbook);
-                    ExcelImporterExporter.SaveWorkbookToOriginalFile(App.XlWorkbook);
-                    break;
-            }
-        }
-
-        /// <summary>
-        ///     This is a helper method that creates and displays the MessageBox before closing the window.
-        /// </summary>
-        private MessageBoxResult CreateSaveDialog()
-        {
-            var messageBoxText = "Do you want to save changes to a new file?";
-            var caption = "Word Processor";
-            var button = MessageBoxButton.YesNo;
-            var icon = MessageBoxImage.Question;
-            return MessageBox.Show(messageBoxText, caption, button, icon);
+            var saveDialog = new SaveWhereDialog() { Owner = this };
+            saveDialog.Show();
         }
 
 
@@ -108,39 +66,11 @@ namespace WPF_Application
         /// </summary>
         private void NavigationWindow_Closing(object sender, CancelEventArgs e)
         {
-            if (true /* if any changes have been made to a facility or inspection form has been filled out */)
-            {
-                var result = CreateWarningDialog();
-
-                // Process message box results
-                switch (result)
-                {
-                    case MessageBoxResult.Yes:
-                        SaveFile();
-                        ExcelImporterExporter.CloseExcelApp(App.XlApp, App.XlWorkbook);
-                        Environment.Exit(0);
-                        break;
-                    case MessageBoxResult.No:
-                        ExcelImporterExporter.CloseExcelApp(App.XlApp, App.XlWorkbook);
-                        Environment.Exit(0);
-                        break;
-                    case MessageBoxResult.Cancel:
-                        e.Cancel = true;
-                        break;
-                }
-            }
-        }
-
-        /// <summary>
-        ///     This is a helper method that creates and displays the MessageBox before closing the window.
-        /// </summary>
-        private MessageBoxResult CreateWarningDialog()
-        {
-            var messageBoxText = "Do you want to save changes?";
-            var caption = "Word Processor";
-            var button = MessageBoxButton.YesNoCancel;
-            var icon = MessageBoxImage.Warning;
-            return MessageBox.Show(messageBoxText, caption, button, icon);
+            SaveFile(); //TODO: This method finishes before the dialog fully opens. Needs logic to prevent closing if the cancel button is pressed.
+            if (IsClosing) {
+                ExcelImporterExporter.CloseExcelApp(App.XlApp, App.XlWorkbook);
+                Environment.Exit(0);
+            } else e.Cancel = true;
         }
 
         /// <summary>
