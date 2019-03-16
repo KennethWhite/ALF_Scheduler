@@ -64,13 +64,12 @@ namespace WPF_Application
         ///     This method handles the closing event that occurs when the user clicks
         ///     the exit button in the menu or the 'X' in the window itself.
         /// </summary>
-        private void NavigationWindow_Closing(object sender, CancelEventArgs e)
-        {
+        private void NavigationWindow_Closing(object sender, CancelEventArgs e) {
             SaveFile(); //TODO: This method finishes before the dialog fully opens. Needs logic to prevent closing if the cancel button is pressed.
-            if (IsClosing) {
+            if (true) { //IsClosing) {
                 ExcelImporterExporter.CloseExcelApp(App.XlApp, App.XlWorkbook);
                 Environment.Exit(0);
-            } else e.Cancel = true;
+            } //else e.Cancel = true;
         }
 
         /// <summary>

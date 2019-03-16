@@ -37,11 +37,14 @@ namespace WPF_Application
         private void Application_Startup(object sender, StartupEventArgs e) {
             XML_Utils.XML_Utils.Init(); //This needs to be run to set up initial code file and folders
             HomePage_Main = new MainWindow();
-            Facilities = new ObservableCollection<Facility>();
-            HomePage = new SchedulerHome();
-            HomePage_Main.Frame.Source = new Uri("pack://application:,,,/SchedulerHome.xaml");
-            CalendarYearPage = new CalendarYear();
-            HomePage_Main.Show();
+
+            OpenFile(HomePage_Main);
+            //TODO: uncomment this section and delete the line above once the opening works correctly
+            //Facilities = new ObservableCollection<Facility>();
+            //HomePage = new SchedulerHome();
+            //HomePage_Main.Frame.Source = new Uri("pack://application:,,,/SchedulerHome.xaml");
+            //CalendarYearPage = new CalendarYear();
+            //HomePage_Main.Show();
         }
 
         public static void OpenFile(Window sender, bool onStartup = false) {
@@ -61,10 +64,11 @@ namespace WPF_Application
                 var filename = dlg.FileName;
                 Init(filename);
 
-                //HomePage = new SchedulerHome();
-                //var mainWindow = (MainWindow)sender;
-                //mainWindow.Frame.Source = new Uri("pack://application:,,,/SchedulerHome.xaml");
-                //CalendarYearPage = new CalendarYear();
+                //TODO: Delete this chunk once opening file works properly
+                HomePage = new SchedulerHome();
+                var mainWindow = (MainWindow)sender;
+                mainWindow.Frame.Source = new Uri("pack://application:,,,/SchedulerHome.xaml");
+                CalendarYearPage = new CalendarYear();
 
                 if (onStartup) sender.Close();
                 HomePage_Main.Show();
