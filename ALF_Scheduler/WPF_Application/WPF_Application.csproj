@@ -85,6 +85,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Details.cs" />
+    <Compile Include="EditCode.xaml.cs">
+      <DependentUpon>EditCode.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Export.xaml.cs">
       <DependentUpon>Export.xaml</DependentUpon>
     </Compile>
@@ -113,6 +116,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CalendarYear.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditCode.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

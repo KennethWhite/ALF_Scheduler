@@ -185,5 +185,16 @@ namespace WPF_Application
             NewFacilityWindow newFacility = new NewFacilityWindow() { Owner = this };
             newFacility.Show();
         }
+
+        /// <summary>
+        /// Triggers when Edit>Code item is clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Menu_Edit_Code_Click(object sender, RoutedEventArgs e)
+        {
+            EditCodeWindow editCode = new EditCodeWindow() { Owner = this };
+            editCode.Show();
+        }
     }
 }

@@ -19,11 +19,21 @@ namespace WPF_Application
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Triggers when Cancel button is clicked. Closes window.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void onCancel(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
+        /// <summary>
+        /// Triggers when Submit button is clicked. Adds new code to file.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void onSubmit(object sender, RoutedEventArgs e)
         {
             string fileName = this.fileName.Text;
@@ -31,6 +41,13 @@ namespace WPF_Application
             string desc = this.desc.Text;
             int minMonth;
             int maxMonth;
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                codeName.Background = red;
+                ShowWarn("Code must be given a name");
+                return;
+            }
 
             if (string.IsNullOrWhiteSpace(fileName))
             {
@@ -93,11 +110,20 @@ namespace WPF_Application
             ShowWarn("An unknown error occured.");
         }
 
-        private MessageBoxResult ShowWarn(string msg)
+        /// <summary>
+        /// Shows user a MessageBox with warning message in it.
+        /// </summary>
+        /// <param name="msg">Message to display.</param>
+        private void ShowWarn(string msg)
         {
-            return MessageBox.Show(msg, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(msg, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
+        /// <summary>
+        /// Triggers when TextBox text is changed. Clears background.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TextChanged(object sender, RoutedEventArgs e)
         {
             TextBox t = (TextBox)sender;

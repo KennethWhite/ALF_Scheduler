@@ -1,0 +1,25 @@
+﻿<Window x:Class="WPF_Application.EditCodeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF_Application"
+        mc:Ignorable="d"
+        Title="Edit Code" Height="275" Width="345" WindowStartupLocation="CenterOwner">
+    <Grid>
+        <ComboBox x:Name="cb_Codes" HorizontalAlignment="Left" Margin="58,10,0,0" VerticalAlignment="Top" Width="120" DisplayMemberPath="Name" SelectionChanged="Codes_SelectionChanged"/>
+        <Label Content="Code" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <Label Content="Name" HorizontalAlignment="Left" Margin="11,40,0,0" VerticalAlignment="Top"/>
+        <Label Content="Description" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top"/>
+        <Label Content="Minimum Schedule Month" HorizontalAlignment="Left" Margin="10,137,0,0" VerticalAlignment="Top"/>
+        <Label Content="Maximum Schedule Month" HorizontalAlignment="Left" Margin="10,165,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tb_Name" HorizontalAlignment="Left" Height="23" Margin="168,44,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="153" TextChanged="TextChanged"/>
+        <TextBox x:Name="tb_Desc" HorizontalAlignment="Left" Height="60" Margin="168,76,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="153" TextChanged="TextChanged"/>
+        <TextBox x:Name="tb_MinMonth" HorizontalAlignment="Left" Height="23" Margin="168,141,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="153" TextChanged="TextChanged"/>
+        <TextBox x:Name="tb_MaxMonth" HorizontalAlignment="Left" Height="23" Margin="168,169,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="153" TextChanged="TextChanged"/>
+        <Button x:Name="btn_Submit" Content="Submit Changes" HorizontalAlignment="Left" Margin="10,207,0,0" VerticalAlignment="Top" Width="100" Click="Submit_Click"/>
+        <Button x:Name="btn_Delete" Content="Delete Code" HorizontalAlignment="Left" Margin="116,207,0,0" VerticalAlignment="Top" Width="100" Click="Delete_Click"/>
+        <Button x:Name="btn_Cancel" Content="Cancel" HorizontalAlignment="Left" Margin="221,207,0,0" VerticalAlignment="Top" Width="100" Click="Cancel_Click"/>
+
+    </Grid>
+</Window>

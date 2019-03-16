@@ -18,22 +18,41 @@ namespace WPF_Application
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Triggers when Cancel button is clicked. Closes window.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void OnCancel(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
-        private MessageBoxResult ShowWarn(string msg)
+        /// <summary>
+        /// Shows user a warning message in MessageBox.
+        /// </summary>
+        /// <param name="msg">Message to display.</param>
+        private void ShowWarn(string msg)
         {
-            return MessageBox.Show(msg, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(msg, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
+        /// <summary>
+        /// Triggers when TextBox text is changed. Clears background.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TextChanged(object sender, RoutedEventArgs e)
         {
             TextBox t = (TextBox)sender;
             t.Background = null;
         }
 
+        /// <summary>
+        /// Triggers when Submit button is clicked. Adds Facility to Facility list.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void OnSubmit(object sender, RoutedEventArgs e)
         {
             string facName = this.facName.Text;

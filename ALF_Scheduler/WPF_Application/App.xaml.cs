@@ -36,7 +36,8 @@ namespace WPF_Application
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            XML_Utils.XML_Utils.Init(); //This needs to be run to set up initial code file and folders
+            XML_Utils.XML_Utils.Init();
+            Code.CodesList = Code.GetCodes();
             HomePage_Main = new MainWindow();
             OpenFile(HomePage_Main);
         }

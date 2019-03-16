@@ -15,7 +15,7 @@ namespace ALF_Scheduler.Models
         public int MinMonth { get; set; }
         public int MaxMonth { get; set; }
 
-        public static ObservableCollection<Code> CodesList { get; private set; }
+        public static ObservableCollection<Code> CodesList { get; set; }
 
         /// <summary>
         /// Returns a list of Codes objects. Codes are coming from the code configuration xml file.
@@ -77,6 +77,11 @@ namespace ALF_Scheduler.Models
             //throw new KeyNotFoundException("Could not find a code with that name");
         }
 
+        /// <summary>
+        /// Adds given code to code file. Creates new file.
+        /// </summary>
+        /// <param name="code">Code to add.</param>
+        /// <param name="fileName">Filename to name new file.</param>
         public static void AddCodeToFile(Code code, string fileName)
         {
             Regex regex = new Regex(@"^.*\.(?i)xml(?-i)$"); //Match .xml
@@ -100,6 +105,66 @@ namespace ALF_Scheduler.Models
             }
 
             throw new FileFormatException("Given filename is not a valid xml filename.");
+        }
+
+        /// <summary>
+        /// Removes given code from document. And saves new code file.
+        /// </summary>
+        /// <param name="code">Code to remove.</param>
+        /// <param name="fileName">Optional filename</param>
+        public static void RemoveCode(Code code, string fileName = null)
+        {
+            if (string.IsNullOrWhiteSpace(fileName))
+            {
+                fileName = "Codes_" + DateTime.Now.ToString("yyyy'_'MM'_'dd'T'HHmmss") + ".xml";
+            }
+            else if (!fileName.EndsWith(".xml", System.StringComparison.InvariantCultureIgnoreCase))
+            {
+                fileName = fileName + ".xml";
+            }
+
+            XDocument doc = XML_Utils.XML_Utils.LoadCodeFile();
+            doc.Element("configuration")
+                .Element("codes")
+                .Descendants("code")
+                .Where(e => e.Element("name").Value.Equals(code.Name))
+                .Remove();
+
+            doc.Save(XML_Utils.XML_Utils.GetImportDir() + "/" + fileName);
+        }
+
+        /// <summary>
+        /// Will update oldCode to newCode's information. Save info to new file.
+        /// </summary>
+        /// <param name="oldCode">Code to update.</param>
+        /// <param name="newCode">Updated Code.</param>
+        /// <param name="fileName">Optional file name.</param>
+        public static void UpdateCode(Code oldCode, Code newCode, string fileName = null)
+        {
+            if (string.IsNullOrWhiteSpace(fileName))
+            {
+                fileName = "Codes_" + DateTime.Now.ToString("yyyy'_'MM'_'dd'T'HHmmss") + ".xml";
+            }
+            else if (!fileName.EndsWith(".xml", System.StringComparison.InvariantCultureIgnoreCase))
+            {
+                fileName = fileName + ".xml";
+            }
+
+            XDocument doc = XML_Utils.XML_Utils.LoadCodeFile();
+
+            XElement code = doc
+                .Element("configuration")
+                .Element("codes")
+                .Elements("code")
+                .Where(e => e.Element("name").Value.Equals(oldCode.Name))
+                .Single();
+
+            code.Element("name").Value = newCode.Name;
+            code.Element("desc").Value = newCode.Description;
+            code.Element("minMonth").Value = newCode.MinMonth.ToString();
+            code.Element("maxMonth").Value = newCode.MaxMonth.ToString();
+
+            doc.Save(XML_Utils.XML_Utils.GetImportDir() + "/" + fileName);
         }
     }
 }

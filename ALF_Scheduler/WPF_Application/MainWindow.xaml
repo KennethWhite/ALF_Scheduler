@@ -15,6 +15,9 @@
                         <MenuItem Name="Menu_New_Code" Header="_Code" Click="Menu_New_Code_Click"/>
                         <MenuItem Name="Menu_New_Facility" Header="_Facility" Click="Menu_New_Facility_Click"/>
                     </MenuItem>
+                    <MenuItem Header="_Edit">
+                        <MenuItem Name="Menu_Edit_Code" Header="_Code" Click="Menu_Edit_Code_Click"/>
+                    </MenuItem>
                     <MenuItem Name="Menu_Open" Header="_Open" Click="Menu_Open_Click" />
                     <MenuItem Name="Menu_Save" Header="_Save" Click="Menu_Save_Click" />
                     <MenuItem Name="Menu_Export" Header="_Export" Click="Menu_Export_Click"/>
