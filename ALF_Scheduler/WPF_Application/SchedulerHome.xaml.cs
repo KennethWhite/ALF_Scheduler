@@ -338,11 +338,13 @@ namespace WPF_Application
                     {
                         Inspection toAdd = CreateInspection(date, check.Licensors, code);
                         check.AddInspection(toAdd);
+                        check.Licensors = LicensorBox.Text;
                         check.EnforcementNotes = EnforcementBox.Text;
                     }
                 FacilityBox.Text = "";
                 ResultCodeCombo.SelectedItem = null;
                 dateBox.Text = null;
+                LicensorBox.Text = "";
                 EnforcementBox.Text = "";
                 _currentDisplayedFacility = SetGlobal_currentDisplayedFacility((Facility)check);
                 _details.DisplayFacility(_currentDisplayedFacility);
