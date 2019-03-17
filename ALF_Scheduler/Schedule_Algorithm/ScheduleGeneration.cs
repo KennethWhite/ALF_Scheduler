@@ -7,6 +7,9 @@ using ALF_Scheduler.Models;
 
 namespace ScheduleGeneration
 {
+    /// <summary>
+    /// Contains all logic for generating schedule
+    /// </summary>
     public static class ScheduleGeneration
     {
         /// <summary>
@@ -138,9 +141,11 @@ namespace ScheduleGeneration
         /// Generates a date for a proposed inspection. Uses random chance to generate a proposed date given the Facility's last inspection. If no previous inspection, will generate random month between 6 and 9 months.
         /// </summary>
         /// <param name="facility">The facility to generate a proposed date for.</param>
-        /// <param name="facList"></param>
+        /// <param name="facList">Observable collection containing all facilities.</param>
+        /// <param name="random">Check to use random or not, default to use random</param>
+        /// <param name="desiredAvg">Average to try and get when generating non-random generation. Default 15.99</param>
         /// <returns></returns>
-        public static DateTime GenerateSingleDate(Facility facility, ObservableCollection<Facility> facList)
+        public static DateTime GenerateSingleDate(Facility facility, ObservableCollection<Facility> facList, bool random = true, double desiredAvg = 15.99)
         {
             Inspection lastInspec = facility.MostRecentFullInspection;
             DateTime date_lastInspection;
@@ -161,13 +166,6 @@ namespace ScheduleGeneration
                 code_lastInspection = lastInspec.Code;
             }
 
-            /* This is if we want to grab a date to perfectly align with average
-            double best = GetClosestToValue(code_lastInspection.MinMonth, code_lastInspection.MaxMonth, desiredAvg);
-            int days = MonthsToDays(best);
-
-            return date_lastInspection.AddDays(days);
-            */
-
             if (!lastInspecNull && !DateRangeAbleToSchedule(lastInspec))
             {
                 MessageBox.Show("The last inspection was on: " + date_lastInspection + ". With code: " + code_lastInspection.Name + ". The maximum date to schedule is: " +
@@ -176,11 +174,19 @@ namespace ScheduleGeneration
                 return DateTime.Today;
             }
 
-            GenNew:
+        GenNew:
 
-            DateTime newDate = PreferRandom(date_lastInspection, code_lastInspection).Date;
+            DateTime newDate;
+            if (random)
+                newDate = PreferRandom(date_lastInspection, code_lastInspection).Date;
+            else
+            {
+                double best = GetClosestToValue(code_lastInspection.MinMonth, code_lastInspection.MaxMonth, desiredAvg);
+                int days = MonthsToDays(best);
+                newDate = date_lastInspection.AddDays(days);
+            }
 
-            if(!lastInspecNull)
+            if (!lastInspecNull)
             {
                 if (IsDateWithinTwoWeeksOfLast(date_lastInspection, newDate))
                     goto GenNew;

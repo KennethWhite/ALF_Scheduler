@@ -349,7 +349,10 @@ namespace WPF_Application
                 EnforcementBox.Text = "";
                 _currentDisplayedFacility = SetGlobal_currentDisplayedFacility((Facility)check);
                 _details.DisplayFacility(_currentDisplayedFacility);
-                _currentDisplayedFacility.ProposedDate = ScheduleGeneration.ScheduleGeneration.GenerateSingleDate(_currentDisplayedFacility, App.Facilities);
+                _currentDisplayedFacility.ProposedDate = ScheduleGeneration.ScheduleGeneration.GenerateSingleDate(_currentDisplayedFacility, App.Facilities, false);
+                MonthAvgLabel.Visibility = Visibility.Visible;
+                MonthAvgVal.Visibility = Visibility.Visible;
+                MonthAvgVal.Content = ScheduleGeneration.ScheduleGeneration.GetGlobalAverage(App.Facilities);
                 RefreshFacilityList();
                 TabItemDetails.IsSelected = true;
             }
