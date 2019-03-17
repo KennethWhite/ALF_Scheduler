@@ -25,6 +25,7 @@ namespace WPF_Application {
         }
 
         private void NewFileButton_Click(object sender, RoutedEventArgs e) {
+            DialogResult = true;
             // Configure save file dialog box
             var dlg = new SaveFileDialog {
                 FileName = "Document", // Default file name
@@ -45,19 +46,17 @@ namespace WPF_Application {
                 ExcelImporterExporter.SaveWorkbookToSpecifiedFile(filename, App.XlWorkbook);
             }
             Close();
-
-            if (App.HomePage_Main.IsClosing) App.HomePage_Main.Close();
         }
 
         private void CurrentFileButton_Click(object sender, RoutedEventArgs e) {
+            DialogResult = true;
             ALF_Scheduler.DataParser.SaveAllFacilitiesToWorkbook(App.Facilities, App.XlWorkbook);
             ExcelImporterExporter.SaveWorkbookToOriginalFile(App.XlWorkbook);
             Close();
-            
-            if (App.HomePage_Main.IsClosing) App.HomePage_Main.Close();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e) {
+            DialogResult = false;
             Close();
         }
     }

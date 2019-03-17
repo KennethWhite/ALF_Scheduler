@@ -41,10 +41,10 @@ namespace WPF_Application
         /// <summary>
         ///     This helper method opens a save file dialog for saving the file.
         /// </summary>
-        private void SaveFile()
+        private bool? SaveFile()
         {
             var saveDialog = new SaveWhereDialog() { Owner = this };
-            saveDialog.Show();
+            return saveDialog.ShowDialog();
         }
 
 
@@ -65,11 +65,11 @@ namespace WPF_Application
         ///     the exit button in the menu or the 'X' in the window itself.
         /// </summary>
         private void NavigationWindow_Closing(object sender, CancelEventArgs e) {
-            SaveFile(); //TODO: This method finishes before the dialog fully opens. Needs logic to prevent closing if the cancel button is pressed.
-            if (true) { //IsClosing) {
+            var saveComplete = SaveFile();
+            if (saveComplete.Value) {
                 ExcelImporterExporter.CloseExcelApp(App.XlApp, App.XlWorkbook);
                 Environment.Exit(0);
-            } //else e.Cancel = true;
+            } else e.Cancel = true;
         }
 
         /// <summary>
