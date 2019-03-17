@@ -35,8 +35,31 @@ namespace WPF_Application
         private void Menu_Open_Click(object sender, RoutedEventArgs e)
         {
             IsOpening = true;
-            App.OpenFile(this, true);
-            HasOpened = true;
+            if (DisplayWarning()) {
+                App.OpenFile(this, true);
+                HasOpened = true;
+            }
+        }
+
+        /// <summary>
+        ///     Displays a warning when opening a new file.
+        /// </summary>
+        /// <returns></returns>
+        private bool DisplayWarning() {
+            var messageBoxText = "All changes will be lost. Would you like to proceed?\n\nClick cancel to manually save current changes.";
+            var caption = "Open File Warning";
+            var button = MessageBoxButton.OKCancel;
+            var icon = MessageBoxImage.Warning;
+            var result = MessageBox.Show(messageBoxText, caption, button, icon);
+
+            // Process message box results
+            switch (result) {
+                case MessageBoxResult.OK:
+                    return true;
+                case MessageBoxResult.Cancel:
+                    return false;
+            }
+            return false;
         }
 
         /// <summary>
@@ -105,7 +128,7 @@ namespace WPF_Application
         /// <returns>Nullable boolean based on the message box result.</returns>
         private bool? SaveMessageBox() {
             var messageBoxText = "Would you like to save your changes?";
-            var caption = "Word Processor";
+            var caption = "Save Changes";
             var button = MessageBoxButton.YesNo;
             var icon = MessageBoxImage.Question;
             var result = MessageBox.Show(messageBoxText, caption, button, icon);
