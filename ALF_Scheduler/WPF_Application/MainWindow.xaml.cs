@@ -34,8 +34,8 @@ namespace WPF_Application
         /// </summary>
         private void Menu_Open_Click(object sender, RoutedEventArgs e)
         {
-            IsOpening = true;
             if (DisplayWarning()) {
+                IsOpening = true;
                 App.OpenFile(this, true);
                 HasOpened = true;
             }
