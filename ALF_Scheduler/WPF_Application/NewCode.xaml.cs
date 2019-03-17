@@ -12,10 +12,14 @@ namespace WPF_Application
     /// </summary>
     public partial class NewCodeWindow : Window
     {
-        private Brush red { get; set; }
+        private Brush Red { get; set; }
+
+        /// <summary>
+        ///     This constructor makes a new code window and intializes a red brush for errors.
+        /// </summary>
         public NewCodeWindow()
         {
-            red = new SolidColorBrush(Color.FromArgb(90, 255, 0, 0));
+            Red = new SolidColorBrush(Color.FromArgb(90, 255, 0, 0));
             InitializeComponent();
         }
 
@@ -24,7 +28,7 @@ namespace WPF_Application
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void onCancel(object sender, RoutedEventArgs e)
+        public void OnCancel(object sender, RoutedEventArgs e)
         {
             Close();
         }
@@ -34,7 +38,7 @@ namespace WPF_Application
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void onSubmit(object sender, RoutedEventArgs e)
+        public void OnSubmit(object sender, RoutedEventArgs e)
         {
             string fileName = this.fileName.Text;
             string name = codeName.Text;
@@ -44,7 +48,7 @@ namespace WPF_Application
 
             if (string.IsNullOrWhiteSpace(name))
             {
-                codeName.Background = red;
+                codeName.Background = Red;
                 ShowWarn("Code must be given a name");
                 return;
             }
@@ -66,7 +70,7 @@ namespace WPF_Application
             catch
             {
                 ShowWarn("There is invalid data in the 'Minimum Month' field.");
-                this.minMonth.Background = red;
+                this.minMonth.Background = Red;
                 return;
             }
 
@@ -77,7 +81,7 @@ namespace WPF_Application
             catch
             {
                 ShowWarn("There is invalid data in the 'Maximum Month' field.");
-                this.maxMonth.Background = red;
+                this.maxMonth.Background = Red;
                 return;
             }
 
@@ -100,7 +104,7 @@ namespace WPF_Application
             catch (FileFormatException)
             {
                 ShowWarn("Current file name not accepted.");
-                this.fileName.Background = red;
+                this.fileName.Background = Red;
             }
             catch
             {

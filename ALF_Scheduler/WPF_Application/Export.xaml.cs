@@ -23,6 +23,9 @@ namespace WPF_Application
     /// </summary>
     public partial class Export : Window
     {
+        /// <summary>
+        ///     This initialies the Export window.
+        /// </summary>
         public Export()
         {
             InitializeComponent();

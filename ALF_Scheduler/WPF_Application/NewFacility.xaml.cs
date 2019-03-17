@@ -12,6 +12,10 @@ namespace WPF_Application
     public partial class NewFacilityWindow : Window
     {
         private Brush Red { get; set; }
+
+        /// <summary>
+        ///     This constructor makes a new facility window and intializes a red brush for errors.
+        /// </summary>
         public NewFacilityWindow()
         {
             Red = new SolidColorBrush(Color.FromArgb(90, 255, 0, 0));

@@ -76,23 +76,24 @@ namespace WPF_Application
             inspecResult = sh.tb_InspecResult;
             enfNotes = sh.tb_EnfNotes;
 
-            allText = new List<TextBox>();
-            allText.Add(facName);
-            allText.Add(licName);
-            allText.Add(licNum);
-            allText.Add(unit);
-            allText.Add(city);
-            allText.Add(zip);
-            allText.Add(bedCount);
-            allText.Add(specInfo);
-            allText.Add(propNext);
-            allText.Add(mostRecentInspec);
-            allText.Add(prevInspecOne);
-            allText.Add(prevInspecTwo);
-            allText.Add(licensors);
-            allText.Add(complaints);
-            allText.Add(inspecResult);
-            allText.Add(enfNotes);
+            allText = new List<TextBox> {
+                facName,
+                licName,
+                licNum,
+                unit,
+                city,
+                zip,
+                bedCount,
+                specInfo,
+                propNext,
+                mostRecentInspec,
+                prevInspecOne,
+                prevInspecTwo,
+                licensors,
+                complaints,
+                inspecResult,
+                enfNotes
+            };
         }
 
         /// <summary>

@@ -11,7 +11,6 @@ namespace WPF_Application
         /// <summary>
         ///     This method adds each facility's proposed date (from the list of facilities given) into the calendar object.
         /// </summary>
-        /// <param name="facilities">The list of facilities.</param>
         /// <param name="month">The Calendar object the dates should be added to.</param>
         public static void DateSelection(Calendar month)
         {

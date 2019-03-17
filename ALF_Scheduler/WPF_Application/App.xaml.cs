@@ -23,15 +23,28 @@ namespace WPF_Application
     /// </summary>
     public partial class App : Application
     {
-
+        /// <value>Excel Workbook</value>
         public static Workbook XlWorkbook { get; set; }
-        public static Worksheet XlWorksheet { get; set; }
-        public static Excel.Application XlApp { get; set; }
 
+        /// <value>Excel Worksheet</value>
+        public static Worksheet XlWorksheet { get; set; }
+
+        /// <value>Excel Application</value>
+        public static Excel.Application XlApp { get; set; }
+        
+        /// <value>ApplicationDbContext</value>
         public static ApplicationDbContext DbContext { get; set; }
+
+        /// <value>ObservableCollection of all facilities</value>
         public static ObservableCollection<Facility> Facilities { get; set; }
+
+        /// <value>CalendarYear page reference</value>
         public static CalendarYear CalendarYearPage { get; set; }
+
+        /// <value>SchedulerHome page reference</value>
         public static SchedulerHome HomePage { get; set; }
+
+        /// <value>MainWindow reference</value>
         public static MainWindow HomePage_Main { get; set; }
 
         /// <summary>

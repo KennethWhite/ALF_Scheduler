@@ -23,6 +23,10 @@ namespace WPF_Application
         private Code selectedCode { get; set; }
         private Brush red = new SolidColorBrush(Color.FromArgb(90, 255, 0, 0));
         private Brush green = new SolidColorBrush(Color.FromArgb(90, 0, 255, 0));
+
+        /// <summary>
+        /// This initializes the edit code window and the list of xml codes.
+        /// </summary>
         public EditCodeWindow()
         {
             InitializeComponent();
