@@ -321,7 +321,8 @@ namespace WPF_Application
         }
 
         /// <summary>
-        ///     Submits the Inspection form creating a new inspection object.
+        ///     Submits the Inspection form creating a new inspection object
+        ///     for the specified facility.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -348,6 +349,7 @@ namespace WPF_Application
                 EnforcementBox.Text = "";
                 _currentDisplayedFacility = SetGlobal_currentDisplayedFacility((Facility)check);
                 _details.DisplayFacility(_currentDisplayedFacility);
+                _currentDisplayedFacility.ProposedDate = ScheduleGeneration.ScheduleGeneration.GenerateSingleDate(_currentDisplayedFacility, App.Facilities);
                 RefreshFacilityList();
                 TabItemDetails.IsSelected = true;
             }
