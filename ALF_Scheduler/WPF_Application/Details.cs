@@ -37,6 +37,9 @@ namespace WPF_Application
         private TextBox inspecResult;
         private TextBox enfNotes;
 
+        private Label avgDatesLabel;
+        private Label avgDatesVal;
+
         private List<TextBox> allText;
 
         private bool InspectionInfoVisible { get { return inspecInfo.Visibility.Equals(Visibility.Visible); } }
@@ -48,6 +51,9 @@ namespace WPF_Application
             buttonArea = sh.sp_ButtonArea;
             detailsViewer = sh.sp_DetailsViewer;
             noFacSel = sh.sp_NoFacSel;
+
+            avgDatesLabel = sh.MonthAvgLabel;
+            avgDatesVal = sh.MonthAvgVal;
 
             facName = sh.tb_FacName;
             licName = sh.tb_NameLicensee;
@@ -242,7 +248,14 @@ namespace WPF_Application
             fac.SpecialInfo = specInfo.Text;
             try
             {
-                fac.ProposedDate = DateTime.Parse(propNext.Text);
+                DateTime newDate = DateTime.Parse(propNext.Text);
+                if (!fac.ProposedDate.Day.Equals(newDate.Day))
+                {
+                    avgDatesLabel.Visibility = Visibility.Visible;
+                    avgDatesVal.Visibility = Visibility.Visible;
+                    avgDatesVal.Content = ScheduleGeneration.ScheduleGeneration.GetGlobalAverage(App.Facilities);
+                    fac.ProposedDate = newDate;
+                }
             }
             catch
             {
@@ -263,6 +276,11 @@ namespace WPF_Application
             {
                 txt.Background = null;
             }
+
+            mostRecentInspec.Background = Brushes.LightGray;
+            inspecResult.Background = Brushes.LightGray;
+            prevInspecOne.Background = Brushes.LightGray;
+            prevInspecTwo.Background = Brushes.LightGray;
         }
         /// <summary>
         /// Replaces data in Details tab with given Facility. Clears TextBox background colors.
