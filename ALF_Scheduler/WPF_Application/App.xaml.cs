@@ -63,9 +63,10 @@ namespace WPF_Application
                 // Open document
                 var filename = dlg.FileName;
                 Init(filename);
+                HomePage = new SchedulerHome();
+                HomePage_Main.Frame.Navigate(HomePage);
 
                 if (onStartup) sender.Close();
-                HomePage_Main.Show();
             } else if (!onStartup) {
                 ExcelImporterExporter.CloseExcelApp(XlApp, XlWorkbook);
                 Environment.Exit(0);
