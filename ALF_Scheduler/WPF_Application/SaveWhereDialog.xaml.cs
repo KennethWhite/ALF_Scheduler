@@ -50,6 +50,7 @@ namespace WPF_Application {
             if (result == true) {
                 // Save document
                 var filename = dlg.FileName;
+                if (!App.HomePage_Main.HasOpened) //TODO @KENNY create new excel file at filename: ExcelImporterExporter.CreateWorkBookAtPath(filename, xlApp, xlWorkbook);
                 ALF_Scheduler.DataParser.SaveAllFacilitiesToWorkbook(App.Facilities, App.XlWorkbook);
                 ExcelImporterExporter.SaveWorkbookToSpecifiedFile(filename, App.XlWorkbook);
             }

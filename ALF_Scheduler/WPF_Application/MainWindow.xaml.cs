@@ -65,20 +65,17 @@ namespace WPF_Application
         /// <summary>
         ///     This method handles the user clicking the save button in the menu.
         /// </summary>
-        private void Menu_Save_Click(object sender, RoutedEventArgs e)
-        {
+        private void Menu_Save_Click(object sender, RoutedEventArgs e) {
             SaveFile();
         }
 
         /// <summary>
         ///     This helper method opens a save file dialog for saving the file.
         /// </summary>
-        private bool? SaveFile()
-        {
+        private bool? SaveFile(bool curFileDisable = false) {
             var saveDialog = new SaveWhereDialog() { Owner = this };
             return saveDialog.ShowDialog();
         }
-
 
         /// <summary>
         ///     This method handles the user clicking the exit button in the menu.
