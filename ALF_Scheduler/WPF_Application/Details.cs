@@ -45,6 +45,10 @@ namespace WPF_Application
         private bool InspectionInfoVisible { get { return inspecInfo.Visibility.Equals(Visibility.Visible); } }
         private bool DetailsViewerVisible { get { return detailsViewer.Visibility.Equals(Visibility.Visible); } }
 
+        /// <summary>
+        ///     This constructor initializes the Details page.
+        /// </summary>
+        /// <param name="sh"></param>
         public Details(SchedulerHome sh)
         {
             inspecInfo = sh.sp_InspecInfo;

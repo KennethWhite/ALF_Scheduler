@@ -34,6 +34,11 @@ namespace WPF_Application
         public static SchedulerHome HomePage { get; set; }
         public static MainWindow HomePage_Main { get; set; }
 
+        /// <summary>
+        ///     This method runs in startup. It initializes all of our settings, pages, and calendars.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             XML_Utils.XML_Utils.Init();
@@ -47,6 +52,11 @@ namespace WPF_Application
             HomePage_Main.Show();
         }
 
+        /// <summary>
+        ///     This method opens a file dialog for the user to choose an excel file to open in our program.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="onStartup"></param>
         public static void OpenFile(Window sender, bool onStartup = false) {
             // Configure open file dialog box
             var dlg = new OpenFileDialog {
@@ -74,7 +84,7 @@ namespace WPF_Application
         }
 
         /// <summary>
-        ///     This method initializes the overall application and data with the specified excel file path
+        ///     This method initializes the data with the specified excel file path
         ///     grabbed from the Open File Dialog Window in <see cref="App.OpenFile(Window, bool)" />
         /// </summary>
         /// <param name="path">The full path of the specified file to import.</param>
@@ -114,7 +124,12 @@ namespace WPF_Application
             }
         }
 
-
+        /// <summary>
+        ///     This method exports the facilites with inspections within 
+        ///     a specified number of months to a separate excel file.
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="months"></param>
         public static void SaveUpcomingInspectionsToExcel(string filePath, int months = 6)
         {
             Microsoft.Office.Interop.Excel.Workbook xlWorkBook = XlApp.Workbooks.Add(Type.Missing);

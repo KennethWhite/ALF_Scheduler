@@ -17,6 +17,9 @@ namespace WPF_Application
         public bool IsOpening { get; set; }
         public bool HasOpened { get; set; }
 
+        /// <summary>
+        ///     The Main Navigation Window constructor.
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -68,6 +71,10 @@ namespace WPF_Application
         ///     This method handles the closing event that occurs when the user clicks
         ///     the exit button in the menu or the 'X' in the window itself.
         /// </summary>
+        /// <remarks>
+        ///     It will close automatically if no excel file has been opened, otherwise it checks
+        ///     to see if you want to save your file, and where.
+        /// </remarks>
         private void NavigationWindow_Closing(object sender, CancelEventArgs e) {
             bool? save = true;
             if (HasOpened) save = SaveMessageBox();
@@ -89,6 +96,11 @@ namespace WPF_Application
             }
         }
 
+        /// <summary>
+        ///     Helper method that opens a message box asking them to save or cancel. If they choose yes,
+        ///     it will open a window to help them decide where to save.
+        /// </summary>
+        /// <returns>Nullable boolean based on the message box result.</returns>
         private bool? SaveMessageBox() {
             var messageBoxText = "Would you like to save your changes?";
             var caption = "Word Processor";

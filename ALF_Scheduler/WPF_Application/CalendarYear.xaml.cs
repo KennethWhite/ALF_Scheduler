@@ -87,6 +87,12 @@ namespace WPF_Application
             }
         }
 
+        /// <summary>
+        ///     This method handles the left arrow being clicked. 
+        ///     It updates the calendars to be the previous year.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PreviousYearButton_Click(object sender, RoutedEventArgs e) {
             calendarGrid.Children.RemoveRange(1, calendarGrid.Children.Count - 1);
             CreateCalendars(--curYear);
@@ -96,6 +102,12 @@ namespace WPF_Application
             }
         }
 
+        /// <summary>
+        ///     This method handles the right arrow being clicked.
+        ///     It updates the calendars to be the next year.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void NextYearButton_Click(object sender, RoutedEventArgs e) {
             calendarGrid.Children.RemoveRange(1, calendarGrid.Children.Count - 1);
             CreateCalendars(++curYear);
@@ -104,12 +116,21 @@ namespace WPF_Application
                 DisableButton(nextYearButton);
             }
         }
+
+        /// <summary>
+        ///     This enables the arrow button.
+        /// </summary>
+        /// <param name="button">The button to be enabled.</param>
         private void EnableButton(Button button) {
             Path path = (Path)button.Content;
             path.Stroke = System.Windows.Media.Brushes.Black;
             button.IsEnabled = true;
         }
 
+        /// <summary>
+        ///     This disables the arrow button.
+        /// </summary>
+        /// <param name="button">The button to be disabled.</param>
         private void DisableButton(Button button) {
             Path path = (Path)button.Content;
             path.Stroke = System.Windows.Media.Brushes.LightGray;

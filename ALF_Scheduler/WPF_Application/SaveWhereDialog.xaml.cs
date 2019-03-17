@@ -20,10 +20,18 @@ namespace WPF_Application {
     /// </summary>
     public partial class SaveWhereDialog : Window {
 
+        /// <summary>
+        ///     Save Dialog window constructor.
+        /// </summary>
         public SaveWhereDialog() {
             InitializeComponent();
         }
 
+        /// <summary>
+        ///     This handles logic for saving to a new file.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void NewFileButton_Click(object sender, RoutedEventArgs e) {
             DialogResult = true;
             // Configure save file dialog box
@@ -48,6 +56,11 @@ namespace WPF_Application {
             Close();
         }
 
+        /// <summary>
+        ///     This handles logic for saving to the current file.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CurrentFileButton_Click(object sender, RoutedEventArgs e) {
             DialogResult = true;
             ALF_Scheduler.DataParser.SaveAllFacilitiesToWorkbook(App.Facilities, App.XlWorkbook);
@@ -55,6 +68,11 @@ namespace WPF_Application {
             Close();
         }
 
+        /// <summary>
+        ///     This handles the user canceling the save.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CancelButton_Click(object sender, RoutedEventArgs e) {
             DialogResult = false;
             Close();

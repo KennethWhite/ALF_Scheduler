@@ -48,6 +48,7 @@ namespace WPF_Application
         ///     trying to be shown. Setting it inside it's own method will make appropriate use of encapsulation.
         /// </summary>
         /// <param name="facToShow">The facility to be displayed.</param>
+        /// <returns>The facility object to display.</returns>
         private Facility SetGlobal_currentDisplayedFacility(Facility facToShow)
         {
             return this._currentDisplayedFacility = facToShow;
@@ -169,6 +170,10 @@ namespace WPF_Application
             NavigationService.Navigate(App.CalendarYearPage);
         }
 
+        /// <summary>
+        ///     Returns true if a facility has a proposed inspection date.
+        /// </summary>
+        /// <returns>boolean</returns>
         private bool IsAnyProposedDate()
         {
             bool propDate = false;
@@ -232,7 +237,7 @@ namespace WPF_Application
         }
 
         /// <summary>
-        ///     This click event will update the specified facility's most recent inspection information.
+        ///     This event <see cref="Sort(string, ListSortDirection)"/>s the column data based on the type clicked.
         /// </summary>
         private void ColumnHeader_Click(object sender, RoutedEventArgs e)
         {
