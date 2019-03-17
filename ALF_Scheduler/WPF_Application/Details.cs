@@ -248,7 +248,9 @@ namespace WPF_Application
             fac.SpecialInfo = specInfo.Text;
             try
             {
-                DateTime newDate = DateTime.Parse(propNext.Text);
+                DateTime newDate = new DateTime();
+                if (!string.IsNullOrWhiteSpace(propNext.Text)) newDate = DateTime.Parse(propNext.Text);
+
                 if (!fac.ProposedDate.Day.Equals(newDate.Day))
                 {
                     avgDatesLabel.Visibility = Visibility.Visible;

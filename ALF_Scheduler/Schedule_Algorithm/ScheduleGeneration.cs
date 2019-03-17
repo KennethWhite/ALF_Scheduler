@@ -71,7 +71,13 @@ namespace ScheduleGeneration
                 Code code_lastInspection;
 
 
-                if (lastInspec.Equals(Inspection.Inspection_Default) || !DateRangeAbleToSchedule(lastInspec))
+                if (lastInspec.Equals(Inspection.Inspection_Default))
+                {
+                    //No prev inspection.
+                    code_lastInspection = new Code() { MinMonth = 6, MaxMonth = 9 };
+                    date_lastInspection = DateTime.Today;
+                }
+                else if (!DateRangeAbleToSchedule(lastInspec))
                 {
                     goto EndOfLoop;
                 }
@@ -144,9 +150,7 @@ namespace ScheduleGeneration
             if (lastInspec.Equals(Inspection.Inspection_Default))
             {
                 //No prev inspection. Generate random 6-9 months out.
-                code_lastInspection = new Code();
-                code_lastInspection.MinMonth = 6;
-                code_lastInspection.MaxMonth = 9;
+                code_lastInspection = new Code() { MinMonth = 6, MaxMonth = 9};
                 date_lastInspection = DateTime.Today;
                 lastInspecNull = true;
                 //return PreferRandom(date_lastInspection, code_lastInspection).Date;
