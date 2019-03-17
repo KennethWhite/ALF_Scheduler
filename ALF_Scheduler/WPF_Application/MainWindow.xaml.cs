@@ -14,7 +14,9 @@ namespace WPF_Application
     /// </summary>
     public partial class MainWindow : NavigationWindow
     {
+        /// <value>A boolean for if an excel file is currently being opened.</value>
         public bool IsOpening { get; set; }
+        /// <value>A boolean for if an excel file has being opened.</value>
         public bool HasOpened { get; set; }
 
         /// <summary>
