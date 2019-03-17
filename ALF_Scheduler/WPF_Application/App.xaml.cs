@@ -39,14 +39,12 @@ namespace WPF_Application
             XML_Utils.XML_Utils.Init();
             Code.CodesList = Code.GetCodes();
             HomePage_Main = new MainWindow();
-
-            OpenFile(HomePage_Main);
-            //TODO: uncomment this section and delete the line above once the opening works correctly
-            //Facilities = new ObservableCollection<Facility>();
-            //HomePage = new SchedulerHome();
-            //HomePage_Main.Frame.Source = new Uri("pack://application:,,,/SchedulerHome.xaml");
-            //CalendarYearPage = new CalendarYear();
-            //HomePage_Main.Show();
+            
+            Facilities = new ObservableCollection<Facility>();
+            HomePage = new SchedulerHome();
+            HomePage_Main.Frame.Source = new Uri("pack://application:,,,/SchedulerHome.xaml");
+            CalendarYearPage = new CalendarYear();
+            HomePage_Main.Show();
         }
 
         public static void OpenFile(Window sender, bool onStartup = false) {
@@ -65,12 +63,6 @@ namespace WPF_Application
                 // Open document
                 var filename = dlg.FileName;
                 Init(filename);
-
-                //TODO: Delete this chunk once opening file works properly
-                HomePage = new SchedulerHome();
-                var mainWindow = (MainWindow)sender;
-                mainWindow.Frame.Source = new Uri("pack://application:,,,/SchedulerHome.xaml");
-                CalendarYearPage = new CalendarYear();
 
                 if (onStartup) sender.Close();
                 HomePage_Main.Show();

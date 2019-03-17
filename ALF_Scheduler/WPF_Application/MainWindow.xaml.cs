@@ -14,12 +14,14 @@ namespace WPF_Application
     /// </summary>
     public partial class MainWindow : NavigationWindow
     {
-        public bool IsClosing { get; set; }
+        public bool IsOpening { get; set; }
+        public bool HasOpened { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
-            IsClosing = false;
+            IsOpening = false;
+            HasOpened = false;
         }
 
         /// <summary>
@@ -27,7 +29,9 @@ namespace WPF_Application
         /// </summary>
         private void Menu_Open_Click(object sender, RoutedEventArgs e)
         {
+            IsOpening = true;
             App.OpenFile(this, true);
+            HasOpened = true;
         }
 
         /// <summary>
@@ -65,11 +69,43 @@ namespace WPF_Application
         ///     the exit button in the menu or the 'X' in the window itself.
         /// </summary>
         private void NavigationWindow_Closing(object sender, CancelEventArgs e) {
-            var saveComplete = SaveFile();
-            if (saveComplete.Value) {
+            bool? save = true;
+            if (HasOpened) save = SaveMessageBox();
+
+            if (save == null && !IsOpening) {
+                save = true;
+            }
+            else if (save == null && IsOpening) {
+                save = false;
+                IsOpening = false;
+            }
+
+            if (save.Value && !IsOpening) {
                 ExcelImporterExporter.CloseExcelApp(App.XlApp, App.XlWorkbook);
                 Environment.Exit(0);
-            } else e.Cancel = true;
+            } else {
+                e.Cancel = true;
+                IsOpening = false;
+            }
+        }
+
+        private bool? SaveMessageBox() {
+            var messageBoxText = "Would you like to save your changes?";
+            var caption = "Word Processor";
+            var button = MessageBoxButton.YesNo;
+            var icon = MessageBoxImage.Question;
+            var result = MessageBox.Show(messageBoxText, caption, button, icon);
+
+            // Process message box results
+            switch (result) {
+                case MessageBoxResult.Yes:
+                    return SaveFile();
+                case MessageBoxResult.No:
+                    return null;
+                case MessageBoxResult.Cancel:
+                    return false;
+            }
+            return false;
         }
 
         /// <summary>
