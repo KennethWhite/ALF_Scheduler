@@ -149,8 +149,13 @@ namespace WPF_Application
         {
             try
             {
-                Code.RemoveCode(selectedCode);
-                Code.CodesList.Remove(selectedCode);
+                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete the code?", "Delete Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if(result.Equals(MessageBoxResult.Yes))
+                {
+                    Code.RemoveCode(selectedCode);
+                    Code.CodesList.Remove(selectedCode);
+                }
+                return;
             }
             catch
             {
