@@ -95,12 +95,6 @@ namespace WPF_Application
                 this.licNum.Background = Red;
                 return;
             }
-            else if (string.IsNullOrWhiteSpace(unit))
-            {
-                ShowWarn("Unit can't be empty.");
-                this.unit.Background = Red;
-                return;
-            }
             else if (string.IsNullOrWhiteSpace(city))
             {
                 ShowWarn("City can't be empty.");
