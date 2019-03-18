@@ -1,4 +1,5 @@
-﻿using Excel_Import_Export;
+﻿using ALF_Scheduler;
+using Excel_Import_Export;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -50,7 +51,23 @@ namespace WPF_Application {
             if (result == true) {
                 // Save document
                 var filename = dlg.FileName;
-                if (!App.HomePage_Main.HasOpened) //TODO @KENNY create new excel file at filename: ExcelImporterExporter.CreateWorkBookAtPath(filename, xlApp, xlWorkbook);
+                if (!App.HomePage_Main.HasOpened)
+                {
+                    //TODO @KENNY create new excel file at filename: 
+                    Microsoft.Office.Interop.Excel.Application app = new Microsoft.Office.Interop.Excel.Application();
+                    app.DisplayAlerts = false;
+                    Microsoft.Office.Interop.Excel.Workbook workbook;
+                    
+                    //ExcelImporterExporter.CreateWorkBookAtPath(filename, out app, out workbook);
+                    App.XlApp = app;
+                    App.XlWorkbook = app.Workbooks.Add();
+                    //workbook.Worksheets.Add();
+                    App.XlWorksheet = (Microsoft.Office.Interop.Excel.Worksheet)App.XlWorkbook.Worksheets[1];
+                    DataParser.WriteColumnHeaders(App.XlWorkbook);
+                    App.SaveUpcomingInspectionsToExcel(filename, 1000);
+
+                    
+                }
                 ALF_Scheduler.DataParser.SaveAllFacilitiesToWorkbook(App.Facilities, App.XlWorkbook);
                 ExcelImporterExporter.SaveWorkbookToSpecifiedFile(filename, App.XlWorkbook);
             }

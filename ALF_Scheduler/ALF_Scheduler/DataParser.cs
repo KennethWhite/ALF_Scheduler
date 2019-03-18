@@ -177,6 +177,48 @@ namespace ALF_Scheduler
             throw new FormatException("date does not match regex format");
         }
 
+        public static void WriteColumnHeaders(Workbook workbook)
+        {
+            var sheet = (Worksheet)workbook.ActiveSheet;
+            sheet.Name = "Inspection Schedule";
+            sheet.Cells.Font.Size = 15;
+            ((Range)sheet.Cells[1, 1]).Value = "Facility Name";
+            ((Range)sheet.Cells[1, 1]).Interior.Color = Excel.XlRgbColor.rgbPaleTurquoise;
+            ((Range)sheet.Cells[1, 2]).Value = "Licensee Name";
+            ((Range)sheet.Cells[1, 2]).Interior.Color = Excel.XlRgbColor.rgbLawnGreen;
+            ((Range)sheet.Cells[1, 3]).Value = "Unit";
+            ((Range)sheet.Cells[1, 3]).Interior.Color = Excel.XlRgbColor.rgbLawnGreen;
+            ((Range)sheet.Cells[1, 4]).Value = "License Number";
+            ((Range)sheet.Cells[1, 4]).Interior.Color = Excel.XlRgbColor.rgbDarkOrange;
+            ((Range)sheet.Cells[1, 5]).Value = "City";
+            ((Range)sheet.Cells[1, 5]).Interior.Color = Excel.XlRgbColor.rgbTan;
+            ((Range)sheet.Cells[1, 6]).Value = "Zip";
+            ((Range)sheet.Cells[1, 6]).Interior.Color = Excel.XlRgbColor.rgbDeepPink;
+            ((Range)sheet.Cells[1, 7]).Value = "Previous Inspection Date";
+            ((Range)sheet.Cells[1, 7]).Interior.Color = Excel.XlRgbColor.rgbGreenYellow;
+            ((Range)sheet.Cells[1, 8]).Value = "Most Recent Inspection Date";
+            ((Range)sheet.Cells[1, 8]).Interior.Color = Excel.XlRgbColor.rgbMediumVioletRed;
+            ((Range)sheet.Cells[1, 9]).Value = "Interval In Months";
+            ((Range)sheet.Cells[1, 9]).Interior.Color = Excel.XlRgbColor.rgbMediumPurple;
+            ((Range)sheet.Cells[1, 10]).Value = "Interval In Days";
+            ((Range)sheet.Cells[1, 10]).Interior.Color = Excel.XlRgbColor.rgbPurple;
+            ((Range)sheet.Cells[1, 11]).Value = "Desired Inspection Date";
+            ((Range)sheet.Cells[1, 11]).Interior.Color = Excel.XlRgbColor.rgbSalmon;
+            ((Range)sheet.Cells[1, 12]).Value = "17th Month (Add 517 Days)";
+            ((Range)sheet.Cells[1, 12]).Interior.Color = Excel.XlRgbColor.rgbYellow;
+            ((Range)sheet.Cells[1, 13]).Value = "18th Month Drop Dead";
+            ((Range)sheet.Cells[1, 13]).Interior.Color = Excel.XlRgbColor.rgbBeige;
+            ((Range)sheet.Cells[1, 14]).Value = "Licensor";
+            ((Range)sheet.Cells[1, 14]).Interior.Color = Excel.XlRgbColor.rgbCornflowerBlue;
+            ((Range)sheet.Cells[1, 16]).Value = "Enforcement/Notes";
+            ((Range)sheet.Cells[1, 16]).Interior.Color = Excel.XlRgbColor.rgbDimGrey;
+            ((Range)sheet.Cells[1, 19]).Value = "Number of Beds";
+            ((Range)sheet.Cells[1, 19]).Interior.Color = Excel.XlRgbColor.rgbLightSalmon;
+
+            //((Range)sheet.Cells[1, 7]).Value = "Special Info";
+            sheet.UsedRange.Columns.AutoFit();
+        }
+
         public static void WriteFacilitiesToWorkbookForInspectionSchedule(List<Facility> facilities, Workbook xlWorkBook)
         {
             var sheet = (Worksheet)xlWorkBook.ActiveSheet;

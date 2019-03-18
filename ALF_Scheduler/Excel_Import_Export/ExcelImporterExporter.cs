@@ -151,6 +151,13 @@ namespace Excel_Import_Export
         {
             xlApp = new Application();
 
+            if (!File.Exists(path))
+            {
+                File.Create(path);
+                xlWorkbook = xlApp.Workbooks.Add();
+                return;
+            }
+
             if (xlApp == null)
                 throw new NullReferenceException(
                     $"The program failed to create the file {path} because Microsoft Excel could not be opened.");

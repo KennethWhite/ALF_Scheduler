@@ -148,7 +148,6 @@ namespace WPF_Application
             Microsoft.Office.Interop.Excel.Workbook xlWorkBook = XlApp.Workbooks.Add(Type.Missing);
             xlWorkBook.Worksheets.Add();
 
-            //Need to retrieve desired number of months from user, default is 6
             var facList = ScheduleGeneration.ScheduleGeneration.RetrieveFacilitiesWithInspectionsInXMonths(Facilities, months);
             ALF_Scheduler.DataParser.WriteFacilitiesToWorkbookForInspectionSchedule(facList, xlWorkBook);
             ExcelImporterExporter.SaveWorkbookToSpecifiedFile(filePath, xlWorkBook);
