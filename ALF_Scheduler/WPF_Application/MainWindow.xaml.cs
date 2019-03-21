@@ -66,15 +66,14 @@ namespace WPF_Application
         ///     This method handles the user clicking the save button in the menu.
         /// </summary>
         private void Menu_Save_Click(object sender, RoutedEventArgs e) {
-            if (HasOpened) SaveFile();
-            else SaveFile(true);
+            SaveFile();
         }
 
         /// <summary>
         ///     This helper method opens a save file dialog for saving the file.
         /// </summary>
         private bool? SaveFile(bool curFileDisable = false) {
-            var saveDialog = new SaveWhereDialog(curFileDisable) { Owner = this };
+            var saveDialog = new SaveWhereDialog() { Owner = this };
             return saveDialog.ShowDialog();
         }
 
@@ -100,7 +99,7 @@ namespace WPF_Application
         /// </remarks>
         private void NavigationWindow_Closing(object sender, CancelEventArgs e) {
             bool? save = true;
-            if (!IsOpening) save = SaveMessageBox();
+            if (HasOpened) save = SaveMessageBox();
 
             if (save == null && !IsOpening) {
                 save = true;
@@ -127,7 +126,7 @@ namespace WPF_Application
         private bool? SaveMessageBox() {
             var messageBoxText = "Would you like to save your changes?";
             var caption = "Save Changes";
-            var button = MessageBoxButton.YesNoCancel;
+            var button = MessageBoxButton.YesNo;
             var icon = MessageBoxImage.Question;
             var result = MessageBox.Show(messageBoxText, caption, button, icon);
 

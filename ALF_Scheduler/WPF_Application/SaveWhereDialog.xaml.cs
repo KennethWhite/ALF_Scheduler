@@ -29,14 +29,6 @@ namespace WPF_Application {
         }
 
         /// <summary>
-        ///     Save Dialog window constructor.
-        /// </summary>
-        public SaveWhereDialog(bool disable) {
-            InitializeComponent();
-            CurrentFileButton.Visibility = Visibility.Hidden;
-        }
-
-        /// <summary>
         ///     This handles logic for saving to a new file.
         /// </summary>
         /// <param name="sender"></param>
@@ -61,10 +53,12 @@ namespace WPF_Application {
                 var filename = dlg.FileName;
                 if (!App.HomePage_Main.HasOpened)
                 {
+                    //TODO @KENNY create new excel file at filename: 
                     Microsoft.Office.Interop.Excel.Application app = new Microsoft.Office.Interop.Excel.Application();
                     app.DisplayAlerts = false;
-                    //Microsoft.Office.Interop.Excel.Workbook workbook;
+                    Microsoft.Office.Interop.Excel.Workbook workbook;
                     
+                    //ExcelImporterExporter.CreateWorkBookAtPath(filename, out app, out workbook);
                     App.XlApp = app;
                     App.XlWorkbook = app.Workbooks.Add();
                     //workbook.Worksheets.Add();
