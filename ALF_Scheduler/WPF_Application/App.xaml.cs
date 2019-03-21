@@ -70,7 +70,7 @@ namespace WPF_Application
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="onStartup"></param>
-        public static void OpenFile(Window sender, bool onStartup = false) {
+        public static bool OpenFile(Window sender, bool onStartup = false) {
             // Configure open file dialog box
             var dlg = new OpenFileDialog {
                 FileName = "Document", // Default file name
@@ -88,12 +88,14 @@ namespace WPF_Application
                 Init(filename);
                 HomePage = new SchedulerHome();
                 HomePage_Main.Frame.Navigate(HomePage);
-
+                
                 if (onStartup) sender.Close();
+                return true;
             } else if (!onStartup) {
                 ExcelImporterExporter.CloseExcelApp(XlApp, XlWorkbook);
                 Environment.Exit(0);
             }
+            return false;
         }
 
         /// <summary>

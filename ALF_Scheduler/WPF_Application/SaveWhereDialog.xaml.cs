@@ -24,8 +24,10 @@ namespace WPF_Application {
         /// <summary>
         ///     Save Dialog window constructor.
         /// </summary>
-        public SaveWhereDialog() {
+        public SaveWhereDialog(bool disable) {
             InitializeComponent();
+            if (disable) CurrentFileButton.Visibility = Visibility.Hidden;
+            else CurrentFileButton.Visibility = Visibility.Visible;
         }
 
         /// <summary>
@@ -53,10 +55,9 @@ namespace WPF_Application {
                 var filename = dlg.FileName;
                 if (!App.HomePage_Main.HasOpened)
                 {
-                    //TODO @KENNY create new excel file at filename: 
                     Microsoft.Office.Interop.Excel.Application app = new Microsoft.Office.Interop.Excel.Application();
                     app.DisplayAlerts = false;
-                    Microsoft.Office.Interop.Excel.Workbook workbook;
+                    //Microsoft.Office.Interop.Excel.Workbook workbook;
                     
                     //ExcelImporterExporter.CreateWorkBookAtPath(filename, out app, out workbook);
                     App.XlApp = app;

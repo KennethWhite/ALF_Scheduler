@@ -36,8 +36,7 @@ namespace WPF_Application
         {
             if (DisplayWarning()) {
                 IsOpening = true;
-                App.OpenFile(this, true);
-                HasOpened = true;
+                HasOpened = App.OpenFile(this, true);
             }
         }
 
@@ -66,14 +65,15 @@ namespace WPF_Application
         ///     This method handles the user clicking the save button in the menu.
         /// </summary>
         private void Menu_Save_Click(object sender, RoutedEventArgs e) {
-            SaveFile();
+            if (HasOpened) SaveFile();
+            else SaveFile(true);
         }
 
         /// <summary>
         ///     This helper method opens a save file dialog for saving the file.
         /// </summary>
         private bool? SaveFile(bool curFileDisable = false) {
-            var saveDialog = new SaveWhereDialog() { Owner = this };
+            var saveDialog = new SaveWhereDialog(curFileDisable) { Owner = this };
             return saveDialog.ShowDialog();
         }
 
@@ -84,9 +84,13 @@ namespace WPF_Application
         ///     This activates the Closing event:
         ///     <see cref="NavigationWindow_Closing(object, System.ComponentModel.CancelEventArgs)" />
         /// </remarks>
-        private void Menu_Exit_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
+        private void Menu_Exit_Click(object sender, RoutedEventArgs e) {
+            bool? save = true;
+            if (!IsOpening) save = SaveMessageBox();
+
+            if (save == null && !IsOpening) {
+                save = true;
+            }
         }
 
         /// <summary>
@@ -126,7 +130,7 @@ namespace WPF_Application
         private bool? SaveMessageBox() {
             var messageBoxText = "Would you like to save your changes?";
             var caption = "Save Changes";
-            var button = MessageBoxButton.YesNo;
+            var button = MessageBoxButton.YesNoCancel;
             var icon = MessageBoxImage.Question;
             var result = MessageBox.Show(messageBoxText, caption, button, icon);
 
