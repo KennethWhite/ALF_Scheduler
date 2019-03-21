@@ -69,6 +69,11 @@ namespace ALF_Scheduler
             }
         }
 
+        /// <summary>
+        /// Saves all facilities in facility list to given Excel workbook
+        /// </summary>
+        /// <param name="facilities">Facilities to save</param>
+        /// <param name="xlWorkbook">Excel workbook to save to</param>
        public static void SaveAllFacilitiesToWorkbook(ObservableCollection<Facility> facilities, Workbook xlWorkbook)
         {
             int rowNumber = 2;
@@ -83,6 +88,11 @@ namespace ALF_Scheduler
             sheet.UsedRange.Columns.AutoFit();
         }
 
+        /// <summary>
+        /// Saves Facility data to Excel Range
+        /// </summary>
+        /// <param name="fac">Facility to retrieve data from</param>
+        /// <param name="excelRow">Excel range to load data into</param>
         public static void SaveFacility(Facility fac, Range excelRow)
         {
             try
@@ -114,7 +124,13 @@ namespace ALF_Scheduler
             }
         }
 
-
+        /// <summary>
+        /// Creates an Inspection object with given data
+        /// </summary>
+        /// <param name="date">Date inspection was held</param>
+        /// <param name="licensor">Licensor who gave inspection</param>
+        /// <param name="code">Code corresponding with result of inspection</param>
+        /// <returns></returns>
         private static Inspection CreateInspection(string date, string licensor = "", string code = "")
         {
             DateTime.TryParse(date, out DateTime parsedDate);
@@ -177,6 +193,10 @@ namespace ALF_Scheduler
             throw new FormatException("date does not match regex format");
         }
 
+        /// <summary>
+        /// Writes column headers to workbook with formatting
+        /// </summary>
+        /// <param name="workbook">Workbook to add headers to</param>
         public static void WriteColumnHeaders(Workbook workbook)
         {
             var sheet = (Worksheet)workbook.ActiveSheet;
@@ -219,6 +239,11 @@ namespace ALF_Scheduler
             sheet.UsedRange.Columns.AutoFit();
         }
 
+        /// <summary>
+        /// Writes facility inspection schedule to Excel workbook
+        /// </summary>
+        /// <param name="facilities">Facilities to get data from</param>
+        /// <param name="xlWorkBook">Excel workbook to write data to</param>
         public static void WriteFacilitiesToWorkbookForInspectionSchedule(List<Facility> facilities, Workbook xlWorkBook)
         {
             var sheet = (Worksheet)xlWorkBook.ActiveSheet;

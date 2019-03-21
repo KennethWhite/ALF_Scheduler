@@ -272,7 +272,11 @@ namespace ALF_Scheduler.Models
             return ReturnFacility(this);
         }
 
-
+        /// <summary>
+        /// Converts list to comma separated string.
+        /// </summary>
+        /// <param name="theList">List to parse.</param>
+        /// <returns></returns>
         private string ListToString(List<Inspection> theList)
         {
             if(theList.Count == 0)
