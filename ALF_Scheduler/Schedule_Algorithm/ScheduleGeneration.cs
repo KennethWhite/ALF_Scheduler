@@ -381,11 +381,6 @@ namespace ScheduleGeneration
             return upcomingInspections;
         }
 
-        /// <summary>
-        /// Checks if you can schedule an inspection past today's date
-        /// </summary>
-        /// <param name="inspection">Inspection to check</param>
-        /// <returns></returns>
         private static bool DateRangeAbleToSchedule(Inspection inspection)
         {
             try

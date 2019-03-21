@@ -5,9 +5,6 @@ using System.Xml.Linq;
 
 namespace XML_Utils
 {
-    /// <summary>
-    /// Class that is responsible for getting information regarding the xml configuration files.
-    /// </summary>
     public static class XML_Utils
     {
         /// <summary>
