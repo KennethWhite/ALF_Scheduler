@@ -35,6 +35,7 @@ namespace WPF_Application
         private void Menu_Open_Click(object sender, RoutedEventArgs e)
         {
             if (DisplayWarning()) {
+                if (HasOpened) ExcelImporterExporter.CloseExcelApp(App.XlApp, App.XlWorkbook);
                 IsOpening = true;
                 HasOpened = App.OpenFile(this, true);
             }
