@@ -176,7 +176,7 @@ namespace ScheduleGeneration
 
         GenNew:
 
-            DateTime newDate;
+            DateTime newDate = DateTime.Today;
             if (random)
                 newDate = PreferRandom(date_lastInspection, code_lastInspection).Date;
             else
@@ -201,7 +201,10 @@ namespace ScheduleGeneration
             }
 
             if (!IsUnscheduledDate(scheduledDays, newDate.DayOfYear) || !(newDate > DateTime.Today))
+            {
+                random = true;
                 goto GenNew;
+            }
 
             return newDate;
         }
@@ -225,20 +228,21 @@ namespace ScheduleGeneration
         /// <returns>Boolean whether or not within 6 days of another date.</returns>
         private static bool IsUnscheduledDate(List<int> scheduledDays, int startInspection)
         {
-            var notScheduled = true;
-            var endInspection = startInspection + 6;
+            var endInspection = startInspection + 5;
 
             var newInpectionRange = GetRange(startInspection, endInspection);
 
             foreach (var startDay in scheduledDays)
             {
-                var endDay = startDay + 6;
+                var endDay = startDay + 5;
                 var currentRange = GetRange(startDay, endDay);
 
-                if (currentRange.Intersect(newInpectionRange).Any()) notScheduled = false;
+                var inter = currentRange.Intersect(newInpectionRange);
+
+                if (inter.Any()) return false;
             }
 
-            return notScheduled;
+            return true;
         }
 
         /// <summary>
